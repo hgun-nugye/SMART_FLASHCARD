@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:id="@+id/addCard">
+
+    <EditText
+        android:id="@+id/edtDeckName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tên bộ sưu tập (ví dụ: IELTS - Topic Food)" />
+
+    <EditText
+        android:id="@+id/edtFront"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Nhập từ vựng (ví dụ: Integrity)" />
+
+    <Button
+        android:id="@+id/btnAiGen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#6200EE"
+        android:text="Tự động điền bằng Groq AI"
+        android:textColor="#FFFFFF" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/edtBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nghĩa của từ"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/edtIpa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phiên âm (IPA)" />
+
+    <EditText
+        android:id="@+id/edtExample"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ví dụ"
+        android:lines="3" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Lưu vào Firebase" />
+
+</LinearLayout>
