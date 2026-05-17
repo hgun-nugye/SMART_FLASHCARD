@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#F8F9FB"
+    android:id="@+id/choiceLogin">
+
+    <!-- Logo -->
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/img"
+        android:layout_marginBottom="40dp"
+        android:scaleType="centerCrop"/>
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome Back"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#222"
+        android:layout_marginBottom="30dp"/>
+
+    <!-- Button Email -->
+    <Button
+        android:id="@+id/btnemail"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Login with Email"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#6610A600"
+        android:layout_marginBottom="15dp"
+        android:elevation="4dp"/>
+
+    <!-- Button Phone -->
+    <Button
+        android:id="@+id/btnOtp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Login with Phone Number"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#35A6BC"
+        android:elevation="4dp"/>
+
+</LinearLayout>

@@ -23,8 +23,7 @@ public class GroqManager {
     private static final String TAG = "GroqManager";
     private static final String ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    // Groq model IDs change over time; prefer production models.
-    // See: https://console.groq.com/docs/models
+
     private static final String[] MODEL_FALLBACKS = new String[] {
             "llama-3.1-8b-instant",
             "llama-3.3-70b-versatile",
@@ -50,7 +49,7 @@ public class GroqManager {
     }
 
     public void generateCardContent(String word, AiCallback callback) {
-        String apiKey = BuildConfig
+        String apiKey = BuildConfig.GROQ_API_KEY;
         if (apiKey == null || apiKey.trim().isEmpty()) {
             sendError(callback, "Thiếu GROQ_API_KEY. Hãy cấu hình trong local.properties/gradle.properties.");
             return;

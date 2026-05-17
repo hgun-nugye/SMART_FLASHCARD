@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -25,6 +26,7 @@ android {
 
         val groqApiKey: String = project.findProperty("GROQ_API_KEY")?.toString() ?: ""
         buildConfigField("String", "GROQ_API_KEY", "\"$groqApiKey\"")
+
     }
 
     buildTypes {
@@ -55,6 +57,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
+
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.json:json:20240303")
