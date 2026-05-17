@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1066134632685",
+    "project_id": "smartflashcard-de873",
+    "storage_bucket": "smartflashcard-de873.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066134632685:android:b543a2ccb8a4766bbfb4e4",
+        "android_client_info": {
+          "package_name": "ntu.nguyenthithanhhuong.smartflashcard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ65XiHCNa7iSoEf3tjgTm5FPg0lnge74"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,22 +1,19 @@
 package ntu.nguyenthithanhhuong.smartflashcard;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -33,17 +30,22 @@ public class AddCardActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String currentDeckId;
     private boolean isCreateDeckMode;
+    private android.speech.tts.TextToSpeech tts;
+    private boolean isTtsReady = false;
+    private android.widget.ImageButton btnPlayTts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_card);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.addCard), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         currentDeckId = getIntent().getStringExtra("DECK_ID");
         isCreateDeckMode = (currentDeckId == null || currentDeckId.trim().isEmpty());
 
@@ -53,20 +55,54 @@ public class AddCardActivity extends AppCompatActivity {
         initViews();
         setupModeUi();
 
+        // 1. Khởi tạo TextToSpeech trước để sẵn sàng sử dụng
+        tts = new android.speech.tts.TextToSpeech(this, status -> {
+            if (status == android.speech.tts.TextToSpeech.SUCCESS) {
+                int result = tts.setLanguage(java.util.Locale.US);
+                if (result == android.speech.tts.TextToSpeech.LANG_MISSING_DATA
+                        || result == android.speech.tts.TextToSpeech.LANG_NOT_SUPPORTED) {
+                    isTtsReady = false;
+                } else {
+                    isTtsReady = true;
+                }
+            }
+        });
+
+        // Bấm nút Play để chủ động nghe đọc
+        btnPlayTts.setOnClickListener(v -> {
+            String word = edtFront.getText().toString().trim();
+            if (!word.isEmpty() && isTtsReady && tts != null) {
+                tts.speak(word, android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, null);
+            } else if (word.isEmpty()) {
+                Toast.makeText(this, "Hãy nhập từ vựng trước khi nghe!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // 2. Cấu hình nút gọi AI sinh nội dung
         btnAiGen.setOnClickListener(v -> {
             String word = edtFront.getText().toString().trim();
-            if (word.isEmpty()) return;
+            if (word.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập từ vựng mặt trước!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             progressBar.setVisibility(View.VISIBLE);
             btnAiGen.setEnabled(false);
+
             groqManager.generateCardContent(word, new GroqManager.AiCallback() {
                 @Override
                 public void onSuccess(String definition, String ipa, String example) {
                     progressBar.setVisibility(View.GONE);
                     btnAiGen.setEnabled(true);
+
                     edtBack.setText(definition);
                     edtIpa.setText(ipa);
                     edtExample.setText(example);
+
+                    // Phát âm từ vựng vừa tra cứu nếu TTS đã sẵn sàng
+                    if (isTtsReady && tts != null) {
+                        tts.speak(word, android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, null);
+                    }
                 }
 
                 @Override
@@ -84,6 +120,7 @@ public class AddCardActivity extends AppCompatActivity {
     private void initViews() {
         edtDeckName = findViewById(R.id.edtDeckName);
         edtFront = findViewById(R.id.edtFront);
+        btnPlayTts = findViewById(R.id.btnPlayTts);
         edtBack = findViewById(R.id.edtBack);
         edtIpa = findViewById(R.id.edtIpa);
         edtExample = findViewById(R.id.edtExample);
@@ -104,10 +141,10 @@ public class AddCardActivity extends AppCompatActivity {
 
     private void saveCardToFirestore() {
         String deckName = edtDeckName.getText().toString().trim();
-        String front = edtFront.getText().toString();
-        String back = edtBack.getText().toString();
-        String ipa = edtIpa.getText().toString();
-        String example = edtExample.getText().toString();
+        String front = edtFront.getText().toString().trim();
+        String back = edtBack.getText().toString().trim();
+        String ipa = edtIpa.getText().toString().trim();
+        String example = edtExample.getText().toString().trim();
 
         if (isCreateDeckMode && deckName.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập tên bộ sưu tập!", Toast.LENGTH_SHORT).show();
@@ -119,9 +156,8 @@ public class AddCardActivity extends AppCompatActivity {
             return;
         }
 
-        // Dùng Model Flashcard đã tạo ở bước trước
         Flashcard newCard = new Flashcard(front, back, ipa, example);
-        newCard.nextReview = System.currentTimeMillis(); // Học ngay hôm nay
+        newCard.nextReview = System.currentTimeMillis();
 
         btnSave.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
@@ -134,16 +170,17 @@ public class AddCardActivity extends AppCompatActivity {
     }
 
     private void createDeckThenAddCard(String deckName, Flashcard firstCard) {
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            btnSave.setEnabled(true);
-            progressBar.setVisibility(View.GONE);
-            Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        String uid = FirebaseAuth.getInstance().getUid();
+//        if (uid == null) {
+//            btnSave.setEnabled(true);
+//            progressBar.setVisibility(View.GONE);
+//            Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
         Map<String, Object> deckData = new HashMap<>();
         deckData.put("name", deckName);
-        deckData.put("ownerId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        deckData.put("ownerId", uid);
         deckData.put("cardCount", 0);
         deckData.put("createdAt", System.currentTimeMillis());
 
@@ -184,5 +221,14 @@ public class AddCardActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(this, "Lỗi lưu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 }

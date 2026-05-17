@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -51,28 +52,30 @@ public class MainActivity extends AppCompatActivity {
         initViews();
 
         // 3. Tải dữ liệu
-        loadDecksFromFirestore();
+//        loadDecksFromFirestore();
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        if (mAuth.getCurrentUser() == null) {
-//            startActivity(new Intent(this, ChoiceLoginActivity.class));
-//            finish();
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(this, ChoiceLoginActivity.class));
+            finish();
+        } else {
+            loadDecksFromFirestore();
+        }
+    }
 
     private void initViews() {
         rvDecks = findViewById(R.id.rvDecks);
         fabAddDeck = findViewById(R.id.fabAddDeck);
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setOnMenuItemClickListener(this::onToolbarMenuClick);
+//        toolbar.setOnMenuItemClickListener(this::onToolbarMenuClick);
 
         rvDecks.setLayoutManager(new LinearLayoutManager(this));
         adapter = new DeckAdapter(deckList, deck -> {
-            Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
+            Intent intent = new Intent(MainActivity.this, CardListActivity.class);
             intent.putExtra("DECK_ID", deck.deckId);
             startActivity(intent);
         });
@@ -126,5 +129,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
                 });
+    }
+
+    // 1. Hàm này dùng để khởi tạo và "bơm" (inflate) menu vào Toolbar
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    // 2. Hàm xử lý sự kiện khi người dùng click vào từng mục trong menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull android.view.MenuItem item) {
+        return onToolbarMenuClick(item) || super.onOptionsItemSelected(item);
     }
 }
