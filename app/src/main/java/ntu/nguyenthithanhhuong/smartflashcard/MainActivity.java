@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ntu.nguyenthithanhhuong.smartflashcard.Model.Deck;
+import ntu.nguyenthithanhhuong.smartflashcard.Model.User;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView rvDecks;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DeckAdapter adapter;
     private final List<Deck> deckList = new ArrayList<>();
+    private User currentUserProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, ChoiceLoginActivity.class));
             finish();
         } else {
+            loadUserProfile();
             loadDecksFromFirestore();
         }
     }
@@ -129,6 +133,23 @@ public class MainActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
                 });
+    }
+
+    private void loadUserProfile() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            db.collection("users").document(currentUser.getUid())
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        User user = documentSnapshot.toObject(User.class);
+                        if (user != null) {
+                            // Cập nhật giao diện thanh tiêu đề hoặc thông tin cá nhân
+                            if (getSupportActionBar() != null) {
+                                getSupportActionBar().setSubtitle("Xin chào, " + user.fullName);
+                            }
+                        }
+                    });
+        }
     }
 
     // 1. Hàm này dùng để khởi tạo và "bơm" (inflate) menu vào Toolbar

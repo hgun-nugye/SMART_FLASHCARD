@@ -1,6 +1,7 @@
 package ntu.nguyenthithanhhuong.smartflashcard.Model;
 
 public class Flashcard {
+    public String cardId;
     public String front;          // Từ vựng (Người dùng nhập)
     public String back;           // Nghĩa (Groq gợi ý hoặc tự nhập)
     public String ipa;            // Phiên âm (Gemini gợi ý)

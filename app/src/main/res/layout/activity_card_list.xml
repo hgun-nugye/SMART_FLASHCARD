@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardList"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/cardList">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarCards"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:titleTextColor="#FFFFFF"
-        app:title="Danh sách thẻ" />
+        app:menu="@menu/card_list_menu"
+        app:title="Danh sách thẻ"
+        app:titleTextColor="#FFFFFF" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarCards"
+        android:clipToPadding="false"
         android:paddingVertical="8dp"
-        android:clipToPadding="false" />
+        tools:listitem="@layout/item_flashcard" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddCard"
@@ -28,8 +31,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="24dp"
-        android:src="@android:drawable/ic_input_add"
-        app:tint="#FFFFFF"
         android:backgroundTint="#6200EE"
-        android:contentDescription="Thêm thẻ mới" />
+        android:contentDescription="Thêm thẻ mới"
+        android:src="@android:drawable/ic_input_add"
+        app:tint="#FFFFFF" />
 </RelativeLayout>

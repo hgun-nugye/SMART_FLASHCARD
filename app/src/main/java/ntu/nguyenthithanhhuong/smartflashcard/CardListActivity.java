@@ -3,6 +3,7 @@ package ntu.nguyenthithanhhuong.smartflashcard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -12,12 +13,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import ntu.nguyenthithanhhuong.smartflashcard.Model.Flashcard;
 
 public class CardListActivity extends AppCompatActivity {
@@ -71,13 +75,25 @@ public class CardListActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Tạo nút quay lại mũi tên góc trái
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Nút mũi tên quay lại góc trái
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
+        // BẮT SỰ KIỆN CLICK ICON SETTING TRÊN TOOLBAR TẠI ĐÂY
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_manage_cards) {
+                // Khi click vào icon bánh răng -> Chuyển sang màn hình quản lý Card
+                Intent intent = new Intent(CardListActivity.this, CardManageActivity.class);
+                intent.putExtra("DECK_ID", deckId); // Truyền mã bộ sưu tập đi kèm
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
+
         rvCards.setLayoutManager(new LinearLayoutManager(this));
 
-        // Gắn sự kiện click phát âm từ adapter truyền ra
+        // Khởi tạo adapter hiển thị danh sách và click phát âm như cũ
         adapter = new FlashcardAdapter(cardList, word -> {
             if (isTtsReady && tts != null && word != null && !word.isEmpty()) {
                 tts.speak(word, android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, null);
@@ -85,7 +101,6 @@ public class CardListActivity extends AppCompatActivity {
         });
         rvCards.setAdapter(adapter);
 
-        // Bấm nút + để chuyển sang AddCardActivity và truyền kèm DECK_ID hiện tại
         fabAddCard.setOnClickListener(v -> {
             Intent intent = new Intent(CardListActivity.this, AddCardActivity.class);
             intent.putExtra("DECK_ID", deckId);
@@ -122,5 +137,12 @@ public class CardListActivity extends AppCompatActivity {
             tts.shutdown();
         }
         super.onDestroy();
+    }
+
+    // Thêm hàm này vào để hệ thống nạp file XML menu vào Toolbar của bạn
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.card_list_menu, menu);
+        return true;
     }
 }

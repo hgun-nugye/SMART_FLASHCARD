@@ -26,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import ntu.nguyenthithanhhuong.smartflashcard.Model.User;
+
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText edmail, edpassword;
     private Button btnLogin;
@@ -83,11 +85,36 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Log.d(TAG, "signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    Toast.makeText(LoginActivity.this, "Đăng Nhập Thành công", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
+                                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
+                                    if (firebaseUser != null) {
+                                        String uid = firebaseUser.getUid();
+
+                                        // Dùng FirebaseFirestore để kéo thông tin chi tiết dựa vào UID
+                                        com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                                                .collection("users")
+                                                .document(uid)
+                                                .get()
+                                                .addOnCompleteListener(firestoreTask -> {
+                                                    if (firestoreTask.isSuccessful() && firestoreTask.getResult() != null) {
+                                                        com.google.firebase.firestore.DocumentSnapshot document = firestoreTask.getResult();
+
+                                                        if (document.exists()) {
+                                                            // Ép kiểu (Mapping) dữ liệu từ Firestore thành Object của class User
+                                                            User userProfile = document.toObject(User.class);
+
+                                                            if (userProfile != null) {
+                                                                // Ví dụ: Chào mừng người dùng bằng tên thật của họ
+                                                                Toast.makeText(LoginActivity.this, "Chào mừng " + userProfile.fullName + " trở lại!", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    }
+                                                    // Sau khi đọc dữ liệu xong (hoặc kể cả lỗi) thì mới chuyển màn hình để tránh đồng bộ chậm
+                                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                    startActivity(intent);
+                                                    finish(); // Đóng luôn LoginActivity để tránh nhấn Back quay lại
+                                                });
+                                    }
                                 } else {
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
                                     Toast.makeText(LoginActivity.this, "Sai Tài Khoản Hoặc Mật khẩu!",

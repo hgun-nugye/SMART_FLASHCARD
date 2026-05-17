@@ -171,12 +171,12 @@ public class AddCardActivity extends AppCompatActivity {
 
     private void createDeckThenAddCard(String deckName, Flashcard firstCard) {
         String uid = FirebaseAuth.getInstance().getUid();
-//        if (uid == null) {
-//            btnSave.setEnabled(true);
-//            progressBar.setVisibility(View.GONE);
-//            Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if (uid == null) {
+            btnSave.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Map<String, Object> deckData = new HashMap<>();
         deckData.put("name", deckName);
