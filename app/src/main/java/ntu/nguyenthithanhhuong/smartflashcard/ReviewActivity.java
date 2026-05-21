@@ -247,7 +247,7 @@ public class ReviewActivity extends AppCompatActivity {
 
         divider.setVisibility(View.GONE);
 
-        // Reset buttons status
+        // Reset button status
         btnAction.setVisibility(View.VISIBLE);
         llActionButtons.setVisibility(View.GONE);
 

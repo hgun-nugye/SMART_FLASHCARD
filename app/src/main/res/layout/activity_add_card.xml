@@ -1,82 +1,323 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:id="@+id/addCard">
-
-    <EditText
-        android:id="@+id/edtDeckName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tên bộ sưu tập (ví dụ: IELTS - Topic Food)" />
+    android:background="#F5F5F7"
+    android:fillViewport="true">
 
     <LinearLayout
+        android:id="@+id/addCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="10dp">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <EditText
-            android:id="@+id/edtFront"
-            android:layout_width="0dp"
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Nhập từ vựng (ví dụ: Integrity)" />
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_header"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-        <ImageButton
-            android:id="@+id/btnPlayTts"
-            android:layout_width="48dp"
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_header_icon"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@android:drawable/ic_menu_agenda"
+                    app:tint="#A78BFA" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thêm thẻ mới"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Bộ sưu tập từ vựng"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Section: Bộ sưu tập -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="6dp"
+            android:letterSpacing="0.08"
+            android:text="BỘ SƯU TẬP"
+            android:textStyle="bold"
+            android:textColor="#050505"
+            android:textSize="11sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_field_card"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="14dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="10dp"
+                android:src="@android:drawable/ic_menu_myplaces"
+                app:tint="#AAAAAA" />
+
+            <EditText
+                android:id="@+id/edtDeckName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="VD: IELTS – Topic Food"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#BBBBBB"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="16dp"
+            android:background="#E0E0E0" />
+
+        <!-- Section: Từ vựng -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="6dp"
+            android:letterSpacing="0.08"
+            android:text="TỪ VỰNG"
+            android:textColor="#050505"
+            android:textStyle="bold"
+            android:textSize="11sp" />
+
+        <!-- Input từ vựng + nút phát âm -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_field_card"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="14dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="6dp">
+
+            <EditText
+                android:id="@+id/edtFront"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Nhập từ vựng (VD: Integrity)"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#BBBBBB"
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/btnPlayTts"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_tts_button"
+                android:contentDescription="Nghe phát âm"
+                android:src="@android:drawable/ic_btn_speak_now"
+                app:tint="#A78BFA" />
+        </LinearLayout>
+
+        <!-- Nút AI -->
+        <Button
+            android:id="@+id/btnAiGen"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_btn_speak_now"
-            android:contentDescription="Nghe phát âm" />
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_btn_ai"
+            android:text="✦  Tự động điền bằng Groq AI"
+            android:textColor="#A78BFA"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <!-- Progress bar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginBottom="8dp"
+            android:indeterminate="true"
+            android:indeterminateTint="#7C3AED"
+            android:progressTint="#7C3AED"
+            android:visibility="gone" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="#E0E0E0" />
+
+        <!-- Section: Chi tiết -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="6dp"
+            android:letterSpacing="0.08"
+            android:text="CHI TIẾT"
+            android:textColor="#050505"
+            android:textStyle="bold"
+            android:textSize="11sp" />
+
+        <!-- Nghĩa của từ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_field_card"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="14dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="10dp"
+                android:src="@android:drawable/ic_menu_info_details"
+                app:tint="#AAAAAA" />
+
+            <EditText
+                android:id="@+id/edtBack"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Nghĩa của từ"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#BBBBBB"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Phiên âm IPA -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_field_card"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="14dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="10dp"
+                android:src="@android:drawable/ic_btn_speak_now"
+                app:tint="#AAAAAA" />
+
+            <EditText
+                android:id="@+id/edtIpa"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Phiên âm IPA (VD: /ɪnˈtɛɡrɪti/)"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#BBBBBB"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Ví dụ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_field_card"
+            android:orientation="horizontal"
+            android:paddingStart="14dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="12dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="10dp"
+                android:src="@android:drawable/ic_menu_edit"
+                app:tint="#AAAAAA" />
+
+            <EditText
+                android:id="@+id/edtExample"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="Câu ví dụ..."
+                android:lines="3"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#BBBBBB"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="16dp"
+            android:background="#E0E0E0" />
+
+        <!-- Nút lưu -->
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_btn_save"
+            android:text="Lưu vào Firebase"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnAiGen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="#6200EE"
-        android:text="Tự động điền bằng Groq AI"
-        android:textColor="#FFFFFF" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/edtBack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nghĩa của từ"
-        android:layout_marginTop="10dp"/>
-
-    <EditText
-        android:id="@+id/edtIpa"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Phiên âm (IPA)" />
-
-    <EditText
-        android:id="@+id/edtExample"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ví dụ"
-        android:lines="3" />
-
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Lưu vào Firebase" />
-
-</LinearLayout>
+</ScrollView>

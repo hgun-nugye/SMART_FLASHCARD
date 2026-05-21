@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,15 +48,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // 1. Khởi tạo Firebase
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        // 2. Thiết lập giao diện
         initViews();
 
-        // 3. Tải dữ liệu
-//        loadDecksFromFirestore();
     }
 
     @Override
@@ -75,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         fabAddDeck = findViewById(R.id.fabAddDeck);
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        toolbar.setOnMenuItemClickListener(this::onToolbarMenuClick);
 
         rvDecks.setLayoutManager(new LinearLayoutManager(this));
         adapter = new DeckAdapter(deckList, deck -> {
@@ -86,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         rvDecks.setAdapter(adapter);
 
         fabAddDeck.setOnClickListener(v -> {
-            // Create new deck flow happens inside AddCardActivity (no dialog).
             Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
             startActivity(intent);
         });
@@ -115,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         // Sử dụng orderBy để đưa bộ thẻ mới nhất lên đầu
         db.collection("decks")
                 .whereEqualTo("ownerId", currentUserId)
-//                .orderBy("createdAt", Query.Direction.DESCENDING)
+                .orderBy("createdAt", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("FIRESTORE_ERROR", error.getMessage());
@@ -152,14 +147,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 1. Hàm này dùng để khởi tạo và "bơm" (inflate) menu vào Toolbar
+    // khởi tạo và "bơm" menu vào Toolbar
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
-    // 2. Hàm xử lý sự kiện khi người dùng click vào từng mục trong menu
+    // xử lý sự kiện khi người dùng click vào từng mục trong menu
     @Override
     public boolean onOptionsItemSelected(@NonNull android.view.MenuItem item) {
         return onToolbarMenuClick(item) || super.onOptionsItemSelected(item);

@@ -45,17 +45,15 @@ public class FlashcardAdapter extends RecyclerView.Adapter<FlashcardAdapter.Card
         holder.tvIpa.setText(card.ipa != null ? card.ipa : "");
         holder.tvBack.setText(card.back != null ? card.back : "");
 
-        // Gọi hàm tính toán và hiển thị badge trạng thái động SM-2
+        // Gọi hàm tính toán và hiển thị status
         bindStatus(holder.tvStatus, card.getStatus());
 
-        // Sự kiện bấm nút loa phát âm (đã thêm check trống dữ liệu)
         holder.btnPlayCard.setOnClickListener(v -> {
             if (speakClickListener != null && card.front != null && !card.front.isEmpty()) {
                 speakClickListener.onSpeakClick(card.front);
             }
         });
 
-        // Click vào bất kỳ vị trí nào trên thẻ để mở màn hình chi tiết
         holder.itemView.setOnClickListener(v -> {
             if (speakClickListener != null) {
                 speakClickListener.onDetailClick(card);
