@@ -6,9 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
+
 import ntu.nguyenthithanhhuong.smartflashcard.Model.Flashcard;
 
 public class FlashcardAdapter extends RecyclerView.Adapter<FlashcardAdapter.CardViewHolder> {
@@ -18,6 +21,7 @@ public class FlashcardAdapter extends RecyclerView.Adapter<FlashcardAdapter.Card
 
     public interface OnCardSpeakClickListener {
         void onSpeakClick(String word);
+        void onDetailClick(Flashcard card);
     }
 
     public FlashcardAdapter(List<Flashcard> cardList, OnCardSpeakClickListener speakClickListener) {
@@ -36,22 +40,32 @@ public class FlashcardAdapter extends RecyclerView.Adapter<FlashcardAdapter.Card
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         Flashcard card = cardList.get(position);
 
-        holder.tvFront.setText(card.front);
+        // Đổ dữ liệu an toàn lên giao diện
+        holder.tvFront.setText(card.front != null ? card.front : "");
         holder.tvIpa.setText(card.ipa != null ? card.ipa : "");
-        holder.tvBack.setText(card.back);
+        holder.tvBack.setText(card.back != null ? card.back : "");
+
+        // Gọi hàm tính toán và hiển thị badge trạng thái động SM-2
         bindStatus(holder.tvStatus, card.getStatus());
 
-        // Sự kiện bấm nút loa phát âm
+        // Sự kiện bấm nút loa phát âm (đã thêm check trống dữ liệu)
         holder.btnPlayCard.setOnClickListener(v -> {
-            if (speakClickListener != null) {
+            if (speakClickListener != null && card.front != null && !card.front.isEmpty()) {
                 speakClickListener.onSpeakClick(card.front);
+            }
+        });
+
+        // Click vào bất kỳ vị trí nào trên thẻ để mở màn hình chi tiết
+        holder.itemView.setOnClickListener(v -> {
+            if (speakClickListener != null) {
+                speakClickListener.onDetailClick(card);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return cardList.size();
+        return cardList != null ? cardList.size() : 0;
     }
 
     static class CardViewHolder extends RecyclerView.ViewHolder {
@@ -69,25 +83,34 @@ public class FlashcardAdapter extends RecyclerView.Adapter<FlashcardAdapter.Card
     }
 
     private void bindStatus(TextView tvStatus, Flashcard.Status status) {
+        if (status == null) {
+            status = Flashcard.Status.NEW;
+        }
         Context ctx = tvStatus.getContext();
 
         switch (status) {
             case NEW:
-                tvStatus.setText("Mới");
-                tvStatus.setTextColor(ctx.getColor(R.color.status_new_text));      // #0F6E56
-                tvStatus.setBackgroundResource(R.drawable.bg_status_new);          // fill #E1F5EE
+                tvStatus.setText("NEW");
+                tvStatus.setTextColor(ctx.getColor(R.color.status_new_text));
+                tvStatus.setBackgroundResource(R.drawable.bg_status_new);
                 break;
 
             case REVIEW:
-                tvStatus.setText("Ôn tập");
-                tvStatus.setTextColor(ctx.getColor(R.color.status_review_text));   // #854F0B
-                tvStatus.setBackgroundResource(R.drawable.bg_status_review);       // fill #FAEEDA
+                tvStatus.setText("REVIEW");
+                tvStatus.setTextColor(ctx.getColor(R.color.status_review_text));
+                tvStatus.setBackgroundResource(R.drawable.bg_status_review);
                 break;
 
             case LEARNED:
-                tvStatus.setText("Thuộc");
-                tvStatus.setTextColor(ctx.getColor(R.color.status_learned_text));  // #534AB7
-                tvStatus.setBackgroundResource(R.drawable.bg_status_learned);      // fill #EEEDFE
+                tvStatus.setText("LEARNED");
+                tvStatus.setTextColor(ctx.getColor(R.color.status_learned_text));
+                tvStatus.setBackgroundResource(R.drawable.bg_status_learned);
+                break;
+
+            default:
+                tvStatus.setText("NEW");
+                tvStatus.setTextColor(ctx.getColor(R.color.status_new_text));
+                tvStatus.setBackgroundResource(R.drawable.bg_status_new);
                 break;
         }
     }
