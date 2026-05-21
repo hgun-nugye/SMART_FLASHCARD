@@ -55,7 +55,7 @@ public class AddCardActivity extends AppCompatActivity {
         initViews();
         setupModeUi();
 
-        // 1. Khởi tạo TextToSpeech trước để sẵn sàng sử dụng
+        // Khởi tạo TextToSpeech
         tts = new android.speech.tts.TextToSpeech(this, status -> {
             if (status == android.speech.tts.TextToSpeech.SUCCESS) {
                 int result = tts.setLanguage(java.util.Locale.US);
@@ -78,7 +78,7 @@ public class AddCardActivity extends AppCompatActivity {
             }
         });
 
-        // 2. Cấu hình nút gọi AI sinh nội dung
+        // Cấu hình nút gọi AI sinh nội dung
         btnAiGen.setOnClickListener(v -> {
             String word = edtFront.getText().toString().trim();
             if (word.isEmpty()) {
@@ -131,10 +131,26 @@ public class AddCardActivity extends AppCompatActivity {
 
     private void setupModeUi() {
         if (isCreateDeckMode) {
+            // CHẾ ĐỘ 1: Tạo bộ sưu tập mới hoàn toàn
             edtDeckName.setVisibility(View.VISIBLE);
+            edtDeckName.setEnabled(true);
+            edtDeckName.setText(""); // Để trống cho người dùng nhập
+            edtDeckName.setHint("VD: IELTS – Topic Food");
             btnSave.setText("Tạo bộ & lưu thẻ");
         } else {
-            edtDeckName.setVisibility(View.GONE);
+            // CHẾ ĐỘ 2: Thêm thẻ vào bộ sưu tập có sẵn
+            edtDeckName.setVisibility(View.VISIBLE); // tên bộ
+            edtDeckName.setEnabled(false);           // không cho sửa đổi tên bộ
+            edtDeckName.setTextColor(android.graphics.Color.GRAY); // mờ chữ
+
+            // Nhận tên bộ truyền sang từ Intent
+            String deckName = getIntent().getStringExtra("DECK_NAME");
+            if (deckName != null && !deckName.trim().isEmpty()) {
+                edtDeckName.setText(deckName);
+            } else {
+                edtDeckName.setText("Bộ sưu tập hiện tại");
+            }
+
             btnSave.setText("Lưu thẻ vào Firebase");
         }
     }

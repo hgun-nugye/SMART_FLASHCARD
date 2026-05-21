@@ -2,6 +2,7 @@ package ntu.nguyenthithanhhuong.smartflashcard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -79,7 +80,6 @@ public class CardListActivity extends AppCompatActivity {
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        // BẮT SỰ KIỆN CLICK ICON SETTING TRÊN TOOLBAR TẠI ĐÂY
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_manage_cards) {
                 // Khi click vào icon bánh răng -> Chuyển sang màn hình quản lý Card
@@ -98,23 +98,33 @@ public class CardListActivity extends AppCompatActivity {
 
         rvCards.setLayoutManager(new LinearLayoutManager(this));
 
-        // Khởi tạo adapter hiển thị danh sách và click phát âm như cũ
-        adapter = new FlashcardAdapter(cardList, word -> {
-            if (isTtsReady && tts != null && word != null && !word.isEmpty()) {
-                tts.speak(word, android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, null);
+        adapter = new FlashcardAdapter(cardList, new FlashcardAdapter.OnCardSpeakClickListener() {
+            @Override
+            public void onSpeakClick(String word) {
+                if (isTtsReady && tts != null && word != null && !word.isEmpty()) {
+                    tts.speak(word, TextToSpeech.QUEUE_FLUSH, null, null);
+                }
+            }
+
+            @Override
+            public void onDetailClick(Flashcard card) {
+                Intent intent = new Intent(CardListActivity.this, CardDetailActivity.class);
+                intent.putExtra("CARD_DATA", card); // Gửi nguyên cục data của thẻ sang
+                startActivity(intent);
             }
         });
+
         rvCards.setAdapter(adapter);
 
         fabAddCard.setOnClickListener(v -> {
             Intent intent = new Intent(CardListActivity.this, AddCardActivity.class);
             intent.putExtra("DECK_ID", deckId);
+            intent.putExtra("DECK_NAME", getIntent().getStringExtra("DECK_NAME"));
             startActivity(intent);
         });
     }
 
     private void loadCardsFromFirestore() {
-        // Truy vấn sâu vào sub-collection "flashcards" nằm trong bộ sưu tập này
         db.collection("decks").document(deckId)
                 .collection("flashcards")
                 .addSnapshotListener((value, error) -> {
