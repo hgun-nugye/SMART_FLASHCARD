@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="status_new_text">#0F6E56</color>
+    <color name="status_review_text">#854F0B</color>
+    <color name="status_learned_text">#534AB7</color>
 </resources>

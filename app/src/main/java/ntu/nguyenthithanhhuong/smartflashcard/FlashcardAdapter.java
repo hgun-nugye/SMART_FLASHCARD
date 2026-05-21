@@ -1,5 +1,6 @@
 package ntu.nguyenthithanhhuong.smartflashcard;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class FlashcardAdapter extends RecyclerView.Adapter<FlashcardAdapter.Card
         holder.tvFront.setText(card.front);
         holder.tvIpa.setText(card.ipa != null ? card.ipa : "");
         holder.tvBack.setText(card.back);
+        bindStatus(holder.tvStatus, card.getStatus());
 
         // Sự kiện bấm nút loa phát âm
         holder.btnPlayCard.setOnClickListener(v -> {
@@ -53,7 +55,7 @@ public class FlashcardAdapter extends RecyclerView.Adapter<FlashcardAdapter.Card
     }
 
     static class CardViewHolder extends RecyclerView.ViewHolder {
-        TextView tvFront, tvIpa, tvBack;
+        TextView tvFront, tvIpa, tvBack, tvStatus;
         ImageButton btnPlayCard;
 
         public CardViewHolder(@NonNull View itemView) {
@@ -62,6 +64,31 @@ public class FlashcardAdapter extends RecyclerView.Adapter<FlashcardAdapter.Card
             tvIpa = itemView.findViewById(R.id.tvIpa);
             tvBack = itemView.findViewById(R.id.tvBack);
             btnPlayCard = itemView.findViewById(R.id.btnPlayCard);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
+        }
+    }
+
+    private void bindStatus(TextView tvStatus, Flashcard.Status status) {
+        Context ctx = tvStatus.getContext();
+
+        switch (status) {
+            case NEW:
+                tvStatus.setText("Mới");
+                tvStatus.setTextColor(ctx.getColor(R.color.status_new_text));      // #0F6E56
+                tvStatus.setBackgroundResource(R.drawable.bg_status_new);          // fill #E1F5EE
+                break;
+
+            case REVIEW:
+                tvStatus.setText("Ôn tập");
+                tvStatus.setTextColor(ctx.getColor(R.color.status_review_text));   // #854F0B
+                tvStatus.setBackgroundResource(R.drawable.bg_status_review);       // fill #FAEEDA
+                break;
+
+            case LEARNED:
+                tvStatus.setText("Thuộc");
+                tvStatus.setTextColor(ctx.getColor(R.color.status_learned_text));  // #534AB7
+                tvStatus.setBackgroundResource(R.drawable.bg_status_learned);      // fill #EEEDFE
+                break;
         }
     }
 }

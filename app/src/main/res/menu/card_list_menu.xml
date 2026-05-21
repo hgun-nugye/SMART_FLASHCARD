@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_review_cards"
+        android:title="Ôn tập"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_manage_cards"
         android:icon="@android:drawable/ic_menu_manage"
         android:title="Quản lý thẻ"

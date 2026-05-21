@@ -87,6 +87,11 @@ public class CardListActivity extends AppCompatActivity {
                 intent.putExtra("DECK_ID", deckId); // Truyền mã bộ sưu tập đi kèm
                 startActivity(intent);
                 return true;
+            } else if (item.getItemId() == R.id.action_review_cards) {
+                Intent intent = new Intent(CardListActivity.this, ReviewActivity.class);
+                intent.putExtra("DECK_ID", deckId);
+                startActivity(intent);
+                return true;
             }
             return false;
         });
@@ -139,7 +144,7 @@ public class CardListActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    // Thêm hàm này vào để hệ thống nạp file XML menu vào Toolbar của bạn
+    // nạp file XML menu vào Toolbar
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         getMenuInflater().inflate(R.menu.card_list_menu, menu);
