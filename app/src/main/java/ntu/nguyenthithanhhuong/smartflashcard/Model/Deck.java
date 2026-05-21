@@ -7,6 +7,9 @@ public class Deck {
     public String description;
     public int cardCount;
 
+    public int newCount = 0;
+    public int dueCount = 0;
+    public int learnedCount = 0;
     public Deck() {}
 
     public Deck(String name, String description, String ownerId) {

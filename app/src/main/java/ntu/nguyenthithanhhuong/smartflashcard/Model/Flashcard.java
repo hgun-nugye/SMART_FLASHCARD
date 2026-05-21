@@ -3,26 +3,18 @@ package ntu.nguyenthithanhhuong.smartflashcard.Model;
 import java.io.Serializable;
 
 public class Flashcard implements Serializable {
+
     public String cardId;
-    public String front;          // Từ vựng
-    public String back;           // Nghĩa (Groq gợi ý hoặc tự nhập)
-    public String ipa;            // Phiên âm
-    public String example;        // Ví dụ
+    public String front;
+    public String back;
+    public String ipa;
+    public String example;
 
-    // Thuộc tính cho thuật toán lặp lại ngắt quãng (Spaced Repetition)
-    public long nextReview;       // Thời điểm học tiếp theo (Timestamp)
-    public int interval = 1;      // Khoảng cách ngày (mặc định là 1)
-    public double easeFactor = 2.5; // Độ dễ (mặc định 2.5 theo SM-2)
-    public int repetitions = 0;   // Số lần đã học thành công
+    public long nextReview = 0;
+    public int repetitions = 0;
 
-    // Thêm biến này để Firestore có thể lưu xuống Database thành dạng chuỗi "NEW", "REVIEW", "LEARNED"
-    private String status = "NEW";
-
-    public enum Status {
-        NEW,     // Chưa học lần nào
-        REVIEW,  // Đến hạn ôn tập
-        LEARNED  // Đã thuộc, chưa đến hạn
-    }
+    public int interval = 1;
+    public double easeFactor = 2.5;
 
     public Flashcard() {
     }
@@ -32,28 +24,32 @@ public class Flashcard implements Serializable {
         this.back = back;
         this.ipa = ipa;
         this.example = example;
+
         this.repetitions = 0;
-        this.status = "NEW";
-        this.nextReview = System.currentTimeMillis(); // Mặc định là ngay bây giờ
+        this.nextReview = System.currentTimeMillis();
+    }
+
+    public enum Status {
+        NEW,
+        REVIEW,
+        LEARNED
     }
 
     public Status getStatus() {
-        if (repetitions == 0) {
+
+        if (repetitions <= 0) {
             return Status.NEW;
         }
 
-        long now = System.currentTimeMillis();
-        if (nextReview <= now) {
+        if (nextReview <= System.currentTimeMillis()) {
             return Status.REVIEW;
-        } else {
-            return Status.LEARNED;
         }
+
+        return Status.LEARNED;
     }
 
-    public void setStatus(Status status) {
-        if (status != null) {
-            this.status = status.name();
-        }
+    public boolean isDue() {
+        return getStatus() == Status.REVIEW;
     }
 
     public String getStatusString() {
@@ -61,14 +57,4 @@ public class Flashcard implements Serializable {
         return getStatus().name();
     }
 
-    public void setStatusString(String statusString) {
-        this.status = statusString;
-    }
-
-
-     //Trả về true nếu thẻ đến hạn cần ôn tập (NEW hoặc REVIEW).
-    public boolean isDue() {
-        Status s = getStatus();
-        return s == Status.NEW || s == Status.REVIEW;
-    }
 }
