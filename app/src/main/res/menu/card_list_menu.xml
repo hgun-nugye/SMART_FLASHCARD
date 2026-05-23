@@ -3,13 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="Tìm kiếm"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="collapseActionView|ifRoom"
+        android:theme="@style/CustomSearchViewStyle" />
+
+    <item
         android:id="@+id/action_review_cards"
         android:title="Ôn tập"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_manage_cards"
-        android:icon="@android:drawable/ic_menu_manage"
         android:title="Quản lý thẻ"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>
