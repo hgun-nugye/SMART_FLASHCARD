@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import ntu.nguyenthithanhhuong.smartflashcard.Model.Flashcard;
 
-public class CardManageActivity extends AppCompatActivity {
+public class CardManageActivity extends BaseAppActivity {
 
     private RecyclerView rvManageCards;
     private SearchView searchViewCard;
@@ -31,7 +32,12 @@ public class CardManageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdgeHelper.enable(this);
         setContentView(R.layout.activity_card_manage);
+        EdgeToEdgeHelper.applyScreenWithToolbar(
+                findViewById(R.id.cardManageRoot),
+                findViewById(R.id.toolbarManage)
+        );
 
         deckId = getIntent().getStringExtra("DECK_ID");
         db = FirebaseFirestore.getInstance();

@@ -5,17 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F5F5F7"
-        android:fitsSystemWindows="true">
+        android:background="#F5F5F7">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#1A1A2E"
@@ -26,7 +25,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="#1A1A2E"
-                app:navigationIcon="@drawable/ic_menu"
                 app:navigationIconTint="#FFFFFF"
                 app:title="Sổ tay của tôi"
                 app:titleTextColor="#FFFFFF"
@@ -150,8 +148,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
-                    android:paddingHorizontal="12dp"
                     android:nestedScrollingEnabled="false"
+                    android:paddingHorizontal="12dp"
                     tools:listitem="@layout/item_deck" />
 
             </LinearLayout>
@@ -170,18 +168,5 @@
             app:tint="#FFFFFF" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationView"
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#1A1A2E"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/nav_drawer_menu"
-        app:itemTextColor="#BFBFCF"
-        app:itemIconTint="#BFBFCF"
-        app:itemRippleColor="@color/nav_item_ripple"
-        android:fitsSystemWindows="true"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

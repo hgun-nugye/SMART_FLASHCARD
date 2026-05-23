@@ -2,11 +2,6 @@ package ntu.nguyenthithanhhuong.smartflashcard;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +23,7 @@ import java.util.List;
 
 import ntu.nguyenthithanhhuong.smartflashcard.Model.Deck;
 
-public class DeckManageActivity extends AppCompatActivity implements DeckManageAdapter.DeckActionListener {
+public class DeckManageActivity extends BaseAppActivity implements DeckManageAdapter.DeckActionListener {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
@@ -39,13 +34,12 @@ public class DeckManageActivity extends AppCompatActivity implements DeckManageA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdgeHelper.enable(this);
         setContentView(R.layout.activity_deck_manage);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.deckmanage), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        EdgeToEdgeHelper.applyCoordinatorInsets(
+                findViewById(R.id.deckmanage),
+                findViewById(R.id.appBarLayout)
+        );
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();

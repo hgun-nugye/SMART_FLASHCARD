@@ -7,11 +7,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
@@ -22,8 +18,8 @@ import java.util.Map;
 
 import ntu.nguyenthithanhhuong.smartflashcard.Model.Flashcard;
 
-public class AddCardActivity extends AppCompatActivity {
-    private EditText edtDeckName, edtFront, edtBack, edtIpa, edtExample;
+public class AddCardActivity extends BaseAppActivity {
+    private EditText edtDeckName, edtFront, edtBack, edtIpa, edtExample, edtDescription;
     private Button btnAiGen, btnSave;
     private ProgressBar progressBar;
     private GroqManager groqManager;
@@ -37,14 +33,9 @@ public class AddCardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdgeHelper.enable(this);
         setContentView(R.layout.activity_add_card);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.addCard), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        EdgeToEdgeHelper.applyRootInsets(findViewById(R.id.rootView));
 
         currentDeckId = getIntent().getStringExtra("DECK_ID");
         isCreateDeckMode = (currentDeckId == null || currentDeckId.trim().isEmpty());
@@ -119,6 +110,7 @@ public class AddCardActivity extends AppCompatActivity {
 
     private void initViews() {
         edtDeckName = findViewById(R.id.edtDeckName);
+        edtDescription=findViewById(R.id.edtDescription);
         edtFront = findViewById(R.id.edtFront);
         btnPlayTts = findViewById(R.id.btnPlayTts);
         edtBack = findViewById(R.id.edtBack);
@@ -157,6 +149,7 @@ public class AddCardActivity extends AppCompatActivity {
 
     private void saveCardToFirestore() {
         String deckName = edtDeckName.getText().toString().trim();
+        String deckDescription = edtDescription.getText().toString().trim();
         String front = edtFront.getText().toString().trim();
         String back = edtBack.getText().toString().trim();
         String ipa = edtIpa.getText().toString().trim();
@@ -179,13 +172,13 @@ public class AddCardActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         if (isCreateDeckMode) {
-            createDeckThenAddCard(deckName, newCard);
+            createDeckThenAddCard(deckName, deckDescription,newCard);
         } else {
             addCardToDeck(currentDeckId, newCard, false);
         }
     }
 
-    private void createDeckThenAddCard(String deckName, Flashcard firstCard) {
+    private void createDeckThenAddCard(String deckName,String deckDescription, Flashcard firstCard) {
         String uid = FirebaseAuth.getInstance().getUid();
         if (uid == null) {
             btnSave.setEnabled(true);
@@ -196,6 +189,7 @@ public class AddCardActivity extends AppCompatActivity {
 
         Map<String, Object> deckData = new HashMap<>();
         deckData.put("name", deckName);
+        deckData.put("description", deckDescription);
         deckData.put("ownerId", uid);
         deckData.put("cardCount", 0);
         deckData.put("createdAt", System.currentTimeMillis());

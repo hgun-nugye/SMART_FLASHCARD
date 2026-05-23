@@ -1,9 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Base.Theme.SmartFlashCard" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primary_dark</item>
+        <item name="colorSecondary">@color/secondary</item>
     </style>
 
     <style name="Theme.SmartFlashCard" parent="Base.Theme.SmartFlashCard" />
+
+    <style name="ToolbarTitleBold" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="CustomSearchViewStyle" parent="Widget.Material3.SearchView">
+        <item name="android:textAppearance">@style/SearchTextWhite</item>
+    </style>
+
+    <style name="SearchTextWhite" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColorHint">#80FFFFFF</item>
+    </style>
 </resources>

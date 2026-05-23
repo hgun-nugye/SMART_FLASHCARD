@@ -40,14 +40,14 @@
                 android:layout_marginTop="2dp" />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btnEditCard"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_edit"
-            app:tint="#4CAF50"
-            android:contentDescription="Sửa thẻ" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/btnEditCard"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:background="?android:attr/selectableItemBackgroundBorderless"-->
+<!--            android:src="@android:drawable/ic_menu_edit"-->
+<!--            app:tint="#4CAF50"-->
+<!--            android:contentDescription="Sửa thẻ" />-->
 
         <ImageButton
             android:id="@+id/btnDeleteCard"

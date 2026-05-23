@@ -84,7 +84,7 @@
 
         <!-- Badge trạng thái + chevron -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
@@ -99,15 +99,9 @@
                 android:paddingVertical="3dp"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                android:text="njfh"
+                android:text="learned"
                 android:background="@drawable/bg_status_badge"
                 android:layout_marginBottom="6dp" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_chevron_right"
-                app:tint="#CCCCCC" />
         </LinearLayout>
 
     </LinearLayout>

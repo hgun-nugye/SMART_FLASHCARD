@@ -2,12 +2,6 @@ package ntu.nguyenthithanhhuong.smartflashcard;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -24,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DeckEditActivity extends AppCompatActivity {
+public class DeckEditActivity extends BaseAppActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
@@ -37,13 +31,12 @@ public class DeckEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdgeHelper.enable(this);
         setContentView(R.layout.activity_deck_edit);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.deckEdit), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        EdgeToEdgeHelper.applyCoordinatorInsets(
+                findViewById(R.id.deckEdit),
+                findViewById(R.id.appBarLayout)
+        );
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();

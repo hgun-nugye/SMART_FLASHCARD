@@ -1,3 +1,56 @@
 <resources>
     <string name="app_name">SmartFlashCard</string>
+
+    <!-- Đăng ký -->
+    <string name="signup_title">Tạo tài khoản</string>
+    <string name="signup_subtitle">Nhập thông tin để bắt đầu học với SmartFlashCard</string>
+    <string name="signup_full_name">Họ và tên</string>
+    <string name="signup_email">Email</string>
+    <string name="signup_password">Mật khẩu</string>
+    <string name="signup_confirm_password">Nhập lại mật khẩu</string>
+    <string name="signup_button">Đăng ký</string>
+    <string name="signup_has_account">Bạn đã có tài khoản?</string>
+    <string name="signup_login_link">Đăng nhập</string>
+    <string name="signup_loading">Đang tạo tài khoản…</string>
+    <string name="signup_success">Đăng ký thành công! Chào mừng %1$s</string>
+    <string name="signup_error_empty">Vui lòng nhập đầy đủ thông tin</string>
+    <string name="signup_error_name_short">Họ tên tối thiểu 2 ký tự</string>
+    <string name="signup_error_email">Email không hợp lệ</string>
+    <string name="signup_error_password_short">Mật khẩu tối thiểu 8 ký tự</string>
+    <string name="validation_password_hint">Tối thiểu 8 ký tự, có chữ hoa, chữ thường và số</string>
+
+    <!-- Validation chung -->
+    <string name="validation_email_empty">Vui lòng nhập email</string>
+    <string name="validation_email_invalid">Email không đúng định dạng (vd: ten@mail.com)</string>
+    <string name="validation_email_too_long">Email quá dài</string>
+    <string name="validation_password_empty">Vui lòng nhập mật khẩu</string>
+    <string name="validation_password_short">Mật khẩu tối thiểu 8 ký tự</string>
+    <string name="validation_password_long">Mật khẩu tối đa 128 ký tự</string>
+    <string name="validation_password_no_space">Mật khẩu không được chứa khoảng trắng</string>
+    <string name="validation_password_need_lower">Cần ít nhất một chữ thường (a-z)</string>
+    <string name="validation_password_need_upper">Cần ít nhất một chữ hoa (A-Z)</string>
+    <string name="validation_password_need_digit">Cần ít nhất một chữ số (0-9)</string>
+    <string name="signup_error_password_mismatch">Mật khẩu không khớp</string>
+    <string name="signup_error_profile">Đăng ký thành công nhưng lỗi lưu hồ sơ: %1$s</string>
+    <string name="signup_error_auth">Không thể đăng ký: %1$s</string>
+    <string name="signup_error_email_used">Email này đã được sử dụng</string>
+    <string name="signup_error_weak_password">Mật khẩu quá yếu</string>
+
+    <!-- Đăng nhập OTP -->
+    <string name="otp_title">Đăng nhập bằng OTP</string>
+    <string name="otp_subtitle">Nhập đủ thông tin tài khoản và xác minh số điện thoại</string>
+    <string name="otp_phone">Số điện thoại</string>
+    <string name="otp_code">Mã OTP</string>
+    <string name="otp_get_code">Gửi mã OTP</string>
+    <string name="otp_login">Xác nhận &amp; đăng nhập</string>
+    <string name="otp_loading">Đang xử lý…</string>
+    <string name="otp_success">Đăng nhập thành công! Chào mừng %1$s</string>
+    <string name="otp_error_empty">Vui lòng nhập đầy đủ thông tin</string>
+    <string name="otp_error_phone">Số điện thoại không hợp lệ (chỉ gồm số)</string>
+    <string name="otp_error_otp_required">Vui lòng nhập mã OTP</string>
+    <string name="otp_error_get_otp_first">Vui lòng gửi mã OTP trước</string>
+    <string name="otp_error_profile">Đăng nhập thành công nhưng lỗi lưu hồ sơ: %1$s</string>
+    <string name="otp_error_email_used">Email đã được dùng cho tài khoản khác</string>
+    <string name="otp_code_sent">Đã gửi mã OTP</string>
+    <string name="otp_error_send">Không gửi được OTP. Thử lại sau.</string>
 </resources>

@@ -3,13 +3,15 @@ package ntu.nguyenthithanhhuong.smartflashcard;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import java.util.Locale;
 import ntu.nguyenthithanhhuong.smartflashcard.Model.Flashcard;
 
-public class CardDetailActivity extends AppCompatActivity {
+public class CardDetailActivity extends BaseAppActivity {
 
     private TextView tvFront, tvIpa, tvBack, tvExample, tvStatus;
     private MaterialButton btnPlay;
@@ -19,7 +21,12 @@ public class CardDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdgeHelper.enable(this);
         setContentView(R.layout.activity_card_detail);
+        EdgeToEdgeHelper.applyScreenWithToolbar(
+                findViewById(R.id.cardDetail),
+                findViewById(R.id.toolbarDetail)
+        );
 
         // Khởi tạo TextToSpeech cho màn hình chi tiết
         tts = new TextToSpeech(this, status -> {

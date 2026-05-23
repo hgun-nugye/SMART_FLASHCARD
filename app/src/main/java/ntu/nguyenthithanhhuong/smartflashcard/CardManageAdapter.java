@@ -55,7 +55,7 @@ public class CardManageAdapter extends RecyclerView.Adapter<CardManageAdapter.Ma
             super(itemView);
             tvFront = itemView.findViewById(R.id.tvManageFront);
             tvBack = itemView.findViewById(R.id.tvManageBack);
-            btnEdit = itemView.findViewById(R.id.btnEditCard);
+//            btnEdit = itemView.findViewById(R.id.btnEditCard);
             btnDelete = itemView.findViewById(R.id.btnDeleteCard);
         }
     }

@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F7"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:id="@+id/rootView"
+    android:clipToPadding="false">
 
     <LinearLayout
-        android:id="@+id/addCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -104,6 +105,41 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
+        <!-- Description -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_field_card"
+            android:orientation="horizontal"
+            android:paddingStart="14dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="12dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="10dp"
+                android:src="@android:drawable/ic_menu_edit"
+                app:tint="#AAAAAA" />
+
+            <EditText
+                android:id="@+id/edtDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="Mô tả thêm về bộ từ vựng..."
+                android:maxLines="6"
+                android:minLines="4"
+                android:inputType="textMultiLine"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#BBBBBB"
+                android:textSize="14sp" />
+        </LinearLayout>
         <!-- Divider -->
         <View
             android:layout_width="match_parent"
@@ -165,8 +201,8 @@
             android:layout_height="48dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/bg_btn_ai"
-            android:text="✦  Tự động điền bằng Groq AI"
-            android:textColor="#A78BFA"
+            android:text="Tự động điền"
+            android:textColor="#ffffff"
             android:textSize="13sp"
             android:textStyle="bold" />
 

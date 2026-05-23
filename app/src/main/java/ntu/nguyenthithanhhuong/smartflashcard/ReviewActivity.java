@@ -8,11 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,7 +20,7 @@ import java.util.List;
 
 import ntu.nguyenthithanhhuong.smartflashcard.Model.Flashcard;
 
-public class ReviewActivity extends AppCompatActivity {
+public class ReviewActivity extends BaseAppActivity {
     private String deckId;
     private FirebaseFirestore db;
     private List<Flashcard> reviewCards = new ArrayList<>();
@@ -45,14 +41,12 @@ public class ReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdgeHelper.enable(this);
         setContentView(R.layout.activity_review);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.reviewLayout), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        EdgeToEdgeHelper.applyScreenWithToolbar(
+                findViewById(R.id.reviewLayout),
+                findViewById(R.id.toolbarReview)
+        );
 
         deckId = getIntent().getStringExtra("DECK_ID");
         if (deckId == null || deckId.isEmpty()) {
