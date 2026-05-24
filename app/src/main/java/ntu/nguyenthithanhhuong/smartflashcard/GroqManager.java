@@ -21,20 +21,39 @@ import okhttp3.Response;
 
 public class GroqManager {
     private static final String TAG = "GroqManager";
-    private static final String ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+    //    private static final String ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+    private static final String ENDPOINT =
+            "https://openrouter.ai/api/v1/chat/completions";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    private static final String[] MODEL_FALLBACKS = new String[] {
-            "llama-3.1-8b-instant",
-            "llama-3.3-70b-versatile",
-            "openai/gpt-oss-20b"
+    //    private static final String[] MODEL_FALLBACKS = new String[] {
+//            "llama-3.1-8b-instant",
+//            "llama-3.3-70b-versatile",
+//            "openai/gpt-oss-20b"
+//    };
+    private static final String[] MODEL_FALLBACKS = new String[]{
+            "deepseek/deepseek-chat-v3-0324",
+            "qwen/qwen3-32b",
+            "google/gemini-2.5-flash"
     };
+
+    private static String extractJson(String text) {
+        int start = text.indexOf("{");
+        int end = text.lastIndexOf("}");
+
+        if (start >= 0 && end > start) {
+            return text.substring(start, end + 1);
+        }
+
+        return text;
+    }
 
     private final OkHttpClient client;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public interface AiCallback {
         void onSuccess(String definition, String ipa, String example);
+
         void onError(String error);
     }
 
@@ -49,9 +68,9 @@ public class GroqManager {
     }
 
     public void generateCardContent(String word, AiCallback callback) {
-        String apiKey = BuildConfig.GROQ_API_KEY;
+        String apiKey = BuildConfig.OPENROUTER_API_KEY;
         if (apiKey == null || apiKey.trim().isEmpty()) {
-            sendError(callback, "Thiếu GROQ_API_KEY. Hãy cấu hình trong local.properties/gradle.properties.");
+            sendError(callback, "Thiếu OPENROUTER_API_KEY. Hãy cấu hình trong local.properties/gradle.properties.");
             return;
         }
 
@@ -61,11 +80,6 @@ public class GroqManager {
             return;
         }
 
-        String prompt =
-                "Analyze the English word '" + safeWord + "'. " +
-                        "Return ONLY a JSON object with keys: " +
-                        "'def' (Vietnamese meaning), 'ipa' (phonetic), 'eg' (English example). " +
-                        "No intro, no markdown.";
 
         try {
             generateWithModelIndex(safeWord, 0, callback);
@@ -75,26 +89,44 @@ public class GroqManager {
     }
 
     private void generateWithModelIndex(String safeWord, int modelIndex, AiCallback callback) throws Exception {
-        String apiKey = BuildConfig.GROQ_API_KEY;
+        String apiKey = BuildConfig.OPENROUTER_API_KEY;
         String model = MODEL_FALLBACKS[Math.min(Math.max(modelIndex, 0), MODEL_FALLBACKS.length - 1)];
 
         String prompt =
-                "Analyze the English word '" + safeWord + "'. " +
-                        "Return ONLY a JSON object with keys: " +
-                        "'def' (Vietnamese meaning), 'ipa' (phonetic), 'eg' (English example). " +
-                        "No intro, no markdown.";
+                "You are an English-Vietnamese dictionary AI.\n" +
+                        "Analyze the English word: '" + safeWord + "'.\n\n" +
+
+                        "Rules:\n" +
+                        "- def MUST be Vietnamese meaning only.\n" +
+                        "- ipa MUST use standard IPA format like /ˈæp.əl/.\n" +
+                        "- eg MUST be a short simple English sentence.\n" +
+                        "- Return ONLY valid JSON.\n" +
+                        "- No markdown.\n" +
+                        "- No explanation.\n" +
+                        "- No English definition.\n\n" +
+
+                        "Format exactly:\n" +
+                        "{\n" +
+                        "\"def\":\"\",\n" +
+                        "\"ipa\":\"\",\n" +
+                        "\"eg\":\"\"\n" +
+                        "}";
 
         try {
             JSONObject payload = new JSONObject();
             payload.put("model", model);
+            payload.put("temperature", 0.2);
             payload.put("messages", new JSONArray()
                     .put(new JSONObject().put("role", "user").put("content", prompt)));
-            payload.put("response_format", new JSONObject().put("type", "json_object"));
+            payload.put("max_tokens", 120);
 
             RequestBody body = RequestBody.create(payload.toString(), JSON);
+
             Request request = new Request.Builder()
                     .url(ENDPOINT)
                     .addHeader("Authorization", "Bearer " + apiKey.trim())
+                    .addHeader("HTTP-Referer", "https://yourapp.com")
+                    .addHeader("X-Title", "SmartFlashcard")
                     .post(body)
                     .build();
 
@@ -143,7 +175,10 @@ public class GroqManager {
 
                         JSONObject message = choices.optJSONObject(0) != null ? choices.optJSONObject(0).optJSONObject("message") : null;
                         String content = message != null ? message.optString("content", "") : "";
-                        String cleaned = stripCodeFences(content).trim();
+//                        String cleaned = stripCodeFences(content).trim();
+                        String cleaned = extractJson(
+                                stripCodeFences(content)
+                        ).trim();
 
                         JSONObject contentObj = new JSONObject(cleaned);
                         String def = contentObj.optString("def", "Không có nghĩa");
