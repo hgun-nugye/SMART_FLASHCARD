@@ -1,18 +1,11 @@
 package ntu.nguyenthithanhhuong.smartflashcard;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,6 +22,9 @@ import com.google.firebase.auth.FirebaseUser;
 import ntu.nguyenthithanhhuong.smartflashcard.Model.User;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private static final String TAG = "LoginActivity";
+
     private TextInputEditText edmail, edpassword;
     private Button btnLogin;
     private TextView txtSignup, txtForgerPass;
@@ -38,13 +34,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdgeHelper.enable(this);
         setContentView(R.layout.activity_login);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        EdgeToEdgeHelper.applyRootInsets(findViewById(R.id.login));
 
         edmail = findViewById(R.id.edemailLg);
         edpassword = findViewById(R.id.edpasswordLg);
@@ -69,16 +61,22 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String email = edmail.getText().toString();
-                String password = edpassword.getText().toString();
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Không được bỏ trống!", Toast.LENGTH_SHORT).show();
+                String email = edmail.getText() != null ? edmail.getText().toString().trim() : "";
+                String password = edpassword.getText() != null ? edpassword.getText().toString() : "";
+
+                AuthValidator.Result emailResult = AuthValidator.validateEmail(email);
+                if (!emailResult.valid) {
+                    Toast.makeText(LoginActivity.this, emailResult.messageResId, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!isValidEmail(email)) {
-                    Toast.makeText(LoginActivity.this, "Địa chỉ email không hợp lệ!", Toast.LENGTH_SHORT).show();
+                email = AuthValidator.normalizeEmail(email);
+
+                AuthValidator.Result passwordResult = AuthValidator.validatePasswordForLogin(password);
+                if (!passwordResult.valid) {
+                    Toast.makeText(LoginActivity.this, passwordResult.messageResId, Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -88,32 +86,29 @@ public class LoginActivity extends AppCompatActivity {
                                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
                                     if (firebaseUser != null) {
-                                        String uid = firebaseUser.getUid();
+                                        UserProfileHelper.ensureUserProfile(firebaseUser, new UserProfileHelper.Callback() {
+                                            @Override
+                                            public void onReady(User user) {
+                                                if (user != null && user.fullName != null) {
+                                                    Toast.makeText(LoginActivity.this,
+                                                            "Chào mừng " + user.fullName + " trở lại!",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                                goToMain();
+                                            }
 
-                                        // Dùng FirebaseFirestore để kéo thông tin chi tiết dựa vào UID
-                                        com.google.firebase.firestore.FirebaseFirestore.getInstance()
-                                                .collection("users")
-                                                .document(uid)
-                                                .get()
-                                                .addOnCompleteListener(firestoreTask -> {
-                                                    if (firestoreTask.isSuccessful() && firestoreTask.getResult() != null) {
-                                                        com.google.firebase.firestore.DocumentSnapshot document = firestoreTask.getResult();
-
-                                                        if (document.exists()) {
-                                                            // Ép kiểu (Mapping) dữ liệu từ Firestore thành Object của class User
-                                                            User userProfile = document.toObject(User.class);
-
-                                                            if (userProfile != null) {
-                                                                // Ví dụ: Chào mừng người dùng bằng tên thật của họ
-                                                                Toast.makeText(LoginActivity.this, "Chào mừng " + userProfile.fullName + " trở lại!", Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        }
-                                                    }
-                                                    // Sau khi đọc dữ liệu xong (hoặc kể cả lỗi) thì mới chuyển màn hình để tránh đồng bộ chậm
-                                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                    startActivity(intent);
-                                                    finish(); // Đóng luôn LoginActivity để tránh nhấn Back quay lại
-                                                });
+                                            @Override
+                                            public void onError(String message) {
+                                                Toast.makeText(LoginActivity.this,
+                                                        "Đăng nhập thành công nhưng lỗi hồ sơ: " + message,
+                                                        Toast.LENGTH_SHORT).show();
+                                                goToMain();
+                                            }
+                                        });
+                                    } else {
+                                        Toast.makeText(LoginActivity.this,
+                                                "Lỗi phiên đăng nhập, vui lòng thử lại!",
+                                                Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -141,7 +136,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private boolean isValidEmail(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    private void goToMain() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
+
 }

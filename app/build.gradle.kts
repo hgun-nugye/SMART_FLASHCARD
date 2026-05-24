@@ -27,6 +27,14 @@ android {
         val groqApiKey: String = project.findProperty("GROQ_API_KEY")?.toString() ?: ""
         buildConfigField("String", "GROQ_API_KEY", "\"$groqApiKey\"")
 
+        val openRouterApiKey: String =
+            project.findProperty("OPENROUTER_API_KEY")?.toString() ?: ""
+
+        buildConfigField(
+            "String",
+            "OPENROUTER_API_KEY",
+            "\"$openRouterApiKey\""
+        )
     }
 
     buildTypes {

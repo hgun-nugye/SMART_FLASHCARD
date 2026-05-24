@@ -1,116 +1,224 @@
 package ntu.nguyenthithanhhuong.smartflashcard;
 
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import android.content.Intent;
-import android.util.Patterns;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
+
+import ntu.nguyenthithanhhuong.smartflashcard.Model.User;
 
 public class SignupActivity extends AppCompatActivity {
-    private TextInputEditText edemail, edpassword, edrppassword;
-    private Button btnsignup;
+
+    private TextInputLayout tilFullName, tilEmail, tilPassword, tilConfirmPassword;
+    private TextInputEditText edFullName, edemail, edpassword, edrppassword;
+    private MaterialButton btnsignup;
     private TextView txtLogin;
+    private ProgressBar progressSignup;
+    private ImageView back;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdgeHelper.enable(this);
         setContentView(R.layout.activity_signup);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.signup), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        EdgeToEdgeHelper.applyRootInsets(findViewById(R.id.signup));
 
+        mAuth = FirebaseAuth.getInstance();
+        bindViews();
+        setupListeners();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mAuth.getCurrentUser() != null) {
+            goToMain();
+        }
+    }
+
+    private void bindViews() {
+        back = findViewById(R.id.back);
+        tilFullName = findViewById(R.id.tilFullName);
+        tilEmail = findViewById(R.id.tilEmail);
+        tilPassword = findViewById(R.id.tilPassword);
+        tilConfirmPassword = findViewById(R.id.tilConfirmPassword);
+        edFullName = findViewById(R.id.edFullName);
         edemail = findViewById(R.id.edemail);
         edpassword = findViewById(R.id.edpassword);
         edrppassword = findViewById(R.id.edrppassword);
         btnsignup = findViewById(R.id.btnsignup);
         txtLogin = findViewById(R.id.txtLogin);
-        mAuth = FirebaseAuth.getInstance();
+        progressSignup = findViewById(R.id.progressSignup);
+    }
 
-        btnsignup.setOnClickListener(view -> {
+    private void setupListeners() {
+        back.setOnClickListener(v -> finish());
 
-            String email = edemail.getText().toString().trim();
-            String password = edpassword.getText().toString().trim();
-            String rppassword = edrppassword.getText().toString().trim();
+        txtLogin.setOnClickListener(v -> {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        });
 
-            // Check rỗng
-            if(email.isEmpty() || password.isEmpty() || rppassword.isEmpty()){
-                Toast.makeText(this, "Vui lòng nhập đầy đủ!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        btnsignup.setOnClickListener(v -> attemptSignup());
+    }
 
-            // Check email
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                edemail.setError("Email không hợp lệ");
-                edemail.requestFocus();
-                return;
-            }
+    private void attemptSignup() {
+        clearErrors();
 
-            // Check password
-            if (password.length() < 6) {
-                edpassword.setError("Mật khẩu tối thiểu 6 ký tự");
-                edpassword.requestFocus();
-                return;
-            }
+        String fullName = textOf(edFullName);
+        String email = textOf(edemail);
+        String password = textOf(edpassword);
+        String confirmPassword = textOf(edrppassword);
 
-            // Check trùng password
-            if (!password.equals(rppassword)) {
-                edrppassword.setError("Mật khẩu không khớp");
-                edrppassword.requestFocus();
-                return;
-            }
+        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            Toast.makeText(this, R.string.signup_error_empty, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            // Disable button tránh spam
-            btnsignup.setEnabled(false);
+        if (fullName.length() < 2) {
+            tilFullName.setError(getString(R.string.signup_error_name_short));
+            edFullName.requestFocus();
+            return;
+        }
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
+        AuthValidator.Result emailResult = AuthValidator.validateEmail(email);
+        if (!emailResult.valid) {
+            tilEmail.setError(getString(emailResult.messageResId));
+            edemail.requestFocus();
+            return;
+        }
+        email = AuthValidator.normalizeEmail(email);
 
-                        btnsignup.setEnabled(true);
+        AuthValidator.Result passwordResult = AuthValidator.validatePassword(password);
+        if (!passwordResult.valid) {
+            tilPassword.setError(getString(passwordResult.messageResId));
+            edpassword.requestFocus();
+            return;
+        }
 
-                        if (task.isSuccessful()) {
+        AuthValidator.Result matchResult = AuthValidator.validatePasswordMatch(password, confirmPassword);
+        if (!matchResult.valid) {
+            tilConfirmPassword.setError(getString(matchResult.messageResId));
+            edrppassword.requestFocus();
+            return;
+        }
 
-                            Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+        setLoading(true);
 
-                            // Chuyển màn hình
-                            Intent intent = new Intent(this, LoginActivity.class);
-                            intent.putExtra("email", email);
-                            startActivity(intent);
-                            finish();
+        String finalEmail = email;
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        setLoading(false);
+                        showAuthError(task.getException());
+                        return;
+                    }
 
-                        } else {
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    if (firebaseUser == null) {
+                        setLoading(false);
+                        Toast.makeText(
+                                this,
+                                getString(R.string.signup_error_auth, "Không lấy được phiên đăng nhập"),
+                                Toast.LENGTH_SHORT
+                        ).show();
+                        goToLogin(finalEmail);
+                        return;
+                    }
 
-                            String error = task.getException().getMessage();
-                            Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+                    UserProfileHelper.saveUserProfile(firebaseUser, fullName, new UserProfileHelper.Callback() {
+                        @Override
+                        public void onReady(User user) {
+                            setLoading(false);
+                            String name = user != null && user.fullName != null
+                                    ? user.fullName
+                                    : fullName;
+                            Toast.makeText(
+                                    SignupActivity.this,
+                                    getString(R.string.signup_success, name),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                            goToMain();
+                        }
+
+                        @Override
+                        public void onError(String message) {
+                            setLoading(false);
+                            Toast.makeText(
+                                    SignupActivity.this,
+                                    getString(R.string.signup_error_profile, message),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                            goToMain();
                         }
                     });
-        });
-
-        txtLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(SignupActivity.this, LoginActivity.class);
-                startActivity(in);
-            }
-        });
+                });
     }
-    private boolean isValidEmail(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+
+    private void clearErrors() {
+        tilFullName.setError(null);
+        tilEmail.setError(null);
+        tilPassword.setError(null);
+        tilConfirmPassword.setError(null);
+    }
+
+    private void setLoading(boolean loading) {
+        btnsignup.setEnabled(!loading);
+        progressSignup.setVisibility(loading ? View.VISIBLE : View.GONE);
+        if (loading) {
+            btnsignup.setText(R.string.signup_loading);
+        } else {
+            btnsignup.setText(R.string.signup_button);
+        }
+    }
+
+    private void showAuthError(Exception exception) {
+        if (exception instanceof FirebaseAuthUserCollisionException) {
+            tilEmail.setError(getString(R.string.signup_error_email_used));
+            edemail.requestFocus();
+            return;
+        }
+        if (exception instanceof FirebaseAuthWeakPasswordException) {
+            tilPassword.setError(getString(R.string.signup_error_weak_password));
+            edpassword.requestFocus();
+            return;
+        }
+
+        String message = exception != null && exception.getMessage() != null
+                ? exception.getMessage()
+                : getString(R.string.signup_error_auth, "unknown");
+        Toast.makeText(this, getString(R.string.signup_error_auth, message), Toast.LENGTH_LONG).show();
+    }
+
+    private static String textOf(TextInputEditText editText) {
+        return editText.getText() != null ? editText.getText().toString().trim() : "";
+    }
+
+    private void goToMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void goToLogin(String email) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("email", email);
+        startActivity(intent);
+        finish();
     }
 }

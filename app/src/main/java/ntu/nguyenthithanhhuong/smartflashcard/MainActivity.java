@@ -58,7 +58,7 @@ public class MainActivity extends BaseAppActivity {
                 findViewById(R.id.main),
                 findViewById(R.id.appBarLayout)
         );
-        EdgeToEdgeHelper.applyToolbarTopInset(findViewById(R.id.navigationView));
+//        EdgeToEdgeHelper.applyToolbarTopInset(findViewById(R.id.navigationView));
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -87,7 +87,7 @@ public class MainActivity extends BaseAppActivity {
         tvLearnedCount = findViewById(R.id.tvLearnedCount);
         fabAddDeck = findViewById(R.id.fabAddDeck);
         drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.navigationView);
+//        navigationView = findViewById(R.id.navigationView);
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
