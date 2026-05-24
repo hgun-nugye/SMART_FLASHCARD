@@ -11,6 +11,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -33,10 +36,16 @@ public class ReviewActivity extends BaseAppActivity {
     private TextView tvFront, tvBack, tvProgress;
     private TextView tvResultCorrect, tvResultIncorrect;
     private View divider;
-    private Button btnAction, btnCorrect, btnIncorrect, btnFinishReview;
-    private LinearLayout llActionButtons, layoutResult;
-    private View cvCard;
     private MaterialToolbar toolbar;
+    private MaterialCardView cvCard, layoutResult;
+    private LinearProgressIndicator progressIndicator;
+
+    private MaterialButton btnAction,
+            btnCorrect,
+            btnIncorrect,
+            btnFinishReview;
+
+    private LinearLayout llActionButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +76,7 @@ public class ReviewActivity extends BaseAppActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         toolbar.setNavigationOnClickListener(v -> finish());
-
+        progressIndicator = findViewById(R.id.progressIndicator);
         cvCard = findViewById(R.id.cvCard);
         tvFront = findViewById(R.id.tvFront);
         tvBack = findViewById(R.id.tvBack);
@@ -90,37 +99,57 @@ public class ReviewActivity extends BaseAppActivity {
 
         // Sự kiện Hiện nghĩa
         btnAction.setOnClickListener(v -> {
+
             if (reviewCards.isEmpty()) return;
 
             btnAction.setEnabled(false);
 
-            // Hiệu ứng lật nhẹ nhàng (tăng duration lên 400ms)
-            android.animation.ObjectAnimator flipOut = android.animation.ObjectAnimator.ofFloat(cvCard, "rotationY", 0f, 90f);
-            flipOut.setDuration(400);
-            flipOut.addListener(new android.animation.AnimatorListenerAdapter() {
+            // Xoay nhẹ
+            android.animation.ObjectAnimator tiltOut =
+                    android.animation.ObjectAnimator.ofFloat(
+                            cvCard,
+                            "rotationY",
+                            0f,
+                            12f
+                    );
+
+            tiltOut.setDuration(180);
+
+            tiltOut.addListener(new android.animation.AnimatorListenerAdapter() {
+
                 @Override
                 public void onAnimationEnd(android.animation.Animator animation) {
-                    // Khi thẻ xoay ngang, đổi mặt
+
                     tvBack.setVisibility(View.VISIBLE);
                     divider.setVisibility(View.VISIBLE);
 
-                    // Ẩn nút "Hiện nghĩa", hiện 2 nút "Đúng/Sai"
                     btnAction.setVisibility(View.GONE);
                     llActionButtons.setVisibility(View.VISIBLE);
 
-                    // Lật nốt nửa đường còn lại
-                    android.animation.ObjectAnimator flipIn = android.animation.ObjectAnimator.ofFloat(cvCard, "rotationY", -90f, 0f);
-                    flipIn.setDuration(400);
-                    flipIn.addListener(new android.animation.AnimatorListenerAdapter() {
+                    android.animation.ObjectAnimator tiltBack =
+                            android.animation.ObjectAnimator.ofFloat(
+                                    cvCard,
+                                    "rotationY",
+                                    12f,
+                                    0f
+                            );
+
+                    tiltBack.setDuration(180);
+
+                    tiltBack.addListener(new android.animation.AnimatorListenerAdapter() {
+
                         @Override
                         public void onAnimationEnd(android.animation.Animator animation) {
+
                             btnAction.setEnabled(true);
                         }
                     });
-                    flipIn.start();
+
+                    tiltBack.start();
                 }
             });
-            flipOut.start();
+
+            tiltOut.start();
         });
 
         // Nút Đúng
@@ -152,12 +181,17 @@ public class ReviewActivity extends BaseAppActivity {
         btnIncorrect.setEnabled(false);
 
         android.animation.ObjectAnimator slideOut = android.animation.ObjectAnimator.ofFloat(cvCard, "translationX", 0f, -cvCard.getWidth());
-        slideOut.setDuration(250);
+        slideOut.setDuration(180);
         slideOut.addListener(new android.animation.AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(android.animation.Animator animation) {
                 currentIndex++;
                 showCurrentCard();
+                cvCard.setAlpha(0f);
+                cvCard.animate()
+                        .alpha(1f)
+                        .setDuration(150)
+                        .start();
 
                 if (currentIndex < reviewCards.size()) {
                     cvCard.setTranslationX(cvCard.getWidth());
@@ -223,6 +257,7 @@ public class ReviewActivity extends BaseAppActivity {
             btnAction.setVisibility(View.GONE);
             llActionButtons.setVisibility(View.GONE);
             tvProgress.setVisibility(View.GONE);
+            progressIndicator.setProgress(100);
 
             layoutResult.setVisibility(View.VISIBLE);
             tvResultCorrect.setText("Số câu đúng: " + correctCount);
@@ -247,6 +282,8 @@ public class ReviewActivity extends BaseAppActivity {
 
         tvProgress.setVisibility(View.VISIBLE);
         tvProgress.setText((currentIndex + 1) + " / " + reviewCards.size());
+        int progress = (int) (((float) currentIndex / reviewCards.size()) * 100);
+        progressIndicator.setProgress(progress);
 
         layoutResult.setVisibility(View.GONE);
     }

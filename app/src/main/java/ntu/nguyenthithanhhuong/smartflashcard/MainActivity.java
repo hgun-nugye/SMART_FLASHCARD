@@ -115,11 +115,11 @@ public class MainActivity extends BaseAppActivity {
         rvDecks.setLayoutManager(new LinearLayoutManager(this));
         rvDecks.setNestedScrollingEnabled(false);
 
-        // 🌟 SỬA QUAN TRỌNG: Truyền filteredList vào Adapter thay vì deckList
         adapter = new DeckAdapter(filteredList, deck -> {
             Intent intent = new Intent(MainActivity.this, CardListActivity.class);
             intent.putExtra("DECK_ID", deck.deckId);
             intent.putExtra("DECK_NAME", deck.name);
+            intent.putExtra("DECK_DESCRIPTION", deck.description);
             startActivity(intent);
         });
         rvDecks.setAdapter(adapter);

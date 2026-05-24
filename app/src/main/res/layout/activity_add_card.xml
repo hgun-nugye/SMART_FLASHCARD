@@ -268,6 +268,17 @@
                 android:textColor="#1A1A1A"
                 android:textColorHint="#BBBBBB"
                 android:textSize="14sp" />
+            <TextView
+                android:id="@+id/txtMoreMeanings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Xem thêm nghĩa"
+                android:textColor="#7C3AED"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <!-- Phiên âm IPA -->

@@ -116,6 +116,7 @@ public class CardListActivity extends BaseAppActivity {
             Intent intent = new Intent(CardListActivity.this, AddCardActivity.class);
             intent.putExtra("DECK_ID", deckId);
             intent.putExtra("DECK_NAME", getIntent().getStringExtra("DECK_NAME"));
+            intent.putExtra("DECK_DESCRIPTION", getIntent().getStringExtra("DECK_DESCRIPTION"));
             startActivity(intent);
         });
     }

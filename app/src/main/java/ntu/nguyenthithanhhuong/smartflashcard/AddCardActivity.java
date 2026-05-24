@@ -4,113 +4,219 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ntu.nguyenthithanhhuong.smartflashcard.Model.Flashcard;
+import ntu.nguyenthithanhhuong.smartflashcard.Model.WordMeaning;
 
 public class AddCardActivity extends BaseAppActivity {
     private EditText edtDeckName, edtFront, edtBack, edtIpa, edtExample, edtDescription;
     private Button btnAiGen, btnSave;
     private ProgressBar progressBar;
-    private GroqManager groqManager;
+    private AIManager groqManager;
     private FirebaseFirestore db;
     private String currentDeckId;
     private boolean isCreateDeckMode;
     private android.speech.tts.TextToSpeech tts;
     private boolean isTtsReady = false;
-    private android.widget.ImageButton btnPlayTts;
+    private ImageButton btnPlayTts;
+    private List<WordMeaning> aiMeanings = new ArrayList<>();
+    private TextView txtMoreMeanings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdgeHelper.enable(this);
-        setContentView(R.layout.activity_add_card);
-        EdgeToEdgeHelper.applyRootInsets(findViewById(R.id.rootView));
 
-        currentDeckId = getIntent().getStringExtra("DECK_ID");
-        isCreateDeckMode = (currentDeckId == null || currentDeckId.trim().isEmpty());
+        EdgeToEdgeHelper.enable(this);
+
+        setContentView(R.layout.activity_add_card);
+
+        EdgeToEdgeHelper.applyRootInsets(
+                findViewById(R.id.rootView)
+        );
+
+        currentDeckId =
+                getIntent().getStringExtra("DECK_ID");
+
+        isCreateDeckMode =
+                (currentDeckId == null
+                        || currentDeckId.trim().isEmpty());
 
         db = FirebaseFirestore.getInstance();
-        groqManager = new GroqManager();
+
+        groqManager = new AIManager();
 
         initViews();
+
         setupModeUi();
 
-        // Khởi tạo TextToSpeech
-        tts = new android.speech.tts.TextToSpeech(this, status -> {
-            if (status == android.speech.tts.TextToSpeech.SUCCESS) {
-                int result = tts.setLanguage(java.util.Locale.US);
-                if (result == android.speech.tts.TextToSpeech.LANG_MISSING_DATA
-                        || result == android.speech.tts.TextToSpeech.LANG_NOT_SUPPORTED) {
-                    isTtsReady = false;
-                } else {
-                    isTtsReady = true;
-                }
-            }
-        });
+        // TTS
+        tts = new android.speech.tts.TextToSpeech(
+                this,
+                status -> {
 
-        // Bấm nút Play để chủ động nghe đọc
+                    if (status ==
+                            android.speech.tts.TextToSpeech.SUCCESS) {
+
+                        int result =
+                                tts.setLanguage(
+                                        java.util.Locale.US
+                                );
+
+                        if (result ==
+                                android.speech.tts.TextToSpeech.LANG_MISSING_DATA
+                                ||
+                                result ==
+                                        android.speech.tts.TextToSpeech.LANG_NOT_SUPPORTED) {
+
+                            isTtsReady = false;
+
+                        } else {
+
+                            isTtsReady = true;
+                        }
+                    }
+                });
+
+        // PLAY TTS
         btnPlayTts.setOnClickListener(v -> {
-            String word = edtFront.getText().toString().trim();
-            if (!word.isEmpty() && isTtsReady && tts != null) {
-                tts.speak(word, android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, null);
+
+            String word =
+                    edtFront.getText().toString().trim();
+
+            if (!word.isEmpty()
+                    && isTtsReady
+                    && tts != null) {
+
+                tts.speak(
+                        word,
+                        android.speech.tts.TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        null
+                );
+
             } else if (word.isEmpty()) {
-                Toast.makeText(this, "Hãy nhập từ vựng trước khi nghe!", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(
+                        this,
+                        "Hãy nhập từ vựng trước khi nghe!",
+                        Toast.LENGTH_SHORT
+                ).show();
             }
         });
 
-        // Cấu hình nút gọi AI sinh nội dung
+        // AI GENERATE
         btnAiGen.setOnClickListener(v -> {
-            String word = edtFront.getText().toString().trim();
+
+            String word =
+                    edtFront.getText().toString().trim();
+
             if (word.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập từ vựng mặt trước!", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(
+                        this,
+                        "Vui lòng nhập từ vựng!",
+                        Toast.LENGTH_SHORT
+                ).show();
+
                 return;
             }
 
             progressBar.setVisibility(View.VISIBLE);
+
             btnAiGen.setEnabled(false);
 
-            groqManager.generateCardContent(word, new GroqManager.AiCallback() {
-                @Override
-                public void onSuccess(String definition, String ipa, String example) {
-                    progressBar.setVisibility(View.GONE);
-                    btnAiGen.setEnabled(true);
+            groqManager.generateCardContent(
+                    word,
+                    new AIManager.AiCallback() {
 
-                    edtBack.setText(definition);
-                    edtIpa.setText(ipa);
-                    edtExample.setText(example);
+                        @Override
+                        public void onSuccess(
+                                List<WordMeaning> meanings
+                        ) {
 
-                    // Phát âm từ vựng vừa tra cứu nếu TTS đã sẵn sàng
-                    if (isTtsReady && tts != null) {
-                        tts.speak(word, android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, null);
+                            progressBar.setVisibility(View.GONE);
+
+                            btnAiGen.setEnabled(true);
+
+                            aiMeanings.clear();
+
+                            aiMeanings.addAll(meanings);
+
+                            if (!aiMeanings.isEmpty()) {
+
+                                WordMeaning first =
+                                        aiMeanings.get(0);
+
+                                edtBack.setText(first.vi);
+
+                                edtIpa.setText(first.ipa);
+
+                                edtExample.setText(first.example);
+                            }
+
+                            txtMoreMeanings.setVisibility(
+                                    aiMeanings.size() > 1
+                                            ? View.VISIBLE
+                                            : View.GONE
+                            );
+
+                            // Auto speak
+                            if (isTtsReady && tts != null) {
+
+                                tts.speak(
+                                        word,
+                                        android.speech.tts.TextToSpeech.QUEUE_FLUSH,
+                                        null,
+                                        null
+                                );
+                            }
+                        }
+                        @Override
+                        public void onError(String error) {
+
+                            progressBar.setVisibility(View.GONE);
+
+                            btnAiGen.setEnabled(true);
+
+                            Toast.makeText(
+                                    AddCardActivity.this,
+                                    error,
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
                     }
-                }
-
-                @Override
-                public void onError(String error) {
-                    progressBar.setVisibility(View.GONE);
-                    btnAiGen.setEnabled(true);
-                    Toast.makeText(AddCardActivity.this, error, Toast.LENGTH_SHORT).show();
-                }
-            });
+            );
         });
 
-        btnSave.setOnClickListener(v -> saveCardToFirestore());
+        // SAVE
+        btnSave.setOnClickListener(
+                v -> saveCardToFirestore()
+        );
+
+        // SHOW MORE MEANINGS
+        txtMoreMeanings.setOnClickListener(
+                v -> showMeaningsDialog()
+        );
     }
 
     private void initViews() {
         edtDeckName = findViewById(R.id.edtDeckName);
-        edtDescription=findViewById(R.id.edtDescription);
+        edtDescription = findViewById(R.id.edtDescription);
         edtFront = findViewById(R.id.edtFront);
         btnPlayTts = findViewById(R.id.btnPlayTts);
         edtBack = findViewById(R.id.edtBack);
@@ -119,6 +225,7 @@ public class AddCardActivity extends BaseAppActivity {
         btnAiGen = findViewById(R.id.btnAiGen);
         btnSave = findViewById(R.id.btnSave);
         progressBar = findViewById(R.id.progressBar);
+        txtMoreMeanings = findViewById(R.id.txtMoreMeanings);
     }
 
     private void setupModeUi() {
@@ -127,7 +234,6 @@ public class AddCardActivity extends BaseAppActivity {
             edtDeckName.setVisibility(View.VISIBLE);
             edtDeckName.setEnabled(true);
             edtDeckName.setText(""); // Để trống cho người dùng nhập
-            edtDeckName.setHint("VD: IELTS – Topic Food");
             btnSave.setText("Tạo bộ & lưu thẻ");
         } else {
             // CHẾ ĐỘ 2: Thêm thẻ vào bộ sưu tập có sẵn
@@ -135,12 +241,31 @@ public class AddCardActivity extends BaseAppActivity {
             edtDeckName.setEnabled(false);           // không cho sửa đổi tên bộ
             edtDeckName.setTextColor(android.graphics.Color.GRAY); // mờ chữ
 
+            edtDescription.setVisibility(View.VISIBLE);
+            edtDescription.setEnabled(false);
+            edtDescription.setTextColor(android.graphics.Color.GRAY);
+
             // Nhận tên bộ truyền sang từ Intent
             String deckName = getIntent().getStringExtra("DECK_NAME");
+            String deckDescription = getIntent().getStringExtra("DECK_DESCRIPTION");
             if (deckName != null && !deckName.trim().isEmpty()) {
+
                 edtDeckName.setText(deckName);
+
+                if (deckDescription != null &&
+                        !deckDescription.trim().isEmpty()) {
+
+                    edtDescription.setText(deckDescription);
+
+                } else {
+
+                    edtDescription.setText("Chưa có mô tả cho bộ từ này");
+                }
+
             } else {
+
                 edtDeckName.setText("Bộ sưu tập hiện tại");
+                edtDescription.setText("Chưa có mô tả cho bộ từ này");
             }
 
             btnSave.setText("Lưu thẻ vào Firebase");
@@ -172,13 +297,14 @@ public class AddCardActivity extends BaseAppActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         if (isCreateDeckMode) {
-            createDeckThenAddCard(deckName, deckDescription,newCard);
+            createDeckThenAddCard(deckName, deckDescription, newCard);
         } else {
             addCardToDeck(currentDeckId, newCard, false);
         }
     }
 
-    private void createDeckThenAddCard(String deckName,String deckDescription, Flashcard firstCard) {
+    private void createDeckThenAddCard(String deckName, String deckDescription, Flashcard
+            firstCard) {
         String uid = FirebaseAuth.getInstance().getUid();
         if (uid == null) {
             btnSave.setEnabled(true);
@@ -231,6 +357,34 @@ public class AddCardActivity extends BaseAppActivity {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(this, "Lỗi lưu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    private void showMeaningsDialog() {
+
+        if (aiMeanings.isEmpty()) return;
+
+        String[] items = new String[aiMeanings.size()];
+
+        for (int i = 0; i < aiMeanings.size(); i++) {
+
+            WordMeaning m = aiMeanings.get(i);
+
+            items[i] =
+                    m.vi + " • " + m.ipa;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Chọn nghĩa")
+                .setItems(items, (dialog, which) -> {
+
+                    WordMeaning selected =
+                            aiMeanings.get(which);
+
+                    edtBack.setText(selected.vi);
+                    edtIpa.setText(selected.ipa);
+                    edtExample.setText(selected.example);
+                })
+                .show();
     }
 
     @Override

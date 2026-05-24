@@ -16,7 +16,6 @@ public class CardManageAdapter extends RecyclerView.Adapter<CardManageAdapter.Ma
     private final OnCardActionListener actionListener;
 
     public interface OnCardActionListener {
-        void onEdit(Flashcard card);
         void onDelete(Flashcard card);
     }
 
@@ -38,7 +37,6 @@ public class CardManageAdapter extends RecyclerView.Adapter<CardManageAdapter.Ma
         holder.tvFront.setText(card.front);
         holder.tvBack.setText(card.back);
 
-        holder.btnEdit.setOnClickListener(v -> actionListener.onEdit(card));
         holder.btnDelete.setOnClickListener(v -> actionListener.onDelete(card));
     }
 
@@ -49,13 +47,12 @@ public class CardManageAdapter extends RecyclerView.Adapter<CardManageAdapter.Ma
 
     static class ManageViewHolder extends RecyclerView.ViewHolder {
         TextView tvFront, tvBack;
-        ImageButton btnEdit, btnDelete;
+        ImageButton btnDelete;
 
         public ManageViewHolder(@NonNull View itemView) {
             super(itemView);
             tvFront = itemView.findViewById(R.id.tvManageFront);
             tvBack = itemView.findViewById(R.id.tvManageBack);
-//            btnEdit = itemView.findViewById(R.id.btnEditCard);
             btnDelete = itemView.findViewById(R.id.btnDeleteCard);
         }
     }

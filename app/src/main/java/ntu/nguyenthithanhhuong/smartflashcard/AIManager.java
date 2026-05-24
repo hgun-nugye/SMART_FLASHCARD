@@ -2,15 +2,17 @@ package ntu.nguyenthithanhhuong.smartflashcard;
 
 import android.os.Handler;
 import android.os.Looper;
-
-import ntu.nguyenthithanhhuong.smartflashcard.BuildConfig;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import ntu.nguyenthithanhhuong.smartflashcard.Model.WordMeaning;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -19,22 +21,17 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class GroqManager {
+public class AIManager {
     private static final String TAG = "GroqManager";
     //    private static final String ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
     private static final String ENDPOINT =
             "https://openrouter.ai/api/v1/chat/completions";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    //    private static final String[] MODEL_FALLBACKS = new String[] {
-//            "llama-3.1-8b-instant",
-//            "llama-3.3-70b-versatile",
-//            "openai/gpt-oss-20b"
-//    };
     private static final String[] MODEL_FALLBACKS = new String[]{
-            "deepseek/deepseek-chat-v3-0324",
+            "google/gemini-2.5-flash",
             "qwen/qwen3-32b",
-            "google/gemini-2.5-flash"
+            "deepseek/deepseek-chat-v3-0324"
     };
 
     private static String extractJson(String text) {
@@ -52,12 +49,12 @@ public class GroqManager {
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public interface AiCallback {
-        void onSuccess(String definition, String ipa, String example);
+        void onSuccess(List<WordMeaning> meanings);
 
         void onError(String error);
     }
 
-    public GroqManager() {
+    public AIManager() {
         this.client = new OkHttpClient.Builder()
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(40, TimeUnit.SECONDS)
@@ -97,19 +94,24 @@ public class GroqManager {
                         "Analyze the English word: '" + safeWord + "'.\n\n" +
 
                         "Rules:\n" +
-                        "- def MUST be Vietnamese meaning only.\n" +
-                        "- ipa MUST use standard IPA format like /ˈæp.əl/.\n" +
-                        "- eg MUST be a short simple English sentence.\n" +
+                        "- Return up to 3 common meanings.\n" +
+                        "- Each meaning must contain:\n" +
+                        "  - Vietnamese meaning\n" +
+                        "  - correct IPA for that meaning\n" +
+                        "  - simple English example\n" +
                         "- Return ONLY valid JSON.\n" +
                         "- No markdown.\n" +
-                        "- No explanation.\n" +
-                        "- No English definition.\n\n" +
+                        "- No explanation.\n\n" +
 
                         "Format exactly:\n" +
                         "{\n" +
-                        "\"def\":\"\",\n" +
+                        "\"meanings\":[\n" +
+                        "{\n" +
+                        "\"vi\":\"\",\n" +
                         "\"ipa\":\"\",\n" +
-                        "\"eg\":\"\"\n" +
+                        "\"example\":\"\"\n" +
+                        "}\n" +
+                        "]\n" +
                         "}";
 
         try {
@@ -118,7 +120,7 @@ public class GroqManager {
             payload.put("temperature", 0.2);
             payload.put("messages", new JSONArray()
                     .put(new JSONObject().put("role", "user").put("content", prompt)));
-            payload.put("max_tokens", 120);
+            payload.put("max_tokens", 300);
 
             RequestBody body = RequestBody.create(payload.toString(), JSON);
 
@@ -139,6 +141,30 @@ public class GroqManager {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String raw = response.body() != null ? response.body().string() : "";
+                    Log.d("AI_RAW", raw);
+                    if (response.code() == 204 || raw.trim().isEmpty()) {
+
+                        if (modelIndex < MODEL_FALLBACKS.length - 1) {
+
+                            try {
+
+                                generateWithModelIndex(
+                                        safeWord,
+                                        modelIndex + 1,
+                                        callback
+                                );
+
+                                return;
+
+                            } catch (Exception ignored) {
+                            }
+                        }
+
+                        sendError(callback,
+                                "AI không trả dữ liệu.");
+
+                        return;
+                    }
 
                     if (!response.isSuccessful()) {
                         String msg = parseApiErrorMessage(raw);
@@ -175,17 +201,51 @@ public class GroqManager {
 
                         JSONObject message = choices.optJSONObject(0) != null ? choices.optJSONObject(0).optJSONObject("message") : null;
                         String content = message != null ? message.optString("content", "") : "";
-//                        String cleaned = stripCodeFences(content).trim();
                         String cleaned = extractJson(
                                 stripCodeFences(content)
                         ).trim();
 
-                        JSONObject contentObj = new JSONObject(cleaned);
-                        String def = contentObj.optString("def", "Không có nghĩa");
-                        String ipa = contentObj.optString("ipa", "/.../");
-                        String eg = contentObj.optString("eg", "Không có ví dụ");
+                        if (!cleaned.startsWith("{")) {
 
-                        mainHandler.post(() -> callback.onSuccess(def, ipa, eg));
+                            sendError(callback,
+                                    "AI trả dữ liệu lỗi.");
+
+                            return;
+                        }
+
+                        JSONObject contentObj = new JSONObject(cleaned);
+
+                        JSONArray meaningsArray =
+                                contentObj.getJSONArray("meanings");
+
+                        List<WordMeaning> meanings =
+                                new ArrayList<>();
+
+                        for (int i = 0; i < meaningsArray.length(); i++) {
+
+                            JSONObject item =
+                                    meaningsArray.getJSONObject(i);
+
+                            String vi =
+                                    item.optString("vi", "");
+
+                            String ipa =
+                                    item.optString("ipa", "");
+
+                            String example =
+                                    item.optString("example", "");
+
+                            meanings.add(
+                                    new WordMeaning(
+                                            vi,
+                                            ipa,
+                                            example
+                                    )
+                            );
+                        }
+
+                        mainHandler.post(() ->
+                                callback.onSuccess(meanings));
                     } catch (Exception ex) {
                         sendError(callback, "Lỗi phân tích: " + ex.getMessage());
                     }
