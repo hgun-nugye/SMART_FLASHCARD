@@ -28,7 +28,6 @@ public class CardDetailActivity extends BaseAppActivity {
                 findViewById(R.id.toolbarDetail)
         );
 
-        // Khởi tạo TextToSpeech cho màn hình chi tiết
         tts = new TextToSpeech(this, status -> {
             if (status == TextToSpeech.SUCCESS) {
                 tts.setLanguage(Locale.US);
@@ -57,19 +56,18 @@ public class CardDetailActivity extends BaseAppActivity {
     }
 
     private void displayCardData() {
-        // Nhận đối tượng Flashcard truyền từ màn hình danh sách sang
         Flashcard card = (Flashcard) getIntent().getSerializableExtra("CARD_DATA");
 
         if (card != null) {
             tvFront.setText(card.front);
             tvIpa.setText(card.ipa != null ? card.ipa : "");
             tvBack.setText(card.back);
-            tvStatus.setText(card.getStatus() != null ? card.getStatus().toString() : "Mới");
+            tvStatus.setText(card.getStatus() != null ? card.getStatus().toString() : getString(R.string.card_status_new));
 
             if (card.example != null && !card.example.isEmpty()) {
                 tvExample.setText(card.example);
             } else {
-                tvExample.setText("Không có ví dụ cho từ này.");
+                tvExample.setText(R.string.card_detail_no_example);
             }
 
             btnPlay.setOnClickListener(v -> {

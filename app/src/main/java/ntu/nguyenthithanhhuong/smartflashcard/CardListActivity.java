@@ -54,7 +54,7 @@ public class CardListActivity extends BaseAppActivity {
 
         deckId = getIntent().getStringExtra("DECK_ID");
         if (deckId == null || deckId.isEmpty()) {
-            Toast.makeText(this, "Không tìm thấy bộ sưu tập!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.deck_not_found, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -243,7 +243,7 @@ public class CardListActivity extends BaseAppActivity {
                     closeIcon.setColorFilter(0xFFFFFFFF);
                 }
 
-                searchView.setQueryHint("Tìm thẻ (từ, nghĩa, IPA)...");
+                searchView.setQueryHint(getString(R.string.card_list_search_hint));
                 searchView.setOnCloseListener(() -> {
                     resetSearch();
                     return false;

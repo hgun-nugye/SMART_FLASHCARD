@@ -5,19 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F7"
+    android:background="?android:attr/colorBackground"
     android:id="@+id/cardDetail">
 
-    <!-- Toolbar nhất quán với toàn app -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarDetail"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#1A1A2E"
+        style="@style/Widget.SmartFlashCard.Toolbar"
         app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="#FFFFFF"
-        app:title="Chi tiết thẻ từ"
-        app:titleTextColor="#FFFFFF"
+        app:title="@string/card_detail_title"
         app:menu="@menu/card_detail_menu" />
 
     <androidx.core.widget.NestedScrollView
@@ -30,23 +27,20 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- ── Card từ vựng chính ── -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0.5dp"
-                app:strokeColor="#E0E0E0"
-                app:cardBackgroundColor="#FFFFFF">
+                style="@style/Widget.SmartFlashCard.Card"
+                app:cardElevation="2dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Thanh màu gradient trên đầu card -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
@@ -58,7 +52,6 @@
                         android:orientation="vertical"
                         android:padding="20dp">
 
-                        <!-- Badge trạng thái -->
                         <TextView
                             android:id="@+id/tvDetailStatus"
                             android:layout_width="wrap_content"
@@ -71,30 +64,27 @@
                             android:text="test"
                             android:background="@drawable/bg_status_learned" />
 
-                        <!-- Từ vựng -->
                         <TextView
                             android:id="@+id/tvDetailFront"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="16dp"
-                            android:textColor="#111827"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="32sp"
                             android:text="test"
                             android:textStyle="bold" />
 
-                        <!-- Phiên âm IPA -->
                         <TextView
                             android:id="@+id/tvDetailIpa"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="6dp"
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:text="test"
                             android:textSize="17sp" />
 
-                        <!-- Nút nghe phát âm -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnDetailPlay"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
@@ -102,22 +92,20 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="16dp"
-                            android:text="Nghe đọc"
-                            android:textColor="#7C3AED"
+                            android:text="@string/card_detail_listen"
+                            android:textColor="?attr/colorPrimary"
                             app:icon="@android:drawable/ic_btn_speak_now"
-                            app:iconTint="#7C3AED"
-                            app:strokeColor="#7C3AED"
-                            app:cornerRadius="10dp" />
+                            app:iconTint="?attr/colorPrimary"
+                            app:strokeColor="?attr/colorPrimary"
+                            app:cornerRadius="@dimen/kid_corner_button" />
 
-                        <!-- Divider -->
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
-                            android:background="#E5E7EB" />
+                            android:background="@color/kid_divider" />
 
-                        <!-- Nhãn Ý nghĩa -->
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -129,14 +117,14 @@
                                 android:layout_width="16dp"
                                 android:layout_height="16dp"
                                 android:src="@drawable/ic_translate"
-                                app:tint="#A78BFA"
+                                app:tint="?attr/colorSecondary"
                                 android:layout_marginEnd="6dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Ý nghĩa"
-                                android:textColor="#4B5563"
+                                android:text="@string/card_detail_meaning"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -145,20 +133,18 @@
                             android:id="@+id/tvDetailBack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#1F2937"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             android:text="test"
                             android:lineSpacingMultiplier="1.5" />
 
-                        <!-- Divider -->
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
-                            android:background="#E5E7EB" />
+                            android:background="@color/kid_divider" />
 
-                        <!-- Nhãn Ví dụ -->
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -170,19 +156,18 @@
                                 android:layout_width="16dp"
                                 android:layout_height="16dp"
                                 android:src="@drawable/ic_quote"
-                                app:tint="#A78BFA"
+                                app:tint="?attr/colorSecondary"
                                 android:layout_marginEnd="6dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Ví dụ minh họa"
-                                android:textColor="#4B5563"
+                                android:text="@string/card_detail_example_label"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
-                        <!-- Ô ví dụ nổi bật -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -196,7 +181,7 @@
                                 android:id="@+id/tvDetailExample"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="#374151"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp"
                                 android:text="test"
                                 android:textStyle="italic"
@@ -211,3 +196,4 @@
     </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
+

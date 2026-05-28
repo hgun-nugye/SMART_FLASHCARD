@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F7"
+    android:background="?android:attr/colorBackground"
     android:fillViewport="true"
     android:id="@+id/rootView"
     android:clipToPadding="false">
@@ -14,12 +14,12 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_header"
+            android:background="@drawable/bg_header_kid"
+            style="@style/Widget.SmartFlashCard.HeaderBanner"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="16dp">
@@ -34,7 +34,7 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:src="@android:drawable/ic_menu_agenda"
-                    app:tint="#A78BFA" />
+                    app:tint="@color/md_theme_light_primary" />
             </LinearLayout>
 
             <LinearLayout
@@ -47,8 +47,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thêm thẻ mới"
-                    android:textColor="#FFFFFF"
+                    android:text="@string/add_card_title"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -56,22 +56,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Bộ sưu tập từ vựng"
-                    android:textColor="#80FFFFFF"
+                    android:text="@string/add_card_deck_label"
+                    android:textColor="@color/kid_hint_on_primary"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Section: Bộ sưu tập -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginBottom="6dp"
             android:letterSpacing="0.08"
-            android:text="BỘ SƯU TẬP"
+            android:text="@string/add_card_deck_section"
             android:textStyle="bold"
-            android:textColor="#050505"
+            style="@style/TextAppearance.SmartFlashCard.Section"
             android:textSize="11sp" />
 
         <LinearLayout
@@ -91,7 +90,7 @@
                 android:layout_height="18dp"
                 android:layout_marginEnd="10dp"
                 android:src="@android:drawable/ic_menu_myplaces"
-                app:tint="#AAAAAA" />
+                app:tint="?attr/colorOutline" />
 
             <EditText
                 android:id="@+id/edtDeckName"
@@ -99,13 +98,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="VD: IELTS – Topic Food"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#BBBBBB"
+                android:hint="@string/add_card_deck_name_example"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOutline"
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Description -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -123,7 +121,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="10dp"
                 android:src="@android:drawable/ic_menu_edit"
-                app:tint="#AAAAAA" />
+                app:tint="?attr/colorOutline" />
 
             <EditText
                 android:id="@+id/edtDescription"
@@ -132,34 +130,31 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:gravity="top"
-                android:hint="Mô tả thêm về bộ từ vựng..."
+                android:hint="@string/add_card_deck_desc_hint"
                 android:maxLines="6"
                 android:minLines="4"
                 android:inputType="textMultiLine"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#BBBBBB"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOutline"
                 android:textSize="14sp" />
         </LinearLayout>
-        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginBottom="16dp"
-            android:background="#E0E0E0" />
+            android:background="@color/kid_divider" />
 
-        <!-- Section: Từ vựng -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginBottom="6dp"
             android:letterSpacing="0.08"
-            android:text="TỪ VỰNG"
-            android:textColor="#050505"
+            android:text="@string/add_card_vocab_section"
+            style="@style/TextAppearance.SmartFlashCard.Section"
             android:textStyle="bold"
             android:textSize="11sp" />
 
-        <!-- Input từ vựng + nút phát âm -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -178,9 +173,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="Nhập từ vựng (VD: Integrity)"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#BBBBBB"
+                android:hint="@string/add_card_word_hint"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOutline"
                 android:textSize="14sp" />
 
             <ImageButton
@@ -189,24 +184,22 @@
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/bg_tts_button"
-                android:contentDescription="Nghe phát âm"
+                android:contentDescription="@string/card_listen_content_desc"
                 android:src="@android:drawable/ic_btn_speak_now"
-                app:tint="#A78BFA" />
+                app:tint="?attr/colorPrimary" />
         </LinearLayout>
 
-        <!-- Nút AI -->
         <Button
             android:id="@+id/btnAiGen"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/bg_btn_ai"
-            android:text="Tự động điền"
-            android:textColor="#ffffff"
+            android:text="@string/add_card_auto_fill"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="13sp"
             android:textStyle="bold" />
 
-        <!-- Progress bar -->
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
@@ -214,31 +207,28 @@
             android:layout_height="3dp"
             android:layout_marginBottom="8dp"
             android:indeterminate="true"
-            android:indeterminateTint="#7C3AED"
-            android:progressTint="#7C3AED"
+            android:indeterminateTint="?attr/colorPrimary"
+            android:progressTint="?attr/colorPrimary"
             android:visibility="gone" />
 
-        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
-            android:background="#E0E0E0" />
+            android:background="@color/kid_divider" />
 
-        <!-- Section: Chi tiết -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginBottom="6dp"
             android:letterSpacing="0.08"
-            android:text="CHI TIẾT"
-            android:textColor="#050505"
+            android:text="@string/add_card_details_section_upper"
+            style="@style/TextAppearance.SmartFlashCard.Section"
             android:textStyle="bold"
             android:textSize="11sp" />
 
-        <!-- Nghĩa của từ -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -256,7 +246,7 @@
                 android:layout_height="18dp"
                 android:layout_marginEnd="10dp"
                 android:src="@android:drawable/ic_menu_info_details"
-                app:tint="#AAAAAA" />
+                app:tint="?attr/colorOutline" />
 
             <EditText
                 android:id="@+id/edtBack"
@@ -264,9 +254,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="Nghĩa của từ"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#BBBBBB"
+                android:hint="@string/add_card_meaning_hint"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOutline"
                 android:textSize="14sp" />
             <TextView
                 android:id="@+id/txtMoreMeanings"
@@ -274,14 +264,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="Xem thêm nghĩa"
-                android:textColor="#7C3AED"
+                android:text="@string/add_card_more_meanings"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:visibility="gone"/>
         </LinearLayout>
 
-        <!-- Phiên âm IPA -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -299,7 +288,7 @@
                 android:layout_height="18dp"
                 android:layout_marginEnd="10dp"
                 android:src="@android:drawable/ic_btn_speak_now"
-                app:tint="#AAAAAA" />
+                app:tint="?attr/colorOutline" />
 
             <EditText
                 android:id="@+id/edtIpa"
@@ -307,13 +296,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="Phiên âm IPA (VD: /ɪnˈtɛɡrɪti/)"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#BBBBBB"
+                android:hint="@string/add_card_ipa_hint"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOutline"
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Ví dụ -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -331,7 +319,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="10dp"
                 android:src="@android:drawable/ic_menu_edit"
-                app:tint="#AAAAAA" />
+                app:tint="?attr/colorOutline" />
 
             <EditText
                 android:id="@+id/edtExample"
@@ -340,31 +328,30 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:gravity="top"
-                android:hint="Câu ví dụ..."
+                android:hint="@string/add_card_example_hint"
                 android:lines="3"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#BBBBBB"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOutline"
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginBottom="16dp"
-            android:background="#E0E0E0" />
+            android:background="@color/kid_divider" />
 
-        <!-- Nút lưu -->
         <Button
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/bg_btn_save"
-            android:text="Lưu vào Firebase"
-            android:textColor="#FFFFFF"
+            android:text="@string/add_card_save"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="14sp"
             android:textStyle="bold" />
 
     </LinearLayout>
 </ScrollView>
+

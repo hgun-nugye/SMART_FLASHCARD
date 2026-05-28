@@ -58,13 +58,12 @@ public class AddCardActivity extends BaseAppActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        groqManager = new AIManager();
+        groqManager = new AIManager(this);
 
         initViews();
 
         setupModeUi();
 
-        // TTS
         tts = new android.speech.tts.TextToSpeech(
                 this,
                 status -> {
@@ -92,7 +91,6 @@ public class AddCardActivity extends BaseAppActivity {
                     }
                 });
 
-        // PLAY TTS
         btnPlayTts.setOnClickListener(v -> {
 
             String word =
@@ -111,15 +109,10 @@ public class AddCardActivity extends BaseAppActivity {
 
             } else if (word.isEmpty()) {
 
-                Toast.makeText(
-                        this,
-                        "Hãy nhập từ vựng trước khi nghe!",
-                        Toast.LENGTH_SHORT
-                ).show();
+                Toast.makeText(this, R.string.add_card_enter_word_listen, Toast.LENGTH_SHORT).show();
             }
         });
 
-        // AI GENERATE
         btnAiGen.setOnClickListener(v -> {
 
             String word =
@@ -127,11 +120,7 @@ public class AddCardActivity extends BaseAppActivity {
 
             if (word.isEmpty()) {
 
-                Toast.makeText(
-                        this,
-                        "Vui lòng nhập từ vựng!",
-                        Toast.LENGTH_SHORT
-                ).show();
+                Toast.makeText(this, R.string.add_card_enter_word, Toast.LENGTH_SHORT).show();
 
                 return;
             }
@@ -175,7 +164,6 @@ public class AddCardActivity extends BaseAppActivity {
                                             : View.GONE
                             );
 
-                            // Auto speak
                             if (isTtsReady && tts != null) {
 
                                 tts.speak(
@@ -186,6 +174,7 @@ public class AddCardActivity extends BaseAppActivity {
                                 );
                             }
                         }
+
                         @Override
                         public void onError(String error) {
 
@@ -203,12 +192,10 @@ public class AddCardActivity extends BaseAppActivity {
             );
         });
 
-        // SAVE
         btnSave.setOnClickListener(
                 v -> saveCardToFirestore()
         );
 
-        // SHOW MORE MEANINGS
         txtMoreMeanings.setOnClickListener(
                 v -> showMeaningsDialog()
         );
@@ -230,22 +217,19 @@ public class AddCardActivity extends BaseAppActivity {
 
     private void setupModeUi() {
         if (isCreateDeckMode) {
-            // CHẾ ĐỘ 1: Tạo bộ sưu tập mới hoàn toàn
             edtDeckName.setVisibility(View.VISIBLE);
             edtDeckName.setEnabled(true);
-            edtDeckName.setText(""); // Để trống cho người dùng nhập
-            btnSave.setText("Tạo bộ & lưu thẻ");
+            edtDeckName.setText("");
+            btnSave.setText(R.string.add_card_save_new_deck);
         } else {
-            // CHẾ ĐỘ 2: Thêm thẻ vào bộ sưu tập có sẵn
-            edtDeckName.setVisibility(View.VISIBLE); // tên bộ
-            edtDeckName.setEnabled(false);           // không cho sửa đổi tên bộ
-            edtDeckName.setTextColor(android.graphics.Color.GRAY); // mờ chữ
+            edtDeckName.setVisibility(View.VISIBLE);
+            edtDeckName.setEnabled(false);
+            edtDeckName.setTextColor(android.graphics.Color.GRAY);
 
             edtDescription.setVisibility(View.VISIBLE);
             edtDescription.setEnabled(false);
             edtDescription.setTextColor(android.graphics.Color.GRAY);
 
-            // Nhận tên bộ truyền sang từ Intent
             String deckName = getIntent().getStringExtra("DECK_NAME");
             String deckDescription = getIntent().getStringExtra("DECK_DESCRIPTION");
             if (deckName != null && !deckName.trim().isEmpty()) {
@@ -259,16 +243,16 @@ public class AddCardActivity extends BaseAppActivity {
 
                 } else {
 
-                    edtDescription.setText("Chưa có mô tả cho bộ từ này");
+                    edtDescription.setText(R.string.add_card_no_description);
                 }
 
             } else {
 
-                edtDeckName.setText("Bộ sưu tập hiện tại");
-                edtDescription.setText("Chưa có mô tả cho bộ từ này");
+                edtDeckName.setText(R.string.add_card_current_deck);
+                edtDescription.setText(R.string.add_card_no_description);
             }
 
-            btnSave.setText("Lưu thẻ vào Firebase");
+            btnSave.setText(R.string.add_card_save);
         }
     }
 
@@ -281,12 +265,12 @@ public class AddCardActivity extends BaseAppActivity {
         String example = edtExample.getText().toString().trim();
 
         if (isCreateDeckMode && deckName.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập tên bộ sưu tập!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.add_card_deck_name_required, Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (front.isEmpty() || back.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập đủ thông tin!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.add_card_fields_required, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -309,7 +293,7 @@ public class AddCardActivity extends BaseAppActivity {
         if (uid == null) {
             btnSave.setEnabled(true);
             progressBar.setVisibility(View.GONE);
-            Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.not_signed_in, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -331,7 +315,9 @@ public class AddCardActivity extends BaseAppActivity {
                 .addOnFailureListener(e -> {
                     btnSave.setEnabled(true);
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, "Lỗi tạo bộ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,
+                            getString(R.string.add_card_create_deck_error, e.getMessage()),
+                            Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -345,17 +331,17 @@ public class AddCardActivity extends BaseAppActivity {
 
                     btnSave.setEnabled(true);
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(
-                            this,
-                            createdDeckNow ? "Đã tạo bộ & thêm thẻ thành công!" : "Thêm thẻ thành công!",
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    Toast.makeText(this,
+                            createdDeckNow ? R.string.add_card_created_success : R.string.add_card_saved_success,
+                            Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .addOnFailureListener(e -> {
                     btnSave.setEnabled(true);
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, "Lỗi lưu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,
+                            getString(R.string.add_card_save_error, e.getMessage()),
+                            Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -374,7 +360,7 @@ public class AddCardActivity extends BaseAppActivity {
         }
 
         new AlertDialog.Builder(this)
-                .setTitle("Chọn nghĩa")
+                .setTitle(R.string.add_card_pick_meaning)
                 .setItems(items, (dialog, which) -> {
 
                     WordMeaning selected =

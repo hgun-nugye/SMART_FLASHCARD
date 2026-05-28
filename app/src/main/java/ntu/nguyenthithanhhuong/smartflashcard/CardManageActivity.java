@@ -29,8 +29,8 @@ public class CardManageActivity extends BaseAppActivity {
     private FirebaseFirestore db;
     private String deckId;
     private CardManageAdapter adapter;
-    private final List<Flashcard> allCards = new ArrayList<>(); // Danh sách gốc
-    private final List<Flashcard> filteredList = new ArrayList<>(); // Danh sách sau khi tìm kiếm
+    private final List<Flashcard> allCards = new ArrayList<>();
+    private final List<Flashcard> filteredList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +78,11 @@ public class CardManageActivity extends BaseAppActivity {
                     for (DocumentSnapshot doc : value.getDocuments()) {
                         Flashcard card = doc.toObject(Flashcard.class);
                         if (card != null) {
-                            card.cardId = doc.getId(); // Gán ID tài liệu để xóa/sửa
+                            card.cardId = doc.getId();
                             allCards.add(card);
                         }
                     }
-                    filterList(searchViewCard.getQuery().toString()); // Cập nhật lại danh sách hiển thị
+                    filterList(searchViewCard.getQuery().toString());
                 });
     }
 
@@ -116,23 +116,21 @@ public class CardManageActivity extends BaseAppActivity {
         adapter.notifyDataSetChanged();
     }
 
-    // Hỏi xác nhận trước khi xóa thẻ khỏi Firebase
     private void confirmDeleteCard(Flashcard card) {
         new AlertDialog.Builder(this)
-                .setTitle("Xóa thẻ từ")
-                .setMessage("Bạn có chắc chắn muốn xóa từ '" + card.front + "' không?")
-                .setPositiveButton("Xóa", (dialog, which) -> {
+                .setTitle(R.string.card_manage_delete_title)
+                .setMessage(getString(R.string.card_manage_delete_message, card.front))
+                .setPositiveButton(R.string.card_manage_delete_confirm, (dialog, which) -> {
                     db.collection("decks").document(deckId)
                             .collection("flashcards").document(card.cardId)
                             .delete()
                             .addOnSuccessListener(aVoid -> {
-                                // Cập nhật giảm trừ số lượng thẻ của bộ sưu tập
                                 db.collection("decks").document(deckId)
                                         .update("cardCount", FieldValue.increment(-1));
-                                Toast.makeText(this, "Đã xóa thẻ!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, R.string.card_manage_deleted, Toast.LENGTH_SHORT).show();
                             });
                 })
-                .setNegativeButton("Hủy", null)
+                .setNegativeButton(R.string.card_manage_cancel, null)
                 .show();
     }
 }
