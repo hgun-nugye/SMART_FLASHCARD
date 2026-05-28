@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -16,7 +17,7 @@
             android:id="@+id/txtDeckName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Tên bộ thẻ"
+            tools:text="@string/deck_placeholder_name"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,8 +29,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="0 thẻ"
-            android:textColor="#757575"
+            tools:text="12 cards"
+            android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtDeckName"
             app:layout_constraintEnd_toStartOf="@id/btnEdit" />
@@ -39,7 +40,7 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sửa"
+            android:text="@string/deck_manage_edit"
             app:layout_constraintEnd_toStartOf="@id/btnDelete"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,8 +49,8 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Xoá"
-            android:textColor="#B00020"
+            android:text="@string/deck_manage_delete_btn"
+            android:textColor="?attr/colorError"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

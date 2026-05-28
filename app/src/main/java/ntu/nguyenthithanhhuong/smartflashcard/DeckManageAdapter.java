@@ -40,7 +40,7 @@ public class DeckManageAdapter extends RecyclerView.Adapter<DeckManageAdapter.VH
     public void onBindViewHolder(@NonNull VH h, int position) {
         Deck d = decks.get(position);
         h.txtName.setText(d.name);
-        h.txtCount.setText(d.cardCount + " thẻ");
+        h.txtCount.setText(h.itemView.getContext().getString(R.string.deck_manage_card_count, d.cardCount));
 
         h.btnEdit.setOnClickListener(v -> listener.onEdit(d));
         h.btnDelete.setOnClickListener(v -> listener.onDelete(d));

@@ -43,16 +43,9 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.DeckViewHolder
         holder.txtDeckName.setText(deck.name);
         holder.txtDeckDes.setText(deck.description);
 
-        // Tổng số card
         holder.txtCardCount.setText(deck.cardCount + "");
-
-        // NEW
         holder.txtNewCount.setText(String.valueOf(deck.newCount));
-
-        // DUE
         holder.txtDueCount.setText(String.valueOf(deck.dueCount));
-
-        // LEARNED
         holder.txtLearnedCount.setText(String.valueOf(deck.learnedCount));
 
         holder.itemView.setOnClickListener(v -> {

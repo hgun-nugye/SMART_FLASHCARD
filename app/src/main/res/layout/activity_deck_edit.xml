@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:title="Bộ thẻ"
+            android:title="@string/deck_edit_title"
             app:navigationIcon="@drawable/ic_back"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -40,8 +40,9 @@
                     android:id="@+id/edtName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tên bộ"
-                    android:inputType="textCapSentences" />
+                    android:hint="@string/deck_name_hint"
+                    android:inputType="textCapSentences"
+                    android:background=""/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -53,7 +54,7 @@
                     android:id="@+id/edtDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Mô tả (tuỳ chọn)"
+                    android:hint="@string/deck_desc_hint"
                     android:inputType="textMultiLine"
                     android:minLines="3" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -63,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Lưu" />
+                android:text="@string/deck_save" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDelete"
@@ -71,9 +72,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Xoá bộ"
-                android:textColor="#B00020"
-                app:strokeColor="#B00020" />
+                android:text="@string/deck_delete"
+                android:textColor="?attr/colorError"
+                app:strokeColor="?attr/colorError" />
 
             <ProgressBar
                 android:id="@+id/progress"

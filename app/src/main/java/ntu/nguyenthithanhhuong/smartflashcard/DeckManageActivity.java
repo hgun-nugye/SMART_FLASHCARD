@@ -1,13 +1,10 @@
 package ntu.nguyenthithanhhuong.smartflashcard;
 
-import android.os.Bundle;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,7 +71,9 @@ public class DeckManageActivity extends BaseAppActivity implements DeckManageAda
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("DECK_MANAGE", error.getMessage() == null ? "error" : error.getMessage());
-                        Toast.makeText(this, "Lỗi tải bộ: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this,
+                                getString(R.string.deck_manage_load_error, error.getMessage()),
+                                Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (value == null) return;
@@ -107,7 +106,8 @@ public class DeckManageActivity extends BaseAppActivity implements DeckManageAda
         if (deck == null || deck.deckId == null) return;
         db.collection("decks").document(deck.deckId)
                 .delete()
-                .addOnSuccessListener(unused -> Toast.makeText(this, "Đã xoá bộ.", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(this, "Lỗi xoá: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(unused -> Toast.makeText(this, R.string.deck_manage_deleted, Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(this,
+                        getString(R.string.deck_delete_error, e.getMessage()), Toast.LENGTH_SHORT).show());
     }
 }

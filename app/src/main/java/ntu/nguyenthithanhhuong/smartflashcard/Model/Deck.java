@@ -2,7 +2,7 @@ package ntu.nguyenthithanhhuong.smartflashcard.Model;
 
 public class Deck {
     public String deckId;
-    public String ownerId; // UID của User
+    public String ownerId;
     public String name;
     public String description;
     public int cardCount;

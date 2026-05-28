@@ -1,13 +1,9 @@
 package ntu.nguyenthithanhhuong.smartflashcard;
 
 import android.os.Bundle;
-
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
@@ -45,7 +41,9 @@ public class DeckEditActivity extends BaseAppActivity {
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
-        toolbar.setTitle(deckId == null ? "Tạo bộ" : "Sửa bộ");
+        toolbar.setTitle(deckId == null
+                ? getString(R.string.deck_create_title)
+                : getString(R.string.deck_edit_existing));
 
         edtName = findViewById(R.id.edtName);
         edtDescription = findViewById(R.id.edtDescription);
@@ -74,20 +72,22 @@ public class DeckEditActivity extends BaseAppActivity {
                 })
                 .addOnFailureListener(e -> {
                     setLoading(false);
-                    Toast.makeText(this, "Lỗi tải: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,
+                            getString(R.string.deck_load_error, e.getMessage()),
+                            Toast.LENGTH_SHORT).show();
                 });
     }
 
     private void save() {
         if (auth.getCurrentUser() == null) {
-            Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.not_signed_in, Toast.LENGTH_SHORT).show();
             return;
         }
 
         String name = edtName.getText() != null ? edtName.getText().toString().trim() : "";
         String desc = edtDescription.getText() != null ? edtDescription.getText().toString().trim() : "";
         if (name.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập tên bộ!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.deck_name_required, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -103,12 +103,14 @@ public class DeckEditActivity extends BaseAppActivity {
                     .add(data)
                     .addOnSuccessListener(ref -> {
                         setLoading(false);
-                        Toast.makeText(this, "Đã tạo bộ!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.deck_created, Toast.LENGTH_SHORT).show();
                         finish();
                     })
                     .addOnFailureListener(e -> {
                         setLoading(false);
-                        Toast.makeText(this, "Lỗi lưu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this,
+                                getString(R.string.deck_save_error, e.getMessage()),
+                                Toast.LENGTH_SHORT).show();
                     });
         } else {
             Map<String, Object> updates = new HashMap<>();
@@ -118,12 +120,14 @@ public class DeckEditActivity extends BaseAppActivity {
                     .update(updates)
                     .addOnSuccessListener(unused -> {
                         setLoading(false);
-                        Toast.makeText(this, "Đã lưu!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.deck_saved, Toast.LENGTH_SHORT).show();
                         finish();
                     })
                     .addOnFailureListener(e -> {
                         setLoading(false);
-                        Toast.makeText(this, "Lỗi lưu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this,
+                                getString(R.string.deck_save_error, e.getMessage()),
+                                Toast.LENGTH_SHORT).show();
                     });
         }
     }
@@ -135,12 +139,14 @@ public class DeckEditActivity extends BaseAppActivity {
                 .delete()
                 .addOnSuccessListener(unused -> {
                     setLoading(false);
-                    Toast.makeText(this, "Đã xoá bộ!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.deck_deleted, Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .addOnFailureListener(e -> {
                     setLoading(false);
-                    Toast.makeText(this, "Lỗi xoá: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,
+                            getString(R.string.deck_delete_error, e.getMessage()),
+                            Toast.LENGTH_SHORT).show();
                 });
     }
 

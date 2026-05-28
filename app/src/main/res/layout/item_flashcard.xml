@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="12dp"
     android:layout_marginVertical="4dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="0.5dp"
-    app:strokeColor="#E0E0E0"
-    app:cardBackgroundColor="#FFFFFF">
+    style="@style/Widget.SmartFlashCard.Card"
+    app:cardElevation="2dp"
+    app:strokeColor="?attr/colorOutline"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="12dp"
-        android:gravity="center_vertical">
+        android:padding="12dp">
 
-        <!-- Icon badge bên trái -->
         <LinearLayout
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/bg_card_badge"
-            android:gravity="center"
-            android:layout_marginEnd="12dp">
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_deck_icon"
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_abc"
-                app:tint="#534AB7" />
+                app:tint="?attr/colorOnPrimary" />
         </LinearLayout>
 
-        <!-- Nội dung chính -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -45,64 +43,54 @@
                 android:id="@+id/tvFront"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                android:textColor="#1A1A1A"
-                android:text="msnc"/>
+                tools:text="Word" />
 
             <TextView
                 android:id="@+id/tvBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="#666666"
                 android:layout_marginTop="2dp"
-                android:maxLines="1"
                 android:ellipsize="end"
-                android:text="csbf"/>
+                android:maxLines="1"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                tools:text="Meaning" />
 
             <TextView
                 android:id="@+id/tvIpa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="11sp"
-                android:textColor="#AAAAAA"
                 android:layout_marginTop="1dp"
-                android:text="cnwjfe"/>
+                android:textColor="?attr/colorOutline"
+                android:textSize="11sp"
+                tools:text="/ipa/" />
         </LinearLayout>
 
-        <!-- Nút phát âm -->
         <ImageButton
             android:id="@+id/btnPlayCard"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:layout_marginStart="6dp"
             android:background="@drawable/bg_tts_button"
+            android:contentDescription="@string/card_listen_content_desc"
             android:src="@android:drawable/ic_btn_speak_now"
-            app:tint="#A78BFA"
-            android:contentDescription="Nghe phát âm"
-            android:layout_marginStart="6dp" />
+            app:tint="?attr/colorPrimary" />
 
-        <!-- Badge trạng thái + chevron -->
-        <LinearLayout
-            android:layout_width="60dp"
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="6dp"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:id="@+id/tvStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="3dp"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                android:text="learned"
-                android:background="@drawable/bg_status_badge"
-                android:layout_marginBottom="6dp" />
-        </LinearLayout>
+            android:background="@drawable/bg_status_badge"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="3dp"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            tools:text="NEW" />
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

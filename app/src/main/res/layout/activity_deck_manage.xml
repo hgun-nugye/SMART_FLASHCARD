@@ -15,8 +15,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:title="Quản lý bộ thẻ"
-            app:navigationIcon="@android:drawable/ic_menu_close_clear_cancel"
+            android:title="@string/deck_manage_title"
+            app:layout_anchor="@+id/appBarLayout"
+            app:layout_anchorGravity="center"
+            app:navigationIcon="@drawable/ic_close"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -35,10 +37,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        android:contentDescription="Tạo bộ mới"
+        android:contentDescription="@string/deck_fab_new"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#6200EE"
-        app:tint="#FFFFFF"
+        app:backgroundTint="?attr/colorPrimary"
+        app:tint="?attr/colorOnPrimary"
         tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
