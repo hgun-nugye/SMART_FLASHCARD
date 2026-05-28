@@ -236,7 +236,7 @@ public class LoginOtpActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (!task.isSuccessful()) {
                         setLoading(false);
-                        tilOtp.setError("OTP không đúng");
+                        tilOtp.setError(getString(R.string.otp_wrong));
                         edotp.requestFocus();
                         return;
                     }
@@ -244,7 +244,7 @@ public class LoginOtpActivity extends AppCompatActivity {
                     FirebaseUser user = task.getResult() != null ? task.getResult().getUser() : null;
                     if (user == null) {
                         setLoading(false);
-                        Toast.makeText(this, "Lỗi phiên đăng nhập, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.otp_session_error, Toast.LENGTH_SHORT).show();
                         return;
                     }
 

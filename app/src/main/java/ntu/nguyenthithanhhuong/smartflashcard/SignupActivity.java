@@ -133,7 +133,7 @@ public class SignupActivity extends AppCompatActivity {
                         setLoading(false);
                         Toast.makeText(
                                 this,
-                                getString(R.string.signup_error_auth, "Không lấy được phiên đăng nhập"),
+                                getString(R.string.signup_error_auth, getString(R.string.signup_error_no_session)),
                                 Toast.LENGTH_SHORT
                         ).show();
                         goToLogin(finalEmail);
@@ -160,7 +160,9 @@ public class SignupActivity extends AppCompatActivity {
                             setLoading(false);
                             Toast.makeText(
                                     SignupActivity.this,
-                                    getString(R.string.signup_error_profile, message),
+                                    getString(R.string.signup_error_profile,
+                                            UserProfileHelper.resolveErrorMessage(
+                                                    SignupActivity.this, message)),
                                     Toast.LENGTH_SHORT
                             ).show();
                             goToMain();

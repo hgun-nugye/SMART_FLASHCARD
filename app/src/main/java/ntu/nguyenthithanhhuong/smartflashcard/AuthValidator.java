@@ -40,7 +40,6 @@ public final class AuthValidator {
     private AuthValidator() {
     }
 
-    //    chuẩn hóa email
     public static String normalizeEmail(String rawEmail) {
         if (rawEmail == null) {
             return "";
@@ -48,7 +47,6 @@ public final class AuthValidator {
         return rawEmail.trim().toLowerCase();
     }
 
-    //Kiểm tra email: không rỗng, không khoảng trắng, đúng định dạng, độ dài hợp lệ.
     public static Result validateEmail(String rawEmail) {
         if (rawEmail == null || rawEmail.trim().isEmpty()) {
             return Result.error(R.string.validation_email_empty);
@@ -85,7 +83,6 @@ public final class AuthValidator {
         return Result.ok();
     }
 
-    //Mật khẩu khi đăng ký / OTP: 8–128 ký tự, có hoa + thường + số, không khoảng trắng.
     public static Result validatePassword(String password) {
         if (password == null || password.isEmpty()) {
             return Result.error(R.string.validation_password_empty);

@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                                             public void onReady(User user) {
                                                 if (user != null && user.fullName != null) {
                                                     Toast.makeText(LoginActivity.this,
-                                                            "Chào mừng " + user.fullName + " trở lại!",
+                                                            getString(R.string.login_welcome_back, user.fullName),
                                                             Toast.LENGTH_SHORT).show();
                                                 }
                                                 goToMain();
@@ -100,19 +100,21 @@ public class LoginActivity extends AppCompatActivity {
                                             @Override
                                             public void onError(String message) {
                                                 Toast.makeText(LoginActivity.this,
-                                                        "Đăng nhập thành công nhưng lỗi hồ sơ: " + message,
+                                                        getString(R.string.signup_error_profile,
+                                                                UserProfileHelper.resolveErrorMessage(
+                                                                        LoginActivity.this, message)),
                                                         Toast.LENGTH_SHORT).show();
                                                 goToMain();
                                             }
                                         });
                                     } else {
                                         Toast.makeText(LoginActivity.this,
-                                                "Lỗi phiên đăng nhập, vui lòng thử lại!",
+                                                R.string.login_session_error,
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(LoginActivity.this, "Sai Tài Khoản Hoặc Mật khẩu!",
+                                    Toast.makeText(LoginActivity.this, R.string.login_failed,
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
