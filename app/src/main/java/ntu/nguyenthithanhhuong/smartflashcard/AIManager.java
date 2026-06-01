@@ -1,5 +1,6 @@
 package ntu.nguyenthithanhhuong.smartflashcard;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import ntu.nguyenthithanhhuong.smartflashcard.Model.WordMeaning;
+import ntu.nguyenthithanhhuong.smartflashcard.model.WordMeaning;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -23,7 +24,6 @@ import okhttp3.Response;
 
 public class AIManager {
     private static final String TAG = "GroqManager";
-    //    private static final String ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
     private static final String ENDPOINT =
             "https://openrouter.ai/api/v1/chat/completions";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -47,6 +47,7 @@ public class AIManager {
 
     private final OkHttpClient client;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final Context appContext;
 
     public interface AiCallback {
         void onSuccess(List<WordMeaning> meanings);
@@ -54,7 +55,8 @@ public class AIManager {
         void onError(String error);
     }
 
-    public AIManager() {
+    public AIManager(Context context) {
+        this.appContext = context.getApplicationContext();
         this.client = new OkHttpClient.Builder()
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(40, TimeUnit.SECONDS)
@@ -67,13 +69,13 @@ public class AIManager {
     public void generateCardContent(String word, AiCallback callback) {
         String apiKey = BuildConfig.OPENROUTER_API_KEY;
         if (apiKey == null || apiKey.trim().isEmpty()) {
-            sendError(callback, "Thiếu OPENROUTER_API_KEY. Hãy cấu hình trong local.properties/gradle.properties.");
+            sendError(callback, appContext.getString(R.string.ai_missing_key));
             return;
         }
 
         String safeWord = (word == null) ? "" : word.trim();
         if (safeWord.isEmpty()) {
-            sendError(callback, "Từ vựng trống.");
+            sendError(callback, appContext.getString(R.string.ai_empty_word));
             return;
         }
 
@@ -81,7 +83,9 @@ public class AIManager {
         try {
             generateWithModelIndex(safeWord, 0, callback);
         } catch (Exception e) {
-            sendError(callback, e.getMessage() == null ? "Lỗi tạo request." : e.getMessage());
+            sendError(callback, e.getMessage() == null
+                    ? appContext.getString(R.string.ai_request_error)
+                    : e.getMessage());
         }
     }
 
@@ -135,7 +139,9 @@ public class AIManager {
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    sendError(callback, e.getMessage() == null ? "Lỗi mạng." : e.getMessage());
+                    sendError(callback, e.getMessage() == null
+                            ? appContext.getString(R.string.ai_network_error)
+                            : e.getMessage());
                 }
 
                 @Override
@@ -160,15 +166,13 @@ public class AIManager {
                             }
                         }
 
-                        sendError(callback,
-                                "AI không trả dữ liệu.");
+                        sendError(callback, appContext.getString(R.string.ai_no_data));
 
                         return;
                     }
 
                     if (!response.isSuccessful()) {
                         String msg = parseApiErrorMessage(raw);
-                        // If model is deprecated/dismissed, try next fallback.
                         if (response.code() == 400 && modelIndex < MODEL_FALLBACKS.length - 1) {
                             String lower = msg == null ? "" : msg.toLowerCase();
                             if (lower.contains("model") && (lower.contains("dismiss") || lower.contains("deprecated") || lower.contains("not found"))) {
@@ -176,7 +180,6 @@ public class AIManager {
                                     generateWithModelIndex(safeWord, modelIndex + 1, callback);
                                     return;
                                 } catch (Exception ignored) {
-                                    // fall through to error
                                 }
                             }
                         }
@@ -188,14 +191,16 @@ public class AIManager {
                         JSONObject obj = new JSONObject(raw);
                         if (obj.has("error")) {
                             JSONObject err = obj.optJSONObject("error");
-                            String msg = err != null ? err.optString("message", "Lỗi không xác định từ API") : "Lỗi không xác định từ API";
+                            String msg = err != null
+                                    ? err.optString("message", appContext.getString(R.string.ai_api_error))
+                                    : appContext.getString(R.string.ai_api_error);
                             sendError(callback, msg);
                             return;
                         }
 
                         JSONArray choices = obj.optJSONArray("choices");
                         if (choices == null || choices.length() == 0) {
-                            sendError(callback, "Server không trả về kết quả (choices).");
+                            sendError(callback, appContext.getString(R.string.ai_no_choices));
                             return;
                         }
 
@@ -207,8 +212,7 @@ public class AIManager {
 
                         if (!cleaned.startsWith("{")) {
 
-                            sendError(callback,
-                                    "AI trả dữ liệu lỗi.");
+                            sendError(callback, appContext.getString(R.string.ai_bad_response));
 
                             return;
                         }
@@ -247,7 +251,7 @@ public class AIManager {
                         mainHandler.post(() ->
                                 callback.onSuccess(meanings));
                     } catch (Exception ex) {
-                        sendError(callback, "Lỗi phân tích: " + ex.getMessage());
+                        sendError(callback, appContext.getString(R.string.ai_parse_error, ex.getMessage()));
                     }
                 }
             });
@@ -280,7 +284,6 @@ public class AIManager {
                 if (err != null) return err.optString("message", "");
             }
         } catch (Exception ignored) {
-            // ignore
         }
         return "";
     }

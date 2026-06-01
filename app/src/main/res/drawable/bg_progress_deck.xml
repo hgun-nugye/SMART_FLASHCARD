@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
-        <shape android:shape="rectangle">
-            <solid android:color="#F3F4F6" />
-            <corners android:radius="99dp" />
+        <shape>
+            <solid android:color="@color/md_theme_light_surfaceVariant" />
+            <corners android:radius="@dimen/kid_corner_chip" />
         </shape>
     </item>
     <item android:id="@android:id/progress">
         <clip>
-            <shape android:shape="rectangle">
-                <solid android:color="#7C3AED" />
-                <corners android:radius="99dp" />
+            <shape>
+                <solid android:color="@color/md_theme_light_primary" />
+                <corners android:radius="@dimen/kid_corner_chip" />
             </shape>
         </clip>
     </item>

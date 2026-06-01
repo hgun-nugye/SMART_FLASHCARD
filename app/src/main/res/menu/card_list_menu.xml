@@ -5,18 +5,13 @@
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
-        android:title="Tìm kiếm"
+        android:title="@string/card_list_menu_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom"
         android:theme="@style/CustomSearchViewStyle" />
 
     <item
-        android:id="@+id/action_review_cards"
-        android:title="Ôn tập"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_manage_cards"
-        android:title="Quản lý thẻ"
+        android:title="@string/card_list_menu_manage"
         app:showAsAction="never" />
 </menu>

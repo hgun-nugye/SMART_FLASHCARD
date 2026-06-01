@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.SmartFlashCard" parent="" />
+
+    <style name="TextAppearance.SmartFlashCard.Hero" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
+    </style>
+
+    <style name="TextAppearance.SmartFlashCard.Section" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.SmartFlashCard.CardTitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.SmartFlashCard.StatValue" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.SmartFlashCard.StatLabel" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textColor">?attr/colorOutline</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartFlashCard.Small" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerSize">@dimen/kid_corner_small</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartFlashCard.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerSize">@dimen/kid_corner_button</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartFlashCard.Large" parent="ShapeAppearance.Material3.Corner.Large">
+        <item name="cornerSize">@dimen/kid_corner_card</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="titleTextColor">?attr/colorOnPrimary</item>
+        <item name="subtitleTextColor">?attr/colorOnPrimary</item>
+        <item name="navigationIconTint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.Toolbar.Study" parent="Widget.SmartFlashCard.Toolbar">
+        <item name="android:background">?attr/colorTertiary</item>
+        <item name="titleTextColor">?attr/colorOnTertiary</item>
+        <item name="subtitleTextColor">?attr/colorOnTertiary</item>
+        <item name="navigationIconTint">?attr/colorOnTertiary</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">@dimen/kid_corner_card</item>
+        <item name="cardElevation">@dimen/kid_elevation_card</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.Card.Hero" parent="Widget.SmartFlashCard.Card">
+        <item name="cardCornerRadius">@dimen/kid_corner_hero</item>
+        <item name="cardBackgroundColor">?attr/colorPrimaryContainer</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.Button" parent="Widget.Material3.Button">
+        <item name="cornerRadius">@dimen/kid_corner_button</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.Button.Secondary" parent="Widget.Material3.Button">
+        <item name="cornerRadius">@dimen/kid_corner_button</item>
+        <item name="backgroundTint">?attr/colorSecondary</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.Button.Study" parent="Widget.Material3.Button">
+        <item name="cornerRadius">@dimen/kid_corner_button</item>
+        <item name="backgroundTint">?attr/colorTertiary</item>
+        <item name="android:textColor">?attr/colorOnTertiary</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="cornerRadius">@dimen/kid_corner_button</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.Fab" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="backgroundTint">?attr/colorSecondary</item>
+        <item name="tint">?attr/colorOnSecondary</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartFlashCard.Medium</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.Fab.Primary" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="tint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">@dimen/kid_corner_small</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/kid_corner_small</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/kid_corner_small</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/kid_corner_small</item>
+        <item name="boxStrokeColor">?attr/colorOutline</item>
+        <item name="hintTextColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.StatBox" parent="">
+        <item name="android:background">@drawable/bg_field_card</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="Widget.SmartFlashCard.HeaderBanner" parent="">
+        <item name="android:background">@drawable/bg_header_kid</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+</resources>

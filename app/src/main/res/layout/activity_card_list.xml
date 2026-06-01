@@ -140,7 +140,7 @@
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
                 android:paddingHorizontal="12dp"
-                tools:listitem="@layout/item_flashcard" />
+                tools:listitem="@layout/item_card" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

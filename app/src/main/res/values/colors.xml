@@ -1,58 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#7C3AED</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="status_new_text">#0F6E56</color>
-    <color name="status_review_text">#854F0B</color>
-    <color name="status_learned_text">#534AB7</color>
-    <color name="primary_dark">#6200EE</color>
-    <color name="secondary">#03DAC6</color>
-    <color name="background">#F5F5F5</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="error">#B00020</color>
-    <color name="onPrimary">#FFFFFF</color>
-    <color name="onSecondary">#000000</color>
-    <color name="onBackground">#000000</color>
-    <color name="onSurface">#000000</color>
-    <color name="onError">#FFFFFF</color>
 
-    <!-- M3 Light -->
-    <color name="md_theme_primary">#6750A4</color>
-    <color name="md_theme_onPrimary">#FFFFFF</color>
-    <color name="md_theme_primaryContainer">#EADDFF</color>
-    <color name="md_theme_onPrimaryContainer">#21005D</color>
+    <color name="md_theme_light_primary">#FF9800</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#FFE0B2</color>
+    <color name="md_theme_light_onPrimaryContainer">#5D3200</color>
 
-    <color name="md_theme_secondary">#625B71</color>
-    <color name="md_theme_onSecondary">#FFFFFF</color>
-    <color name="md_theme_secondaryContainer">#E8DEF8</color>
-    <color name="md_theme_onSecondaryContainer">#1D192B</color>
+    <color name="md_theme_light_secondary">#00BCD4</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#B2EBF2</color>
+    <color name="md_theme_light_onSecondaryContainer">#006064</color>
 
-    <color name="md_theme_tertiary">#7D5260</color>
-    <color name="md_theme_onTertiary">#FFFFFF</color>
-    <color name="md_theme_tertiaryContainer">#D5F0E0</color>
-    <color name="md_theme_onTertiaryContainer">#002114</color>
+    <color name="md_theme_light_tertiary">#66BB6A</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#C8E6C9</color>
+    <color name="md_theme_light_onTertiaryContainer">#1B5E20</color>
 
-    <color name="md_theme_error">#B3261E</color>
-    <color name="md_theme_onError">#FFFFFF</color>
-    <color name="md_theme_errorContainer">#FFDAD6</color>
-    <color name="md_theme_onErrorContainer">#410002</color>
+    <color name="md_theme_light_error">#E53935</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#FFCDD2</color>
+    <color name="md_theme_light_onErrorContainer">#B71C1C</color>
 
-    <color name="md_theme_background">#FFFBFE</color>
-    <color name="md_theme_onBackground">#1C1B1F</color>
-    <color name="md_theme_surface">#F6F0FA</color>
-    <color name="md_theme_onSurface">#1C1B1F</color>
-    <color name="md_theme_surfaceVariant">#E7E0EC</color>
-    <color name="md_theme_onSurfaceVariant">#49454F</color>
-    <color name="md_theme_surfaceTint">#6750A4</color>
+    <color name="md_theme_light_background">#FFF8E1</color>
+    <color name="md_theme_light_onBackground">#3E2723</color>
 
-    <color name="md_theme_outline">#79747E</color>
-    <color name="md_theme_outlineVariant">#CAC4D0</color>
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#3E2723</color>
+    <color name="md_theme_light_surfaceVariant">#FFF3E0</color>
+    <color name="md_theme_light_onSurfaceVariant">#6D4C41</color>
+    <color name="md_theme_light_outline">#BCAAA4</color>
 
-    <color name="md_theme_inverseSurface">#313033</color>
-    <color name="md_theme_inverseOnSurface">#F4EFF4</color>
-    <color name="md_theme_inversePrimary">#D0BCFF</color>
+    <color name="kid_stat_decks">#FF9800</color>
+    <color name="kid_stat_due">#F4511E</color>
+    <color name="kid_stat_learned">#43A047</color>
+    <color name="kid_stat_new">#00897B</color>
 
-    <color name="md_theme_scrim">#000000</color>
-    <color name="md_theme_shadow">#000000</color>
+    <color name="status_new_text">@color/kid_stat_new</color>
+    <color name="status_review_text">@color/kid_stat_due</color>
+    <color name="status_learned_text">@color/kid_stat_learned</color>
+
+    <color name="kid_badge_new_bg">#E0F2F1</color>
+    <color name="kid_badge_due_bg">#FFEBEE</color>
+    <color name="kid_badge_learned_bg">#E8F5E9</color>
+    <color name="kid_chip_bg">#FFE0B2</color>
+
+    <color name="kid_icon_tint">@color/md_theme_light_primary</color>
+    <color name="kid_divider">#FFE0B2</color>
+    <color name="kid_hint_on_primary">#B3FFFFFF</color>
 </resources>

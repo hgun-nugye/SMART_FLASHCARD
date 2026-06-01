@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#F5F0FF" />
-            <corners android:radius="8dp" />
+        <shape>
+            <solid android:color="@color/md_theme_light_secondaryContainer" />
+            <corners android:radius="@dimen/kid_corner_small" />
         </shape>
     </item>
-    <item android:right="999dp">
-        <shape android:shape="rectangle">
-            <solid android:color="#7C3AED" />
-            <corners android:topLeftRadius="8dp" android:bottomLeftRadius="8dp" />
+    <item
+        android:bottom="0dp"
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp">
+        <shape>
+            <stroke
+                android:width="2dp"
+                android:color="@color/md_theme_light_secondary" />
+            <corners android:radius="@dimen/kid_corner_small" />
         </shape>
     </item>
 </layer-list>

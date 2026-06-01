@@ -5,7 +5,7 @@
     android:id="@+id/signup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F9FC"
+    android:background="?android:attr/colorBackground"
     android:fillViewport="true">
 
     <LinearLayout
@@ -29,7 +29,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
             android:text="@string/signup_title"
-            android:textColor="#222222"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -40,12 +40,12 @@
             android:layout_marginBottom="24dp"
             android:gravity="center"
             android:text="@string/signup_subtitle"
-            android:textColor="#6B7280"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilFullName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.SmartFlashCard.TextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -62,7 +62,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilEmail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.SmartFlashCard.TextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -79,7 +79,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.SmartFlashCard.TextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -99,7 +99,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilConfirmPassword"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.SmartFlashCard.TextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -131,7 +131,7 @@
             android:layout_height="56dp"
             android:text="@string/signup_button"
             android:textAllCaps="false"
-            app:backgroundTint="#2196F3"
+            style="@style/Widget.SmartFlashCard.Button"
             app:cornerRadius="12dp" />
 
         <LinearLayout
@@ -146,7 +146,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/signup_has_account"
-                android:textColor="#374151" />
+                android:textColor="?attr/colorOnSurfaceVariant" />
 
             <TextView
                 android:id="@+id/txtLogin"
@@ -154,9 +154,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="@string/signup_login_link"
-                android:textColor="#4A90E2"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
+
