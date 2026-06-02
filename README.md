@@ -1,10 +1,18 @@
 **ỨNG DỤNG SMART_FLASHCARD**
 
-1. Ứng dụng sử dụng API AI của OpenRouter để truy cập vào các model: DeepSeek Chat V3, Qwen3-32B và Gemini 2.5 Flash để tự động sinh nghĩa tiếng Việt, ipa và ví dụ minh họa.
-   
-2. Ứng dụng còn cho phép người dùng ôn tập các thẻ đã lưu.
-   
-3. Sử dụng Firebase Firestore để lưu các thẻ và Firebase Authentication để đăng nhập/đăng ký tài khoản người dùng.
+**Giới thiệu dự án**
+
+  Smart Flashcard là một ứng dụng di động chạy trên nền tảng Android, được thiết kế nhằm giúp người học tiếng Anh ghi nhớ từ vựng một cách hiệu quả và tự động hóa. Khác với các ứng dụng flashcard truyền thống yêu cầu người dùng phải tự nhập liệu thủ công, Smart Flashcard ứng dụng sức mạnh của AI để hỗ trợ phân tích và tạo nội dung học tập một cách nhanh chóng và chính xác.
+
+**Các tính năng cốt lõi**
+1. Cho phép người dùng tạo, chỉnh sửa và tổ chức các bộ từ vựng theo từng chủ đề riêng biệt.
+
+2. Ứng dụng tích hợp API của OpenRouter để truy cập các mô hình ngôn ngữ lớn như DeepSeek Chat V3, Qwen3-32B và Gemini 2.5 Flash nhằm tự động sinh nghĩa tiếng Việt, IPA và ví dụ cho flashcard từ vựng tiếng Anh. 
+
+3. Sử dụng Firebase Firestore để đồng bộ hóa dữ liệu theo thời gian thực. Người dùng không lo mất dữ liệu khi thay đổi thiết bị.
+
+4. Hỗ trợ việc ôn tập qua việc lật thẻ, hiển thị thông tin chi tiết để tăng khả năng ghi nhớ dài hạn.
+
 
 **Một số hình ảnh của ứng dụng:**
 
@@ -19,24 +27,29 @@
 
 **2. Giao diện bộ thẻ (deck):**
 
-<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/188a7da6-5ff0-4e70-acf7-5ffb21a53aa8" />
-<img width="189" height="421" alt="image" src="https://github.com/user-attachments/assets/d67efb4b-b0d7-4315-898a-0af5126e1169" />
-<img width="189" height="421" alt="image" src="https://github.com/user-attachments/assets/307ded8e-a091-415e-b721-0b22361037c8" />
-<img width="189" height="421" alt="image" src="https://github.com/user-attachments/assets/8a478443-f595-4443-b48e-e2e3c82d4737" />
-<img width="189" height="421" alt="image" src="https://github.com/user-attachments/assets/f02cc72d-eef2-4e40-85aa-63d797e68b79" />
-<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/f37f8d72-8409-4f24-a666-b18862723908" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/68ed92fc-4165-4cb5-b5e6-8270e4e79835" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/e95df6d3-64e7-4167-96d5-d89cb8f69e17" />
+<img width="189" height="421" alt="image" src="https://github.com/user-attachments/assets/67080041-9e34-4efe-b0f6-92b86117a933" />
+<img width="189" height="421" alt="image" src="https://github.com/user-attachments/assets/dc63eba0-e977-4380-a018-ef87168183fa" />
+
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/55191a66-d2ee-4d24-9ca4-697adca85196" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/f9ac8512-3f7f-41ad-99fe-972e132aa86f" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/c7ae39db-ca2f-4410-ab07-4823179c8676" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/8bbe1d48-f91b-44d2-9b9b-5db8d14e3bfd" />
+
 
 **3. Giao diện ôn tập:**
 
-<img width="189" height="421" alt="image" src="https://github.com/user-attachments/assets/78175f6c-295f-46b0-ac47-ed59c0caedd4" />
-<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/0dadcc1b-cbd0-4888-8aa6-fd4a0b4fa463" />
-<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/dc488cf8-e193-4eba-b2ce-20d4ddf5f272" />
-<img width="189" height="421" alt="image" src="https://github.com/user-attachments/assets/6201b73f-0488-4868-95a2-116c0cc665f0" />
-
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/1e03364f-9a66-44a4-8109-d0255f1e32dc" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/c3538d0b-46e0-479c-aa95-cfd456611a69" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/caced2e4-2627-4870-ab12-2861c44bedd9" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/1be21bcf-bd45-452e-bb87-83cea51609c3" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/3cf3de7b-d13d-43c9-b673-546ff0c60332" />
 
 **4. Giao diện tài khoản người dùng:**
 
-<img width="189" height="421" alt="image" src="https://github.com/user-attachments/assets/4b769da1-3731-4136-9e32-b1bc4bed9c30" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/66fe5b1a-aab5-4177-98c4-6451bccab244" />
+
 
 
 
