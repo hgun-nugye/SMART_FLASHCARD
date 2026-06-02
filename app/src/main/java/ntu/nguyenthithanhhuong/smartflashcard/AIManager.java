@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import ntu.nguyenthithanhhuong.smartflashcard.model.AiWordResult;
 import ntu.nguyenthithanhhuong.smartflashcard.model.WordMeaning;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -50,7 +51,7 @@ public class AIManager {
     private final Context appContext;
 
     public interface AiCallback {
-        void onSuccess(List<WordMeaning> meanings);
+        void onSuccess(AiWordResult result);
 
         void onError(String error);
     }
@@ -94,21 +95,21 @@ public class AIManager {
         String model = MODEL_FALLBACKS[Math.min(Math.max(modelIndex, 0), MODEL_FALLBACKS.length - 1)];
 
         String prompt =
-                "You are an English-Vietnamese dictionary AI.\n" +
-                        "Analyze the English word: '" + safeWord + "'.\n\n" +
+                "You are an English dictionary AI.\n" +
+                        "Analyze this English word: '" + safeWord + "'.\n\n" +
 
                         "Rules:\n" +
+                        "- If the word is misspelled, detect and correct it.\n" +
+                        "- Return the corrected word.\n" +
+                        "- If the word is already correct, correctedWord must equal original word.\n" +
                         "- Return up to 3 common meanings.\n" +
-                        "- Each meaning must contain:\n" +
-                        "  - Vietnamese meaning\n" +
-                        "  - correct IPA for that meaning\n" +
-                        "  - simple English example\n" +
-                        "- Return ONLY valid JSON.\n" +
-                        "- No markdown.\n" +
-                        "- No explanation.\n\n" +
+                        "- Each meaning must contain Vietnamese meaning, IPA and example.\n" +
+                        "- Return ONLY valid JSON.\n\n" +
 
-                        "Format exactly:\n" +
+                        "Format:\n" +
                         "{\n" +
+                        "\"correctedWord\":\"\",\n" +
+                        "\"isCorrect\":true,\n" +
                         "\"meanings\":[\n" +
                         "{\n" +
                         "\"vi\":\"\",\n" +
@@ -219,8 +220,24 @@ public class AIManager {
 
                         JSONObject contentObj = new JSONObject(cleaned);
 
+                        String correctedWord =
+                                contentObj.optString(
+                                        "correctedWord",
+                                        safeWord
+                                );
+
+                        boolean isCorrect =
+                                contentObj.optBoolean(
+                                        "isCorrect",
+                                        true
+                                );
+
                         JSONArray meaningsArray =
-                                contentObj.getJSONArray("meanings");
+                                contentObj.optJSONArray("meanings");
+
+                        if (meaningsArray == null) {
+                            meaningsArray = new JSONArray();
+                        }
 
                         List<WordMeaning> meanings =
                                 new ArrayList<>();
@@ -248,8 +265,17 @@ public class AIManager {
                             );
                         }
 
+                        AiWordResult result =
+                                new AiWordResult(
+                                        correctedWord,
+                                        isCorrect,
+                                        meanings
+                                );
+
                         mainHandler.post(() ->
-                                callback.onSuccess(meanings));
+                                callback.onSuccess(result)
+                        );
+
                     } catch (Exception ex) {
                         sendError(callback, appContext.getString(R.string.ai_parse_error, ex.getMessage()));
                     }

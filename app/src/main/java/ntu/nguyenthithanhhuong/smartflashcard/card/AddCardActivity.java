@@ -11,7 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,6 +27,7 @@ import java.util.Map;
 import ntu.nguyenthithanhhuong.smartflashcard.AIManager;
 import ntu.nguyenthithanhhuong.smartflashcard.EdgeToEdgeHelper;
 import ntu.nguyenthithanhhuong.smartflashcard.R;
+import ntu.nguyenthithanhhuong.smartflashcard.model.AiWordResult;
 import ntu.nguyenthithanhhuong.smartflashcard.model.Flashcard;
 import ntu.nguyenthithanhhuong.smartflashcard.model.WordMeaning;
 
@@ -31,7 +35,7 @@ public class AddCardActivity extends BaseAppActivity {
     private EditText edtDeckName, edtFront, edtBack, edtIpa, edtExample, edtDescription;
     private Button btnAiGen, btnSave;
     private ProgressBar progressBar;
-    private AIManager groqManager;
+    private AIManager aiManager;
     private FirebaseFirestore db;
     private String currentDeckId;
     private boolean isCreateDeckMode;
@@ -62,7 +66,7 @@ public class AddCardActivity extends BaseAppActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        groqManager = new AIManager(this);
+        aiManager = new AIManager(this);
 
         initViews();
 
@@ -133,22 +137,47 @@ public class AddCardActivity extends BaseAppActivity {
 
             btnAiGen.setEnabled(false);
 
-            groqManager.generateCardContent(
+            aiManager.generateCardContent(
                     word,
                     new AIManager.AiCallback() {
 
                         @Override
-                        public void onSuccess(
-                                List<WordMeaning> meanings
-                        ) {
+                        public void onSuccess(AiWordResult result) {
 
                             progressBar.setVisibility(View.GONE);
 
                             btnAiGen.setEnabled(true);
 
+                            if (!result.isCorrect &&
+                                    result.correctedWord != null &&
+                                    !result.correctedWord.equalsIgnoreCase(
+                                            edtFront.getText().toString().trim()
+                                    )) {
+
+                                new MaterialAlertDialogBuilder(AddCardActivity.this)
+                                        .setTitle("✏️ Correct Word")
+                                        .setMessage(
+                                                "Do you want to change the word to:\n\n\"" +
+                                                        result.correctedWord +
+                                                        "\" ?"
+                                        )
+                                        .setPositiveButton(
+                                                "Use",
+                                                (dialog, which) ->
+                                                        edtFront.setText(
+                                                                result.correctedWord
+                                                        )
+                                        )
+                                        .setNegativeButton(
+                                                "Cancel",
+                                                null
+                                        )
+                                        .show();
+                            }
+
                             aiMeanings.clear();
 
-                            aiMeanings.addAll(meanings);
+                            aiMeanings.addAll(result.meanings);
 
                             if (!aiMeanings.isEmpty()) {
 
@@ -171,14 +200,13 @@ public class AddCardActivity extends BaseAppActivity {
                             if (isTtsReady && tts != null) {
 
                                 tts.speak(
-                                        word,
-                                        android.speech.tts.TextToSpeech.QUEUE_FLUSH,
+                                        edtFront.getText().toString(),
+                                        TextToSpeech.QUEUE_FLUSH,
                                         null,
                                         null
                                 );
                             }
                         }
-
                         @Override
                         public void onError(String error) {
 
@@ -353,28 +381,50 @@ public class AddCardActivity extends BaseAppActivity {
 
         if (aiMeanings.isEmpty()) return;
 
-        String[] items = new String[aiMeanings.size()];
+        View view = getLayoutInflater()
+                .inflate(
+                        R.layout.dialog_meanings,
+                        null
+                );
 
-        for (int i = 0; i < aiMeanings.size(); i++) {
+        RecyclerView recyclerView =
+                view.findViewById(
+                        R.id.recyclerMeanings
+                );
 
-            WordMeaning m = aiMeanings.get(i);
+        AlertDialog dialog =
+                new MaterialAlertDialogBuilder(this)
+                        .setTitle("📚 Select Meaning")
+                        .setView(view)
+                        .create();
 
-            items[i] =
-                    m.vi + " • " + m.ipa;
-        }
+        recyclerView.setLayoutManager(
+                new LinearLayoutManager(this)
+        );
 
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.add_card_pick_meaning)
-                .setItems(items, (dialog, which) -> {
+        recyclerView.setAdapter(
+                new MeaningAdapter(
+                        aiMeanings,
+                        meaning -> {
 
-                    WordMeaning selected =
-                            aiMeanings.get(which);
+                            edtBack.setText(
+                                    meaning.vi
+                            );
 
-                    edtBack.setText(selected.vi);
-                    edtIpa.setText(selected.ipa);
-                    edtExample.setText(selected.example);
-                })
-                .show();
+                            edtIpa.setText(
+                                    meaning.ipa
+                            );
+
+                            edtExample.setText(
+                                    meaning.example
+                            );
+
+                            dialog.dismiss();
+                        }
+                )
+        );
+
+        dialog.show();
     }
 
     @Override
