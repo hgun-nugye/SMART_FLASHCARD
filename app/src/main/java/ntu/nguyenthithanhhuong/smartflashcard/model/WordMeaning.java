@@ -1,7 +1,6 @@
 package ntu.nguyenthithanhhuong.smartflashcard.model;
 
 public class WordMeaning {
-
     public String vi;
     public String ipa;
     public String example;

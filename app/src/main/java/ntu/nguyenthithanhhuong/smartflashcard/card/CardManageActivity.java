@@ -21,7 +21,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.R;
 import ntu.nguyenthithanhhuong.smartflashcard.model.Flashcard;
 
 public class CardManageActivity extends BaseAppActivity {
-
     private RecyclerView rvManageCards;
     private SearchView searchViewCard;
     private FirebaseFirestore db;

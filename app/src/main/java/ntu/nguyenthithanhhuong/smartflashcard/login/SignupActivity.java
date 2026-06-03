@@ -24,10 +24,9 @@ import ntu.nguyenthithanhhuong.smartflashcard.model.User;
 import ntu.nguyenthithanhhuong.smartflashcard.R;
 
 public class SignupActivity extends AppCompatActivity {
-
     private TextInputLayout tilFullName, tilEmail, tilPassword, tilConfirmPassword;
-    private TextInputEditText edFullName, edemail, edpassword, edrppassword;
-    private MaterialButton btnsignup;
+    private TextInputEditText edFullName, edEmail, edPassword, edConfirmPassword;
+    private MaterialButton btnSignup;
     private TextView txtLogin;
     private ProgressBar progressSignup;
     private ImageView back;
@@ -60,10 +59,10 @@ public class SignupActivity extends AppCompatActivity {
         tilPassword = findViewById(R.id.tilPassword);
         tilConfirmPassword = findViewById(R.id.tilConfirmPassword);
         edFullName = findViewById(R.id.edFullName);
-        edemail = findViewById(R.id.edemail);
-        edpassword = findViewById(R.id.edpassword);
-        edrppassword = findViewById(R.id.edrppassword);
-        btnsignup = findViewById(R.id.btnsignup);
+        edEmail = findViewById(R.id.edemail);
+        edPassword = findViewById(R.id.edpassword);
+        edConfirmPassword = findViewById(R.id.edrppassword);
+        btnSignup = findViewById(R.id.btnsignup);
         txtLogin = findViewById(R.id.txtLogin);
         progressSignup = findViewById(R.id.progressSignup);
     }
@@ -76,16 +75,16 @@ public class SignupActivity extends AppCompatActivity {
             finish();
         });
 
-        btnsignup.setOnClickListener(v -> attemptSignup());
+        btnSignup.setOnClickListener(v -> attemptSignup());
     }
 
     private void attemptSignup() {
         clearErrors();
 
         String fullName = textOf(edFullName);
-        String email = textOf(edemail);
-        String password = textOf(edpassword);
-        String confirmPassword = textOf(edrppassword);
+        String email = textOf(edEmail);
+        String password = textOf(edPassword);
+        String confirmPassword = textOf(edConfirmPassword);
 
         if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Toast.makeText(this, R.string.signup_error_empty, Toast.LENGTH_SHORT).show();
@@ -101,7 +100,7 @@ public class SignupActivity extends AppCompatActivity {
         AuthValidator.Result emailResult = AuthValidator.validateEmail(email);
         if (!emailResult.valid) {
             tilEmail.setError(getString(emailResult.messageResId));
-            edemail.requestFocus();
+            edEmail.requestFocus();
             return;
         }
         email = AuthValidator.normalizeEmail(email);
@@ -109,14 +108,14 @@ public class SignupActivity extends AppCompatActivity {
         AuthValidator.Result passwordResult = AuthValidator.validatePassword(password);
         if (!passwordResult.valid) {
             tilPassword.setError(getString(passwordResult.messageResId));
-            edpassword.requestFocus();
+            edPassword.requestFocus();
             return;
         }
 
         AuthValidator.Result matchResult = AuthValidator.validatePasswordMatch(password, confirmPassword);
         if (!matchResult.valid) {
             tilConfirmPassword.setError(getString(matchResult.messageResId));
-            edrppassword.requestFocus();
+            edConfirmPassword.requestFocus();
             return;
         }
 
@@ -182,24 +181,24 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void setLoading(boolean loading) {
-        btnsignup.setEnabled(!loading);
+        btnSignup.setEnabled(!loading);
         progressSignup.setVisibility(loading ? View.VISIBLE : View.GONE);
         if (loading) {
-            btnsignup.setText(R.string.signup_loading);
+            btnSignup.setText(R.string.signup_loading);
         } else {
-            btnsignup.setText(R.string.signup_button);
+            btnSignup.setText(R.string.signup_button);
         }
     }
 
     private void showAuthError(Exception exception) {
         if (exception instanceof FirebaseAuthUserCollisionException) {
             tilEmail.setError(getString(R.string.signup_error_email_used));
-            edemail.requestFocus();
+            edEmail.requestFocus();
             return;
         }
         if (exception instanceof FirebaseAuthWeakPasswordException) {
             tilPassword.setError(getString(R.string.signup_error_weak_password));
-            edpassword.requestFocus();
+            edPassword.requestFocus();
             return;
         }
 

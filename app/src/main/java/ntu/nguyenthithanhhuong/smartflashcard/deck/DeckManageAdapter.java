@@ -15,13 +15,11 @@ import java.util.List;
 import ntu.nguyenthithanhhuong.smartflashcard.R;
 import ntu.nguyenthithanhhuong.smartflashcard.model.Deck;
 
-public class DeckManageAdapter extends RecyclerView.Adapter<DeckManageAdapter.VH> {
-
+public class DeckManageAdapter extends RecyclerView.Adapter<DeckManageAdapter.ViewHolder> {
     public interface DeckActionListener {
         void onEdit(Deck deck);
         void onDelete(Deck deck);
     }
-
     private final List<Deck> decks;
     private final DeckActionListener listener;
 
@@ -32,13 +30,13 @@ public class DeckManageAdapter extends RecyclerView.Adapter<DeckManageAdapter.VH
 
     @NonNull
     @Override
-    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_deck_manage, parent, false);
-        return new VH(v);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VH h, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder h, int position) {
         Deck d = decks.get(position);
         h.txtName.setText(d.name);
         h.txtCount.setText(h.itemView.getContext().getString(R.string.deck_manage_card_count, d.cardCount));
@@ -52,11 +50,11 @@ public class DeckManageAdapter extends RecyclerView.Adapter<DeckManageAdapter.VH
         return decks.size();
     }
 
-    static class VH extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName, txtCount;
         MaterialButton btnEdit, btnDelete;
 
-        public VH(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.txtDeckName);
             txtCount = itemView.findViewById(R.id.txtCardCount);

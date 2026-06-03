@@ -7,11 +7,9 @@ import java.util.regex.Pattern;
 import ntu.nguyenthithanhhuong.smartflashcard.R;
 
 public final class AuthValidator {
-
     public static final int MIN_PASSWORD_LENGTH = 8;
     public static final int MAX_PASSWORD_LENGTH = 128;
     public static final int MAX_EMAIL_LENGTH = 254;
-
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
             "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$"
     );

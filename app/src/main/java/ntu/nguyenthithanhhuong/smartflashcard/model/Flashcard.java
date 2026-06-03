@@ -3,7 +3,6 @@ package ntu.nguyenthithanhhuong.smartflashcard.model;
 import java.io.Serializable;
 
 public class Flashcard implements Serializable {
-
     public String cardId;
     public String front;
     public String back;
@@ -26,7 +25,7 @@ public class Flashcard implements Serializable {
         this.example = example;
 
         this.repetitions = 0;
-        this.nextReview = System.currentTimeMillis();
+        this.nextReview = 0;
     }
 
     public enum Status {
@@ -39,13 +38,18 @@ public class Flashcard implements Serializable {
     private static final double MIN_EASE_FACTOR = 1.3;
 
     public Status getStatus() {
+        // Nếu nextReview bằng 0 và chưa lặp lại lần nào -> thẻ MỚI
+        if (nextReview == 0 && repetitions <= 0) {
+            return Status.NEW;
+        }
+
+        // Nếu đã đến hạn hoặc học sai bị reset (nextReview = now) -> ĐẾN HẠN
         long now = System.currentTimeMillis();
         if (nextReview <= now) {
             return Status.DUE;
         }
-        if (repetitions <= 0) {
-            return Status.NEW;
-        }
+
+        // Các trường hợp còn lại (đã học và chưa đến hạn) -> ĐÃ HỌC
         return Status.LEARNED;
     }
 

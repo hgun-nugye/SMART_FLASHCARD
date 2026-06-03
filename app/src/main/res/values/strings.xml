@@ -57,7 +57,8 @@
     <string name="signup_confirm_password">Confirm Password</string>
     <string name="signup_button">Sign Up</string>
     <string name="signup_has_account">Already have an account?</string>
-    <string name="signup_login_link">Sign up</string>
+    <string name="signup_link">Sign up</string>
+    <string name="login_link">Sign up</string>
     <string name="signup_loading">Creating account…</string>
     <string name="signup_success">Welcome, %1$s!</string>
     <string name="signup_error_empty">Please fill all fields</string>

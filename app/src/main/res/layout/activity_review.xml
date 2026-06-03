@@ -81,7 +81,8 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cvCard"
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_height="wrap_content"
+                android:minHeight="320dp"
                 android:layout_marginBottom="28dp"
                 app:cardElevation="2dp"
                 app:strokeWidth="0dp"

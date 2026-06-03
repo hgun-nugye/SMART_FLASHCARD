@@ -14,7 +14,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.R;
 import ntu.nguyenthithanhhuong.smartflashcard.model.Deck;
 
 public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.DeckViewHolder> {
-
     private List<Deck> deckList;
     private OnDeckClickListener listener;
 
@@ -32,18 +31,15 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.DeckViewHolder
     public DeckViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_deck, parent, false);
-
         return new DeckViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DeckViewHolder holder, int position) {
-
         Deck deck = deckList.get(position);
 
         holder.txtDeckName.setText(deck.name);
         holder.txtDeckDes.setText(deck.description);
-
         holder.txtCardCount.setText(deck.cardCount + "");
         holder.txtNewCount.setText(String.valueOf(deck.newCount));
         holder.txtDueCount.setText(String.valueOf(deck.dueCount));

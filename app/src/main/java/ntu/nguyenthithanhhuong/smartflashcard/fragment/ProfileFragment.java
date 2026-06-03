@@ -6,6 +6,7 @@ import static android.graphics.Typeface.create;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.model.User;
 import ntu.nguyenthithanhhuong.smartflashcard.login.ChoiceLoginActivity;
 
 public class ProfileFragment extends Fragment {
-
     private TextView tvProfileName;
     private TextView tvProfileEmail;
     private TextView tvUid;
@@ -61,7 +61,7 @@ public class ProfileFragment extends Fragment {
         tvCreatedAt = view.findViewById(R.id.tvCreatedAt);
 
         btnLogout = view.findViewById(R.id.btnLogout);
-        imgUser= view.findViewById(R.id.imgUser);
+        imgUser = view.findViewById(R.id.imgUser);
 
         btnLogout.setOnClickListener(v -> {
             mAuth.signOut();
@@ -161,14 +161,14 @@ public class ProfileFragment extends Fragment {
         return (words[0].substring(0, 1) + words[words.length - 1].substring(0, 1)).toUpperCase();
     }
 
-    // Vẽ nền hình tròn màu sắc pastel ngẫu nhiên theo mã băm của tên
+    // Vẽ nền hình tròn màu sắc pastel ngẫu nhiên theo tên
     private GradientDrawable createTextDrawable(String text) {
         int[] colors = {
-                android.graphics.Color.parseColor("#9B7BFF"), // Tím
-                android.graphics.Color.parseColor("#FF6B81"), // Hồng
-                android.graphics.Color.parseColor("#4ED164"), // Xanh lá
-                android.graphics.Color.parseColor("#FF9F43"), // Cam
-                android.graphics.Color.parseColor("#54a0ff")  // Xanh dương
+                Color.parseColor("#9B7BFF"), // Tím
+                Color.parseColor("#FF6B81"), // Hồng
+                Color.parseColor("#4ED164"), // Xanh lá
+                Color.parseColor("#FF9F43"), // Cam
+                Color.parseColor("#54a0ff")  // Xanh dương
         };
         int randomColor = colors[Math.abs(text.hashCode()) % colors.length];
 
@@ -183,7 +183,7 @@ public class ProfileFragment extends Fragment {
     // Kết hợp chữ viết trắng đè lên nền hình tròn
     private BitmapDrawable generateAvatarBitmap(String name) {
         String subName = getSubName(name);
-       GradientDrawable background = createTextDrawable(subName);
+        GradientDrawable background = createTextDrawable(subName);
 
         int size = (int) (100 * getResources().getDisplayMetrics().density);
         android.graphics.Bitmap bitmap = createBitmap(size, size, Bitmap.Config.ARGB_8888);

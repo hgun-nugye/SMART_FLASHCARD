@@ -72,23 +72,19 @@ public class AddCardActivity extends BaseAppActivity {
 
         setupModeUi();
 
-        tts = new android.speech.tts.TextToSpeech(
+        tts = new TextToSpeech(
                 this,
                 status -> {
 
-                    if (status ==
-                            android.speech.tts.TextToSpeech.SUCCESS) {
+                    if (status == TextToSpeech.SUCCESS) {
 
-                        int result =
-                                tts.setLanguage(
-                                        java.util.Locale.US
-                                );
+                        int result = tts.setLanguage(
+                                java.util.Locale.US
+                        );
 
-                        if (result ==
-                                android.speech.tts.TextToSpeech.LANG_MISSING_DATA
+                        if (result == TextToSpeech.LANG_MISSING_DATA
                                 ||
-                                result ==
-                                        android.speech.tts.TextToSpeech.LANG_NOT_SUPPORTED) {
+                                result == TextToSpeech.LANG_NOT_SUPPORTED) {
 
                             isTtsReady = false;
 
@@ -137,23 +133,16 @@ public class AddCardActivity extends BaseAppActivity {
 
             btnAiGen.setEnabled(false);
 
-            aiManager.generateCardContent(
-                    word,
+            aiManager.generateCardContent(word,
                     new AIManager.AiCallback() {
-
                         @Override
                         public void onSuccess(AiWordResult result) {
-
                             progressBar.setVisibility(View.GONE);
-
                             btnAiGen.setEnabled(true);
-
-                            if (!result.isCorrect &&
-                                    result.correctedWord != null &&
+                            if (!result.isCorrect && result.correctedWord != null &&
                                     !result.correctedWord.equalsIgnoreCase(
                                             edtFront.getText().toString().trim()
                                     )) {
-
                                 new MaterialAlertDialogBuilder(AddCardActivity.this)
                                         .setTitle("✏️ Correct Word")
                                         .setMessage(
@@ -176,29 +165,19 @@ public class AddCardActivity extends BaseAppActivity {
                             }
 
                             aiMeanings.clear();
-
                             aiMeanings.addAll(result.meanings);
-
                             if (!aiMeanings.isEmpty()) {
-
-                                WordMeaning first =
-                                        aiMeanings.get(0);
-
+                                WordMeaning first = aiMeanings.get(0);
                                 edtBack.setText(first.vi);
-
                                 edtIpa.setText(first.ipa);
-
                                 edtExample.setText(first.example);
                             }
-
                             txtMoreMeanings.setVisibility(
                                     aiMeanings.size() > 1
                                             ? View.VISIBLE
                                             : View.GONE
                             );
-
                             if (isTtsReady && tts != null) {
-
                                 tts.speak(
                                         edtFront.getText().toString(),
                                         TextToSpeech.QUEUE_FLUSH,
@@ -207,13 +186,11 @@ public class AddCardActivity extends BaseAppActivity {
                                 );
                             }
                         }
+
                         @Override
                         public void onError(String error) {
-
                             progressBar.setVisibility(View.GONE);
-
                             btnAiGen.setEnabled(true);
-
                             Toast.makeText(
                                     AddCardActivity.this,
                                     error,
@@ -227,7 +204,6 @@ public class AddCardActivity extends BaseAppActivity {
         btnSave.setOnClickListener(
                 v -> saveCardToFirestore()
         );
-
         txtMoreMeanings.setOnClickListener(
                 v -> showMeaningsDialog()
         );
@@ -265,9 +241,7 @@ public class AddCardActivity extends BaseAppActivity {
             String deckName = getIntent().getStringExtra("DECK_NAME");
             String deckDescription = getIntent().getStringExtra("DECK_DESCRIPTION");
             if (deckName != null && !deckName.trim().isEmpty()) {
-
                 edtDeckName.setText(deckName);
-
                 if (deckDescription != null &&
                         !deckDescription.trim().isEmpty()) {
 
@@ -277,13 +251,11 @@ public class AddCardActivity extends BaseAppActivity {
 
                     edtDescription.setText(R.string.add_card_no_description);
                 }
-
             } else {
 
                 edtDeckName.setText(R.string.add_card_current_deck);
                 edtDescription.setText(R.string.add_card_no_description);
             }
-
             btnSave.setText(R.string.add_card_save);
         }
     }
@@ -378,9 +350,7 @@ public class AddCardActivity extends BaseAppActivity {
     }
 
     private void showMeaningsDialog() {
-
         if (aiMeanings.isEmpty()) return;
-
         View view = getLayoutInflater()
                 .inflate(
                         R.layout.dialog_meanings,
@@ -423,7 +393,6 @@ public class AddCardActivity extends BaseAppActivity {
                         }
                 )
         );
-
         dialog.show();
     }
 

@@ -21,11 +21,9 @@ import ntu.nguyenthithanhhuong.smartflashcard.R;
 public class DeckEditActivity extends BaseAppActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-
     private TextInputEditText edtName, edtDescription;
     private MaterialButton btnSave, btnDelete;
     private ProgressBar progress;
-
     private String deckId;
 
     @Override
@@ -40,7 +38,6 @@ public class DeckEditActivity extends BaseAppActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
-
         deckId = getIntent().getStringExtra("DECK_ID");
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);

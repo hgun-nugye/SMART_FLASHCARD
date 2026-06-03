@@ -13,7 +13,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.R;
 import ntu.nguyenthithanhhuong.smartflashcard.model.Flashcard;
 
 public class CardDetailActivity extends BaseAppActivity {
-
     private TextView tvFront, tvIpa, tvBack, tvExample, tvStatus;
     private MaterialButton btnPlay;
     private TextToSpeech tts;

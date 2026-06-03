@@ -96,7 +96,8 @@
                 android:id="@+id/txtSignup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/signup_login_link"
+                android:text="@string/signup_link"
+                android:layout_marginLeft="8dp"
                 android:textColor="?attr/colorPrimary"
                 android:textStyle="bold" />
         </LinearLayout>

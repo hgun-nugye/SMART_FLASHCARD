@@ -26,7 +26,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.model.Deck;
 public class DeckManageActivity extends BaseAppActivity implements DeckManageAdapter.DeckActionListener {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-
     private RecyclerView rv;
     private DeckManageAdapter adapter;
     private final List<Deck> decks = new ArrayList<>();

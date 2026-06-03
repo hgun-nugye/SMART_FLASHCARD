@@ -35,13 +35,11 @@ import ntu.nguyenthithanhhuong.smartflashcard.R;
 import ntu.nguyenthithanhhuong.smartflashcard.model.Flashcard;
 
 public class ReviewSessionFragment extends Fragment {
-
     private static final String ARG_DECK_ID = "DECK_ID";
     private String deckId;
     private FirebaseFirestore db;
     private final List<Flashcard> reviewCards = new ArrayList<>();
     private int currentIndex = 0;
-
     private int correctCount = 0;
     private int incorrectCount = 0;
 
@@ -114,8 +112,6 @@ public class ReviewSessionFragment extends Fragment {
                 tts.speak(word, TextToSpeech.QUEUE_FLUSH, null, null);
             }
         });
-
-
     }
 
     private void initViews(View view) {

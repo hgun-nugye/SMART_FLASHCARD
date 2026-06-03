@@ -24,7 +24,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class AIManager {
-    private static final String TAG = "GroqManager";
     private static final String ENDPOINT =
             "https://openrouter.ai/api/v1/chat/completions";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -80,7 +79,6 @@ public class AIManager {
             return;
         }
 
-
         try {
             generateWithModelIndex(safeWord, 0, callback);
         } catch (Exception e) {
@@ -103,6 +101,11 @@ public class AIManager {
                         "- Return the corrected word.\n" +
                         "- If the word is already correct, correctedWord must equal original word.\n" +
                         "- Return up to 3 common meanings.\n" +
+                        "- Vietnamese meaning must be SHORT.\n" +
+                        "- Use only 1-5 Vietnamese words for each meaning.\n" +
+                        "- Do NOT explain the meaning.\n" +
+                        "- Do NOT write complete sentences in Vietnamese.\n" +
+                        "- Example: 'book' -> 'quyển sách', 'reserve' -> 'đặt trước'.\n" +
                         "- Each meaning must contain Vietnamese meaning, IPA and example.\n" +
                         "- Return ONLY valid JSON.\n\n" +
 
@@ -132,7 +135,6 @@ public class AIManager {
             Request request = new Request.Builder()
                     .url(ENDPOINT)
                     .addHeader("Authorization", "Bearer " + apiKey.trim())
-                    .addHeader("HTTP-Referer", "https://yourapp.com")
                     .addHeader("X-Title", "SmartFlashcard")
                     .post(body)
                     .build();
@@ -152,17 +154,13 @@ public class AIManager {
                     if (response.code() == 204 || raw.trim().isEmpty()) {
 
                         if (modelIndex < MODEL_FALLBACKS.length - 1) {
-
                             try {
-
                                 generateWithModelIndex(
                                         safeWord,
                                         modelIndex + 1,
                                         callback
                                 );
-
                                 return;
-
                             } catch (Exception ignored) {
                             }
                         }
@@ -243,18 +241,10 @@ public class AIManager {
                                 new ArrayList<>();
 
                         for (int i = 0; i < meaningsArray.length(); i++) {
-
-                            JSONObject item =
-                                    meaningsArray.getJSONObject(i);
-
-                            String vi =
-                                    item.optString("vi", "");
-
-                            String ipa =
-                                    item.optString("ipa", "");
-
-                            String example =
-                                    item.optString("example", "");
+                            JSONObject item = meaningsArray.getJSONObject(i);
+                            String vi = item.optString("vi", "");
+                            String ipa = item.optString("ipa", "");
+                            String example = item.optString("example", "");
 
                             meanings.add(
                                     new WordMeaning(

@@ -32,10 +32,9 @@ import ntu.nguyenthithanhhuong.smartflashcard.model.User;
 import ntu.nguyenthithanhhuong.smartflashcard.R;
 
 public class LoginOtpActivity extends AppCompatActivity {
-
     private TextInputLayout tilFullName, tilPassword, tilConfirmPassword, tilPhone, tilOtp;
-    private TextInputEditText edFullName, edPassword, edConfirmPassword, edphone, edotp;
-    private MaterialButton btngetotp, btnloginotp;
+    private TextInputEditText edFullName, edPassword, edConfirmPassword, edPhone, edOtp;
+    private MaterialButton btnGetOtp, btnLoginOtp;
     private ProgressBar progressOtp;
     private FirebaseAuth mAuth;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -81,18 +80,18 @@ public class LoginOtpActivity extends AppCompatActivity {
         edFullName = findViewById(R.id.edFullName);
         edPassword = findViewById(R.id.edPassword);
         edConfirmPassword = findViewById(R.id.edConfirmPassword);
-        edphone = findViewById(R.id.edphone);
-        edotp = findViewById(R.id.edotp);
+        edPhone = findViewById(R.id.edphone);
+        edOtp = findViewById(R.id.edotp);
 
-        btngetotp = findViewById(R.id.btngetotp);
-        btnloginotp = findViewById(R.id.btnloginotp);
+        btnGetOtp = findViewById(R.id.btngetotp);
+        btnLoginOtp = findViewById(R.id.btnloginotp);
         progressOtp = findViewById(R.id.progressOtp);
 
         tilFullName.setVisibility(View.GONE);
         tilPassword.setVisibility(View.GONE);
         tilConfirmPassword.setVisibility(View.GONE);
 
-        edphone.addTextChangedListener(new TextWatcher() {
+        edPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -114,7 +113,7 @@ public class LoginOtpActivity extends AppCompatActivity {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
                 if (credential.getSmsCode() != null) {
-                    edotp.setText(credential.getSmsCode());
+                    edOtp.setText(credential.getSmsCode());
                 }
                 if (isExistingUser != null && isExistingUser) {
                     if (validateOtpField()) {
@@ -145,12 +144,12 @@ public class LoginOtpActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        btngetotp.setOnClickListener(v -> {
+        btnGetOtp.setOnClickListener(v -> {
             clearErrors();
-            String phoneNumber = textOf(edphone);
+            String phoneNumber = textOf(edPhone);
             if (!phoneNumber.matches("[0-9]+")) {
                 tilPhone.setError(getString(R.string.otp_error_phone));
-                edphone.requestFocus();
+                edPhone.requestFocus();
                 return;
             }
 
@@ -185,7 +184,7 @@ public class LoginOtpActivity extends AppCompatActivity {
             }
         });
 
-        btnloginotp.setOnClickListener(v -> {
+        btnLoginOtp.setOnClickListener(v -> {
             clearErrors();
             if (isExistingUser == null) {
                 Toast.makeText(this, R.string.otp_error_get_otp_first, Toast.LENGTH_SHORT).show();
@@ -200,21 +199,21 @@ public class LoginOtpActivity extends AppCompatActivity {
             if (!isExistingUser) {
                 cacheProfileFields();
             }
-            verifyOtp(textOf(edotp));
+            verifyOtp(textOf(edOtp));
         });
     }
 
     private void cacheProfileFields() {
         pendingFullName = textOf(edFullName);
         pendingPassword = textOf(edPassword);
-        pendingPhone = textOf(edphone);
+        pendingPhone = textOf(edPhone);
     }
 
     private boolean validateProfileFields() {
         String fullName = textOf(edFullName);
         String password = textOf(edPassword);
         String confirmPassword = textOf(edConfirmPassword);
-        String phone = textOf(edphone);
+        String phone = textOf(edPhone);
 
         if (fullName.isEmpty() || password.isEmpty()
                 || confirmPassword.isEmpty() || phone.isEmpty()) {
@@ -244,7 +243,7 @@ public class LoginOtpActivity extends AppCompatActivity {
 
         if (!phone.matches("[0-9]+")) {
             tilPhone.setError(getString(R.string.otp_error_phone));
-            edphone.requestFocus();
+            edPhone.requestFocus();
             return false;
         }
 
@@ -252,10 +251,10 @@ public class LoginOtpActivity extends AppCompatActivity {
     }
 
     private boolean validateOtpField() {
-        String otp = textOf(edotp);
+        String otp = textOf(edOtp);
         if (otp.isEmpty()) {
             tilOtp.setError(getString(R.string.otp_error_otp_required));
-            edotp.requestFocus();
+            edOtp.requestFocus();
             return false;
         }
         return true;
@@ -292,7 +291,7 @@ public class LoginOtpActivity extends AppCompatActivity {
                     if (!task.isSuccessful()) {
                         setLoading(false);
                         tilOtp.setError(getString(R.string.otp_wrong));
-                        edotp.requestFocus();
+                        edOtp.requestFocus();
                         return;
                     }
 
@@ -356,13 +355,13 @@ public class LoginOtpActivity extends AppCompatActivity {
     }
 
     private void setLoading(boolean loading) {
-        btngetotp.setEnabled(!loading);
-        btnloginotp.setEnabled(!loading);
+        btnGetOtp.setEnabled(!loading);
+        btnLoginOtp.setEnabled(!loading);
         progressOtp.setVisibility(loading ? View.VISIBLE : View.GONE);
         if (loading) {
-            btnloginotp.setText(R.string.otp_loading);
+            btnLoginOtp.setText(R.string.otp_loading);
         } else {
-            btnloginotp.setText(R.string.otp_login);
+            btnLoginOtp.setText(R.string.otp_login);
         }
     }
 

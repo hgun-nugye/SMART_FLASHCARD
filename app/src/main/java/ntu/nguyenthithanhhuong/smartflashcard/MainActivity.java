@@ -15,7 +15,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.fragment.ReviewFragment;
 import ntu.nguyenthithanhhuong.smartflashcard.login.ChoiceLoginActivity;
 
 public class MainActivity extends AppCompatActivity {
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-
         if (hasFocus) {
             EdgeToEdgeHelper.hideStatusBar(this);
         }

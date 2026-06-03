@@ -13,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 public final class EdgeToEdgeHelper {
-
     private EdgeToEdgeHelper() {
     }
 

@@ -71,22 +71,15 @@ public class MeaningAdapter
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView txtMeaning;
         TextView txtIpa;
         TextView txtExample;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            txtMeaning =
-                    itemView.findViewById(R.id.txtMeaning);
-
-            txtIpa =
-                    itemView.findViewById(R.id.txtIpa);
-
-            txtExample =
-                    itemView.findViewById(R.id.txtExample);
+            txtMeaning = itemView.findViewById(R.id.txtMeaning);
+            txtIpa = itemView.findViewById(R.id.txtIpa);
+            txtExample = itemView.findViewById(R.id.txtExample);
         }
     }
 }

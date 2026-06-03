@@ -30,9 +30,7 @@ import ntu.nguyenthithanhhuong.smartflashcard.model.Deck;
 import ntu.nguyenthithanhhuong.smartflashcard.model.Flashcard;
 
 public class ReviewFragment extends Fragment {
-
     private static final String PREFS = "review_session_prefs";
-
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private final List<Deck> reviewDecks = new ArrayList<>();
@@ -52,8 +50,6 @@ public class ReviewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-//        EdgeToEdgeHelper.applyRootInsets(view);
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();

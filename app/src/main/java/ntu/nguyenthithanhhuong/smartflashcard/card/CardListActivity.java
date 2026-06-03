@@ -29,7 +29,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.R;
 import ntu.nguyenthithanhhuong.smartflashcard.model.Flashcard;
 
 public class CardListActivity extends BaseAppActivity {
-
     private RecyclerView rvCards;
     private FloatingActionButton fabAddCard;
     private TextView tvTotalCards, tvDueCards, tvLearnedCards;

@@ -19,7 +19,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/signup_login_link"
+            android:contentDescription="@string/login_link"
             android:padding="6dp"
             android:src="@drawable/ic_back" />
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -40,7 +41,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.model.Flashcard;
 import ntu.nguyenthithanhhuong.smartflashcard.model.User;
 
 public class MainFragment extends Fragment {
-
     private static final String TAG = "MainFragment";
     private TextView tvTotalDecks, tvDueCount, tvLearnedCount;
     private RecyclerView rvDecks;
@@ -94,7 +94,7 @@ public class MainFragment extends Fragment {
             toolbar.inflateMenu(R.menu.main_menu);
 
             // Ép cấu hình hiển thị màu chữ trắng cho SearchView trực tiếp từ mã nguồn
-            android.view.MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
+            MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
             if (searchItem != null) {
                 SearchView searchView = (SearchView) searchItem.getActionView();
                 if (searchView != null) {

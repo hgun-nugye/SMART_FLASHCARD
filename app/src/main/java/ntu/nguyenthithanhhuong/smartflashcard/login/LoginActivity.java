@@ -25,10 +25,8 @@ import ntu.nguyenthithanhhuong.smartflashcard.model.User;
 import ntu.nguyenthithanhhuong.smartflashcard.R;
 
 public class LoginActivity extends AppCompatActivity {
-
     private static final String TAG = "LoginActivity";
-
-    private TextInputEditText edmail, edpassword;
+    private TextInputEditText edMail, edPassword;
     private Button btnLogin;
     private TextView txtSignup, txtForgerPass;
     private FirebaseAuth mAuth;
@@ -41,8 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         EdgeToEdgeHelper.applyRootInsets(findViewById(R.id.login));
 
-        edmail = findViewById(R.id.edemailLg);
-        edpassword = findViewById(R.id.edpasswordLg);
+        edMail = findViewById(R.id.edemailLg);
+        edPassword = findViewById(R.id.edpasswordLg);
         btnLogin = findViewById(R.id.btnLogin);
         txtSignup = findViewById(R.id.txtSignup);
         txtForgerPass = findViewById(R.id.txtForgerPass);
@@ -53,8 +51,8 @@ public class LoginActivity extends AppCompatActivity {
         if (intent != null) {
             Bundle ex = intent.getExtras();
             if (ex != null) {
-                edmail.setText(ex.getString("email"));
-                edpassword.setText(ex.getString("password"));
+                edMail.setText(ex.getString("email"));
+                edPassword.setText(ex.getString("password"));
             }
         }
 
@@ -64,8 +62,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String email = edmail.getText() != null ? edmail.getText().toString().trim() : "";
-                String password = edpassword.getText() != null ? edpassword.getText().toString() : "";
+                String email = edMail.getText() != null ? edMail.getText().toString().trim() : "";
+                String password = edPassword.getText() != null ? edPassword.getText().toString() : "";
 
                 AuthValidator.Result emailResult = AuthValidator.validateEmail(email);
                 if (!emailResult.valid) {

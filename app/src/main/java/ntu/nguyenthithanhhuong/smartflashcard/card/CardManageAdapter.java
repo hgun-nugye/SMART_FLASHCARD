@@ -13,7 +13,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.R;
 import ntu.nguyenthithanhhuong.smartflashcard.model.Flashcard;
 
 public class CardManageAdapter extends RecyclerView.Adapter<CardManageAdapter.ManageViewHolder> {
-
     private final List<Flashcard> cardList;
     private final OnCardActionListener actionListener;
 
@@ -38,7 +37,6 @@ public class CardManageAdapter extends RecyclerView.Adapter<CardManageAdapter.Ma
         Flashcard card = cardList.get(position);
         holder.tvFront.setText(card.front);
         holder.tvBack.setText(card.back);
-
         holder.btnDelete.setOnClickListener(v -> actionListener.onDelete(card));
     }
 

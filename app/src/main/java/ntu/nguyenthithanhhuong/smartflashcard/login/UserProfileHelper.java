@@ -16,7 +16,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.R;
 import ntu.nguyenthithanhhuong.smartflashcard.model.User;
 
 public final class UserProfileHelper {
-
     public interface Callback {
         void onReady(User user);
 
@@ -181,7 +180,6 @@ public final class UserProfileHelper {
         }
         return "+84" + digits;
     }
-
 
     public static void ensureUserProfile(FirebaseUser firebaseUser, Callback callback) {
         if (firebaseUser == null) {

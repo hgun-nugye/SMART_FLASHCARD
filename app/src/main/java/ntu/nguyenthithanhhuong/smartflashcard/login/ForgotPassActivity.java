@@ -17,7 +17,6 @@ import ntu.nguyenthithanhhuong.smartflashcard.EdgeToEdgeHelper;
 import ntu.nguyenthithanhhuong.smartflashcard.R;
 
 public class ForgotPassActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,28 +24,25 @@ public class ForgotPassActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_pass);
         EdgeToEdgeHelper.applyRootInsets(findViewById(R.id.forgotPass));
 
-        Button btnsenemail = findViewById(R.id.btnsenemail);
-        EditText edmail = findViewById(R.id.edmail);
+        Button btnSendEmail = findViewById(R.id.btnsenemail);
+        EditText edMail = findViewById(R.id.edmail);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(v -> finish());
 
-        btnsenemail.setOnClickListener(v -> {
-            String email = edmail.getText().toString().trim();
+        btnSendEmail.setOnClickListener(v -> {
+            String email = edMail.getText().toString().trim();
             if (email.isEmpty()) {
                 Toast.makeText(ForgotPassActivity.this, R.string.forgot_email_required, Toast.LENGTH_SHORT).show();
                 return;
             }
-            mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(ForgotPassActivity.this, R.string.forgot_email_sent, Toast.LENGTH_SHORT).show();
-                    } else {
-                        String msg = task.getException() != null ? task.getException().getMessage() : "";
-                        Toast.makeText(ForgotPassActivity.this,
-                                getString(R.string.forgot_error, msg), Toast.LENGTH_SHORT).show();
-                    }
+            mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(ForgotPassActivity.this, R.string.forgot_email_sent, Toast.LENGTH_SHORT).show();
+                } else {
+                    String msg = task.getException() != null ? task.getException().getMessage() : "";
+                    Toast.makeText(ForgotPassActivity.this,
+                            getString(R.string.forgot_error, msg), Toast.LENGTH_SHORT).show();
                 }
             });
         });

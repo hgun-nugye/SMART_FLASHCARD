@@ -15,7 +15,6 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- 🌟 THẺ AVATAR: PHONG CÁCH STICKER NỔI BẬT -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +31,6 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <!-- Viền tròn dày bao quanh ảnh đại diện như khung tranh -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="112dp"
                     android:layout_height="112dp"
@@ -74,7 +72,6 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 🌟 THẺ THÔNG TIN: ĐƯỜNG VIỀN NÉT ĐỨT CÚC ÁO ĐÁNG YÊU -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,7 +91,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🎈 Thông tin cá nhân"
+                    android:text="Thông tin cá nhân"
                     android:textColor="#1D93D2"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
@@ -105,7 +102,6 @@
                     android:layout_marginTop="12dp"
                     android:background="#E8F6FF"/>
 
-                <!-- Mục 1: Mã số ID -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -143,7 +139,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Mục 2: Số điện thoại -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -181,7 +176,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Mục 3: Ngày tham gia -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -233,10 +227,9 @@
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:backgroundTint="#FF7676"
+            app:backgroundTint="#FFA71E"
             app:cornerRadius="24dp"
             app:elevation="4dp"/>
-
     </LinearLayout>
 
 </ScrollView>

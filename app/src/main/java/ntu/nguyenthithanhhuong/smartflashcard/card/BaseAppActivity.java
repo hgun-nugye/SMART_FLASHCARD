@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import ntu.nguyenthithanhhuong.smartflashcard.EdgeToEdgeHelper;
 
 public abstract class BaseAppActivity extends AppCompatActivity {
-
     @Override
     protected void onResume() {
         super.onResume();
