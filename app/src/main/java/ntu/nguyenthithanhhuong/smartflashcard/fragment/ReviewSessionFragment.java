@@ -3,12 +3,17 @@ package ntu.nguyenthithanhhuong.smartflashcard.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,7 +48,7 @@ public class ReviewSessionFragment extends Fragment {
     private int correctCount = 0;
     private int incorrectCount = 0;
 
-    private TextView tvFront, tvBack, tvProgress;
+    private TextView tvFront, tvIpa, tvBack, tvProgress;
     private TextView tvResultCorrect, tvResultIncorrect;
     private View divider;
     private MaterialToolbar toolbar;
@@ -55,6 +60,11 @@ public class ReviewSessionFragment extends Fragment {
     private TextToSpeech tts;
     private boolean isTtsReady = false;
     private ImageButton btnPlayTts;
+
+    private SoundPool soundPool;
+    private int soundCorrectId;
+    private int soundIncorrectId;
+    private int soundFlipId;
 
     public static ReviewSessionFragment newInstance(String deckId) {
         ReviewSessionFragment fragment = new ReviewSessionFragment();
@@ -70,6 +80,21 @@ public class ReviewSessionFragment extends Fragment {
         if (getArguments() != null) {
             deckId = getArguments().getString(ARG_DECK_ID);
         }
+
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(3)
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+        soundCorrectId = soundPool.load(requireContext(), R.raw.sound_correct, 1);
+        soundIncorrectId = soundPool.load(requireContext(), R.raw.sound_incorrect, 1);
+
+        soundFlipId = soundPool.load(requireContext(), R.raw.sound_flip, 1);
     }
 
     @Nullable
@@ -93,7 +118,6 @@ public class ReviewSessionFragment extends Fragment {
         initViews(view);
 
         EdgeToEdgeHelper.applyScreenWithToolbar(view, toolbar);
-
         loadCards();
 
         tts = new TextToSpeech(requireContext(), status -> {
@@ -129,6 +153,7 @@ public class ReviewSessionFragment extends Fragment {
         progressIndicator = view.findViewById(R.id.progressIndicator);
         cvCard = view.findViewById(R.id.cvCard);
         tvFront = view.findViewById(R.id.tvFront);
+        tvIpa = view.findViewById(R.id.tvIpa);
         tvBack = view.findViewById(R.id.tvBack);
         divider = view.findViewById(R.id.divider);
         tvProgress = view.findViewById(R.id.tvProgress);
@@ -144,39 +169,56 @@ public class ReviewSessionFragment extends Fragment {
         tvResultIncorrect = view.findViewById(R.id.tvResultIncorrect);
 
         float scale = getResources().getDisplayMetrics().density;
-        cvCard.setCameraDistance(8000 * scale);
+        cvCard.setCameraDistance(10000 * scale);
 
         btnAction.setOnClickListener(v -> {
             if (reviewCards.isEmpty()) return;
 
             btnAction.setEnabled(false);
-            ObjectAnimator tiltOut = ObjectAnimator.ofFloat(cvCard, "rotationY", 0f, 12f);
-            tiltOut.setDuration(180);
-            tiltOut.addListener(new AnimatorListenerAdapter() {
+
+            if (soundPool != null) {
+                soundPool.play(soundFlipId, 1.0f, 1.0f, 0, 0, 1.0f);
+            }
+
+            ObjectAnimator flipOut = ObjectAnimator.ofFloat(cvCard, "rotationY", 0f, 90f);
+            flipOut.setDuration(150);
+            flipOut.setInterpolator(new AccelerateInterpolator());
+
+            flipOut.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     tvBack.setVisibility(View.VISIBLE);
                     divider.setVisibility(View.VISIBLE);
 
+                    if (tvIpa.getText() != null && !tvIpa.getText().toString().trim().isEmpty()) {
+                        tvIpa.setVisibility(View.VISIBLE);
+                    }
+
                     btnAction.setVisibility(View.GONE);
                     llActionButtons.setVisibility(View.VISIBLE);
 
-                    ObjectAnimator tiltBack = ObjectAnimator.ofFloat(cvCard, "rotationY", 12f, 0f);
-                    tiltBack.setDuration(180);
-                    tiltBack.addListener(new AnimatorListenerAdapter() {
+                    cvCard.setRotationY(-90f);
+
+                    ObjectAnimator flipIn = ObjectAnimator.ofFloat(cvCard, "rotationY", -90f, 0f);
+                    flipIn.setDuration(150);
+                    flipIn.setInterpolator(new DecelerateInterpolator());
+                    flipIn.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             btnAction.setEnabled(true);
                         }
                     });
-                    tiltBack.start();
+                    flipIn.start();
                 }
             });
-            tiltOut.start();
+            flipOut.start();
         });
 
         btnCorrect.setOnClickListener(v -> {
             correctCount++;
+            if (soundPool != null) {
+                soundPool.play(soundCorrectId, 1.0f, 1.0f, 0, 0, 1.0f);
+            }
             if (currentIndex < reviewCards.size()) {
                 Flashcard currentCard = reviewCards.get(currentIndex);
                 applyReviewAndSync(currentCard, true);
@@ -186,6 +228,9 @@ public class ReviewSessionFragment extends Fragment {
 
         btnIncorrect.setOnClickListener(v -> {
             incorrectCount++;
+            if (soundPool != null) {
+                soundPool.play(soundIncorrectId, 1.0f, 1.0f, 0, 0, 1.0f);
+            }
             if (currentIndex < reviewCards.size()) {
                 Flashcard currentCard = reviewCards.get(currentIndex);
                 applyReviewAndSync(currentCard, false);
@@ -201,7 +246,7 @@ public class ReviewSessionFragment extends Fragment {
         btnIncorrect.setEnabled(false);
 
         ObjectAnimator slideOut = ObjectAnimator.ofFloat(cvCard, "translationX", 0f, -cvCard.getWidth());
-        slideOut.setDuration(180);
+        slideOut.setDuration(200);
         slideOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -301,8 +346,19 @@ public class ReviewSessionFragment extends Fragment {
         Flashcard currentCard = reviewCards.get(currentIndex);
 
         cvCard.setVisibility(View.VISIBLE);
+        cvCard.setRotationY(0f);
+
         tvFront.setVisibility(View.VISIBLE);
         tvFront.setText(currentCard.front);
+
+        if (currentCard.ipa != null && !currentCard.ipa.isEmpty()) {
+            String ipaText = currentCard.ipa.startsWith("/") ? currentCard.ipa : "/" + currentCard.ipa + "/";
+            tvIpa.setText(ipaText);
+        } else {
+            tvIpa.setText("");
+        }
+
+        tvIpa.setVisibility(View.GONE);
 
         tvBack.setVisibility(View.GONE);
         tvBack.setText(currentCard.back);
@@ -344,6 +400,10 @@ public class ReviewSessionFragment extends Fragment {
         if (tts != null) {
             tts.stop();
             tts.shutdown();
+        }
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
         }
         super.onDestroy();
     }

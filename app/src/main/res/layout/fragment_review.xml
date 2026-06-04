@@ -117,7 +117,7 @@
                         android:textColor="?attr/colorOnSecondaryContainer"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        tools:text="12 correct · 3 to practice" />
+                        tools:text="No data yet" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
