@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     android:id="@+id/deckEdit">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -72,8 +73,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/deck_delete"
-                android:textColor="?attr/colorError"
-                app:strokeColor="?attr/colorError" />
+                android:textColor="@color/white"
+                android:backgroundTint="@color/md_theme_light_error"/>
 
             <ProgressBar
                 android:id="@+id/progress"

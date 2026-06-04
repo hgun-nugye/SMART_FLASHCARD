@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFDF0"
+    android:background="@drawable/bg"
     android:fillViewport="true">
 
     <LinearLayout
@@ -20,8 +20,8 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="36dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#FFF0D4"
-            app:strokeColor="#FFC14D"
+            app:cardBackgroundColor="#257ABDB0"
+            app:strokeColor="@color/md_theme_light_outline"
             app:strokeWidth="3dp">
 
             <LinearLayout
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textColor="#5C3E00"
+                    android:textColor="#523600"
                     android:textSize="26sp"
                     android:textStyle="bold"
                     tools:text="Thanh Hương"/>
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:textColor="#A68342"
+                    android:textColor="#684600"
                     android:textSize="14sp"
                     android:textStyle="italic"
                     tools:text="email@email.com"/>
@@ -78,7 +78,7 @@
             android:layout_marginTop="20dp"
             app:cardCornerRadius="32dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#FFFFFF"
+            app:cardBackgroundColor="#6DFFFFFF"
             app:strokeColor="#C2EAFF"
             app:strokeWidth="3dp">
 
@@ -227,7 +227,7 @@
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:backgroundTint="#FFA71E"
+            app:backgroundTint="@color/md_theme_light_outline"
             app:cornerRadius="24dp"
             app:elevation="4dp"/>
     </LinearLayout>

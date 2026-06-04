@@ -5,7 +5,7 @@
     android:id="@+id/loginOtp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
+    android:background="@drawable/bg"
     android:fillViewport="true">
 
     <LinearLayout
@@ -118,11 +118,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btngetotp"
+            style="@style/Widget.SmartFlashCard.Button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="@string/otp_get_code"
             android:textAllCaps="false"
-            style="@style/Widget.SmartFlashCard.Button"
             app:cornerRadius="12dp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -154,13 +154,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnloginotp"
+            style="@style/Widget.SmartFlashCard.Button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/otp_login"
             android:textAllCaps="false"
-            style="@style/Widget.SmartFlashCard.Button"
             app:cornerRadius="12dp" />
 
     </LinearLayout>

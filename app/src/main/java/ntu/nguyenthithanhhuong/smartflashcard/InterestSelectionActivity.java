@@ -10,19 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ntu.nguyenthithanhhuong.smartflashcard.EdgeToEdgeHelper;
-import ntu.nguyenthithanhhuong.smartflashcard.MainActivity;
-import ntu.nguyenthithanhhuong.smartflashcard.R;
-
 public class InterestSelectionActivity extends AppCompatActivity {
 
-    private Chip chipEnglish, chipJapanese, chipKorean, chipChinese;
-    private Chip chipTOEIC, chipIELTS, chipJLPT, chipTOPIK;
+    // Nhóm 1: Phong cách & Đời sống văn hóa
+    private Chip chipGeneralEnglish, chipWorkplaceCulture, chipEntertainmentMedia, chipGlobalTrade;
+
+    // Nhóm 2: Chứng chỉ & Kỹ năng phòng thi
+    private Chip chipTOEIC, chipIELTS, chipTestStrategies, chipExamAnxiety;
+
+    // Nhóm 3: Chuyên ngành & Đời sống
     private Chip chipIT, chipBusiness, chipTourism, chipMedical, chipDaily;
 
     private MaterialButton btnStartLearning;
@@ -42,17 +42,17 @@ public class InterestSelectionActivity extends AppCompatActivity {
         btnStartLearning.setOnClickListener(v -> {
             List<String> selectedTopics = new ArrayList<>();
 
-            // Nhóm 1: Languages
-            if (chipEnglish.isChecked()) selectedTopics.add("English");
-            if (chipJapanese.isChecked()) selectedTopics.add("Japanese");
-            if (chipKorean.isChecked()) selectedTopics.add("Korean");
-            if (chipChinese.isChecked()) selectedTopics.add("Chinese");
+            // Nhóm 1: Languages & Cultural Vibes
+            if (chipGeneralEnglish.isChecked()) selectedTopics.add("General_English");
+            if (chipWorkplaceCulture.isChecked()) selectedTopics.add("Workplace_Culture");
+            if (chipEntertainmentMedia.isChecked()) selectedTopics.add("Entertainment_Media");
+            if (chipGlobalTrade.isChecked()) selectedTopics.add("Global_Trade");
 
-            // Nhóm 2: Exam Preparation
+            // Nhóm 2: Exam Preparation & Test Skills
             if (chipTOEIC.isChecked()) selectedTopics.add("TOEIC");
             if (chipIELTS.isChecked()) selectedTopics.add("IELTS");
-            if (chipJLPT.isChecked()) selectedTopics.add("JLPT");
-            if (chipTOPIK.isChecked()) selectedTopics.add("TOPIK");
+            if (chipTestStrategies.isChecked()) selectedTopics.add("Test_Strategies");
+            if (chipExamAnxiety.isChecked()) selectedTopics.add("Exam_Management");
 
             // Nhóm 3: Majors & Daily Life
             if (chipIT.isChecked()) selectedTopics.add("IT");
@@ -88,13 +88,12 @@ public class InterestSelectionActivity extends AppCompatActivity {
         });
     }
 
-    // Hàm lắng nghe thay đổi trạng thái các chip để cập nhật Text nút bấm động (UI mượt hơn)
     private void setupChipListeners() {
         View.OnClickListener chipClickListener = v -> {
-            boolean anyChecked = chipEnglish.isChecked() || chipJapanese.isChecked() ||
-                    chipKorean.isChecked() || chipChinese.isChecked() ||
+            boolean anyChecked = chipGeneralEnglish.isChecked() || chipWorkplaceCulture.isChecked() ||
+                    chipEntertainmentMedia.isChecked() || chipGlobalTrade.isChecked() ||
                     chipTOEIC.isChecked() || chipIELTS.isChecked() ||
-                    chipJLPT.isChecked() || chipTOPIK.isChecked() ||
+                    chipTestStrategies.isChecked() || chipExamAnxiety.isChecked() ||
                     chipIT.isChecked() || chipBusiness.isChecked() ||
                     chipTourism.isChecked() || chipMedical.isChecked() ||
                     chipDaily.isChecked();
@@ -106,15 +105,14 @@ public class InterestSelectionActivity extends AppCompatActivity {
             }
         };
 
-        // Gán sự kiện lắng nghe cho toàn bộ các chip
-        chipEnglish.setOnClickListener(chipClickListener);
-        chipJapanese.setOnClickListener(chipClickListener);
-        chipKorean.setOnClickListener(chipClickListener);
-        chipChinese.setOnClickListener(chipClickListener);
+        chipGeneralEnglish.setOnClickListener(chipClickListener);
+        chipWorkplaceCulture.setOnClickListener(chipClickListener);
+        chipEntertainmentMedia.setOnClickListener(chipClickListener);
+        chipGlobalTrade.setOnClickListener(chipClickListener);
         chipTOEIC.setOnClickListener(chipClickListener);
         chipIELTS.setOnClickListener(chipClickListener);
-        chipJLPT.setOnClickListener(chipClickListener);
-        chipTOPIK.setOnClickListener(chipClickListener);
+        chipTestStrategies.setOnClickListener(chipClickListener);
+        chipExamAnxiety.setOnClickListener(chipClickListener);
         chipIT.setOnClickListener(chipClickListener);
         chipBusiness.setOnClickListener(chipClickListener);
         chipTourism.setOnClickListener(chipClickListener);
@@ -129,19 +127,22 @@ public class InterestSelectionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        chipEnglish = findViewById(R.id.chipEnglish);
-        chipJapanese = findViewById(R.id.chipJapanese);
-        chipKorean = findViewById(R.id.chipKorean);
-        chipChinese = findViewById(R.id.chipChinese);
+        chipGeneralEnglish = findViewById(R.id.chipGeneralEnglish);
+        chipWorkplaceCulture = findViewById(R.id.chipWorkplaceCulture);
+        chipEntertainmentMedia = findViewById(R.id.chipEntertainmentMedia);
+        chipGlobalTrade = findViewById(R.id.chipGlobalTrade);
+
         chipTOEIC = findViewById(R.id.chipTOEIC);
         chipIELTS = findViewById(R.id.chipIELTS);
-        chipJLPT = findViewById(R.id.chipJLPT);
-        chipTOPIK = findViewById(R.id.chipTOPIK);
+        chipTestStrategies = findViewById(R.id.chipTestStrategies);
+        chipExamAnxiety = findViewById(R.id.chipExamAnxiety);
+
         chipIT = findViewById(R.id.chipIT);
         chipBusiness = findViewById(R.id.chipBusiness);
         chipTourism = findViewById(R.id.chipTourism);
         chipMedical = findViewById(R.id.chipMedical);
         chipDaily = findViewById(R.id.chipDaily);
+
         btnStartLearning = findViewById(R.id.btnStartLearning);
         layoutLoading = findViewById(R.id.layoutLoading);
 

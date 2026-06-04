@@ -68,19 +68,19 @@
 
     <style name="Widget.SmartFlashCard.Button" parent="Widget.Material3.Button">
         <item name="cornerRadius">@dimen/kid_corner_button</item>
-        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="backgroundTint">#3C9DF2</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <style name="Widget.SmartFlashCard.Button.Secondary" parent="Widget.Material3.Button">
         <item name="cornerRadius">@dimen/kid_corner_button</item>
-        <item name="backgroundTint">?attr/colorSecondary</item>
+        <item name="backgroundTint">#5E9ED9</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
     <style name="Widget.SmartFlashCard.Button.Study" parent="Widget.Material3.Button">
         <item name="cornerRadius">@dimen/kid_corner_button</item>
-        <item name="backgroundTint">?attr/colorTertiary</item>
+        <item name="backgroundTint">@color/kid_stat_decks</item>
         <item name="android:textColor">?attr/colorOnTertiary</item>
     </style>
 

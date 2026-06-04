@@ -4,7 +4,7 @@
     android:id="@+id/interestSelection"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
+    android:background="@drawable/bg"
     android:fillViewport="true">
 
     <LinearLayout
@@ -39,7 +39,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Popular Languages"
+            android:text="Languages &amp; Cultural Vibes"
             android:textColor="?attr/colorPrimary"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -53,16 +53,39 @@
             app:chipSpacingHorizontal="8dp"
             app:chipSpacingVertical="8dp">
 
-            <com.google.android.material.chip.Chip android:id="@+id/chipEnglish" style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="English" />
-            <com.google.android.material.chip.Chip android:id="@+id/chipJapanese" style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Japanese" />
-            <com.google.android.material.chip.Chip android:id="@+id/chipKorean" style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Korean" />
-            <com.google.android.material.chip.Chip android:id="@+id/chipChinese" style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Chinese" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipGeneralEnglish"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="General English" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipWorkplaceCulture"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Workplace Culture" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipEntertainmentMedia"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Entertainment &amp; Media" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipGlobalTrade"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Global Trade" />
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exam Preparation"
+            android:text="Exam Preparation &amp; Test Skills"
             android:textColor="?attr/colorPrimary"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -76,10 +99,33 @@
             app:chipSpacingHorizontal="8dp"
             app:chipSpacingVertical="8dp">
 
-            <com.google.android.material.chip.Chip android:id="@+id/chipTOEIC" style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TOEIC" />
-            <com.google.android.material.chip.Chip android:id="@+id/chipIELTS" style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="IELTS" />
-            <com.google.android.material.chip.Chip android:id="@+id/chipJLPT" style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="JLPT" />
-            <com.google.android.material.chip.Chip android:id="@+id/chipTOPIK" style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TOPIK" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTOEIC"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TOEIC Preparation" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipIELTS"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IELTS Academic" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTestStrategies"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Test-Taking Strategies" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipExamAnxiety"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exam Anxiety &amp; Pace" />
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
@@ -125,6 +171,7 @@
             android:layout_height="56dp"
             android:text="Skip for now"
             android:textAllCaps="false"
+            app:strokeColor="@color/cardview_dark_background"
             app:cornerRadius="16dp" />
 
     </LinearLayout>

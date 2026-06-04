@@ -5,7 +5,7 @@
     android:id="@+id/mainRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground">
+    android:background="@drawable/bg">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"

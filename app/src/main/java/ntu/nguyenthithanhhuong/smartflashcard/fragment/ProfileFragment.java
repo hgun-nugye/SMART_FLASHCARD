@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -63,12 +64,7 @@ public class ProfileFragment extends Fragment {
         btnLogout = view.findViewById(R.id.btnLogout);
         imgUser = view.findViewById(R.id.imgUser);
 
-        btnLogout.setOnClickListener(v -> {
-            mAuth.signOut();
-            Intent intent = new Intent(requireContext(), ChoiceLoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        });
+        btnLogout.setOnClickListener(v -> showLogoutConfirmationDialog());
 
         loadUserProfile();
 
@@ -78,62 +74,56 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         EdgeToEdgeHelper.applyRootInsets(view);
+    }
+
+    private void showLogoutConfirmationDialog() {
+        new MaterialAlertDialogBuilder(requireContext(),
+                com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog)
+                .setTitle("Sign Out")
+                .setMessage("Are you sure you want to sign out of this account?")
+                .setCancelable(true)
+                .setPositiveButton("Sign Out", (dialog, which) -> {
+                    mAuth.signOut();
+                    Intent intent = new Intent(requireContext(), ChoiceLoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private void loadUserProfile() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser == null) {
-            return;
-        }
+        if (currentUser == null) return;
 
         tvProfileEmail.setText(currentUser.getEmail());
 
         UserProfileHelper.ensureUserProfile(currentUser, new UserProfileHelper.Callback() {
             @Override
             public void onReady(User user) {
-                if (!isAdded() || user == null) {
-                    return;
-                }
+                if (!isAdded() || user == null) return;
 
-                // 1. Xử lý Tên và Tự động tạo ảnh đại diện theo tên
                 if (user.fullName != null && !user.fullName.isEmpty()) {
                     tvProfileName.setText(user.fullName);
-
-                    if (imgUser != null) {
-                        imgUser.setImageDrawable(generateAvatarBitmap(user.fullName));
-                    }
+                    if (imgUser != null) imgUser.setImageDrawable(generateAvatarBitmap(user.fullName));
                 } else {
                     tvProfileName.setText("Guest");
-                    if (imgUser != null) {
-                        imgUser.setImageDrawable(generateAvatarBitmap("Guest"));
-                    }
+                    if (imgUser != null) imgUser.setImageDrawable(generateAvatarBitmap("Guest"));
                 }
 
-                // 2. Email
-                if (user.email != null) {
-                    tvProfileEmail.setText(user.email);
-                }
+                if (user.email != null) tvProfileEmail.setText(user.email);
+                if (user.uid != null) tvUid.setText(user.uid);
 
-                // 3. UID
-                if (user.uid != null) {
-                    tvUid.setText(user.uid);
-                }
-
-                // 4. Phone
                 if (user.phone != null && !user.phone.isEmpty()) {
                     tvPhone.setText(user.phone);
                 } else {
                     tvPhone.setText("Not updated");
                 }
 
-                // 5. Created At
                 if (user.createdAt > 0) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-                    String date = sdf.format(new Date(user.createdAt));
-                    tvCreatedAt.setText(date);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.US);
+                    tvCreatedAt.setText(sdf.format(new Date(user.createdAt)));
                 } else {
                     tvCreatedAt.setText("Unknown");
                 }
@@ -143,15 +133,12 @@ public class ProfileFragment extends Fragment {
             public void onError(String message) {
                 if (isAdded()) {
                     tvProfileName.setText("Guest");
-                    if (imgUser != null) {
-                        imgUser.setImageDrawable(generateAvatarBitmap("Guest"));
-                    }
+                    if (imgUser != null) imgUser.setImageDrawable(generateAvatarBitmap("Guest"));
                 }
             }
         });
     }
 
-    // Lấy 2 chữ cái đầu của Tên
     private String getSubName(String fullName) {
         if (fullName == null || fullName.trim().isEmpty()) return "G";
         String[] words = fullName.trim().split("\\s+");
@@ -161,14 +148,13 @@ public class ProfileFragment extends Fragment {
         return (words[0].substring(0, 1) + words[words.length - 1].substring(0, 1)).toUpperCase();
     }
 
-    // Vẽ nền hình tròn màu sắc pastel ngẫu nhiên theo tên
     private GradientDrawable createTextDrawable(String text) {
         int[] colors = {
-                Color.parseColor("#9B7BFF"), // Tím
-                Color.parseColor("#FF6B81"), // Hồng
-                Color.parseColor("#4ED164"), // Xanh lá
-                Color.parseColor("#FF9F43"), // Cam
-                Color.parseColor("#54a0ff")  // Xanh dương
+                Color.parseColor("#162E7B"), // Deep Indigo
+                Color.parseColor("#5E9ED9"), // Soft Blue
+                Color.parseColor("#A9DBFF"), // Light Sky Blue
+                Color.parseColor("#9B7BFF"), // Muted Purple
+                Color.parseColor("#00BCD4")  // Soft Cyan
         };
         int randomColor = colors[Math.abs(text.hashCode()) % colors.length];
 
@@ -180,20 +166,19 @@ public class ProfileFragment extends Fragment {
         return drawable;
     }
 
-    // Kết hợp chữ viết trắng đè lên nền hình tròn
     private BitmapDrawable generateAvatarBitmap(String name) {
         String subName = getSubName(name);
         GradientDrawable background = createTextDrawable(subName);
 
         int size = (int) (100 * getResources().getDisplayMetrics().density);
-        android.graphics.Bitmap bitmap = createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = createBitmap(size, size, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
         background.setBounds(0, 0, size, size);
         background.draw(canvas);
 
         android.graphics.Paint paint = new android.graphics.Paint();
-        paint.setColor(android.graphics.Color.WHITE);
+        paint.setColor(Color.WHITE);
         paint.setTextSize(32 * getResources().getDisplayMetrics().density);
         paint.setAntiAlias(true);
         paint.setTextAlign(android.graphics.Paint.Align.CENTER);

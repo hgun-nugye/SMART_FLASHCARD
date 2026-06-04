@@ -5,22 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground">
+    android:background="@drawable/bg">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@color/md_theme_light_onBackground"
         app:elevation="0dp"
         app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbarReview"
-            style="@style/Widget.SmartFlashCard.Toolbar.Study"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorTertiary"
+            android:background="@color/md_theme_light_primary"
             app:title="@string/review_title" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -43,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="?attr/colorPrimaryContainer"
+                app:cardBackgroundColor="@color/kid_icon_tint"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="4dp"
                 app:strokeWidth="0dp">
@@ -67,7 +66,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/review_hero_title"
-                        android:textColor="?attr/colorOnPrimaryContainer"
+                        android:textColor="@color/md_theme_light_onBackground"
                         android:textSize="22sp"
                         android:textStyle="bold" />
 
@@ -90,7 +89,9 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="12dp"
                 android:visibility="gone"
-                app:cardBackgroundColor="?attr/colorSecondaryContainer"
+                app:cardBackgroundColor="@color/kid_divider"
+                app:strokeColor="@color/kid_icon_tint"
+                app:strokeWidth="2dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="2dp"
                 tools:visibility="visible">
@@ -105,7 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/review_last_session"
-                        android:textColor="?attr/colorOnSecondaryContainer"
+                        android:textColor="@color/md_theme_light_onBackground"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -116,8 +117,7 @@
                         android:layout_marginTop="4dp"
                         android:textColor="?attr/colorOnSecondaryContainer"
                         android:textSize="16sp"
-                        android:textStyle="bold"
-                        tools:text="No data yet" />
+                        android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

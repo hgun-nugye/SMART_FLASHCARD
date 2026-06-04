@@ -3,11 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="md_theme_light_primary">#FF9800</color>
+    <color name="md_theme_light_primary">#5E9ED9</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
-    <color name="md_theme_light_primaryContainer">#FFE0B2</color>
-    <color name="md_theme_light_onPrimaryContainer">#5D3200</color>
-
+    <color name="md_theme_light_primaryContainer">#A9DBFF</color>
+    <color name="md_theme_light_onPrimaryContainer">#162E7B</color>
     <color name="md_theme_light_secondary">#00BCD4</color>
     <color name="md_theme_light_onSecondary">#FFFFFF</color>
     <color name="md_theme_light_secondaryContainer">#B2EBF2</color>
@@ -23,30 +22,26 @@
     <color name="md_theme_light_errorContainer">#FFCDD2</color>
     <color name="md_theme_light_onErrorContainer">#B71C1C</color>
 
-    <color name="md_theme_light_background">#FFF8E1</color>
-    <color name="md_theme_light_onBackground">#3E2723</color>
-
+    <color name="md_theme_light_background">#A9DBFF</color>
+    <color name="md_theme_light_onBackground">#162E7B</color>
     <color name="md_theme_light_surface">#FFFFFF</color>
-    <color name="md_theme_light_onSurface">#3E2723</color>
-    <color name="md_theme_light_surfaceVariant">#FFF3E0</color>
-    <color name="md_theme_light_onSurfaceVariant">#6D4C41</color>
-    <color name="md_theme_light_outline">#BCAAA4</color>
-
-    <color name="kid_stat_decks">#FF9800</color>
-    <color name="kid_stat_due">#F4511E</color>
+    <color name="md_theme_light_onSurface">#162E7B</color>
+    <color name="md_theme_light_surfaceVariant">#A9DBFF</color>
+    <color name="md_theme_light_onSurfaceVariant">#162E7B</color>
+    <color name="md_theme_light_outline">#5E9ED9</color>
+    <color name="kid_stat_decks">#5E9ED9</color>
+    <color name="kid_stat_due">#5E9ED9</color>
     <color name="kid_stat_learned">#43A047</color>
     <color name="kid_stat_new">#00897B</color>
-
     <color name="status_new_text">@color/kid_stat_new</color>
     <color name="status_review_text">@color/kid_stat_due</color>
     <color name="status_learned_text">@color/kid_stat_learned</color>
 
     <color name="kid_badge_new_bg">#E0F2F1</color>
-    <color name="kid_badge_due_bg">#FFEBEE</color>
+    <color name="kid_badge_due_bg">#B3FFFFFF</color>
     <color name="kid_badge_learned_bg">#E8F5E9</color>
-    <color name="kid_chip_bg">#FFE0B2</color>
-
+    <color name="kid_chip_bg">#A9DBFF</color>
     <color name="kid_icon_tint">@color/md_theme_light_primary</color>
-    <color name="kid_divider">#FFE0B2</color>
+    <color name="kid_divider">#A9DBFF</color>
     <color name="kid_hint_on_primary">#B3FFFFFF</color>
 </resources>
