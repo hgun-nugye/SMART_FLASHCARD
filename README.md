@@ -53,8 +53,15 @@
 
 **4. Giao diện tài khoản người dùng:**
 
-<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/70aeeb67-652e-42ea-a4d5-fe84bc3c26ea" />
-<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/d1a8badc-dee2-495d-b876-1b2602a928c7" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/0ebe870e-28d7-407b-8b24-0b168e188351" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/1b3c0f49-2077-4d9e-9e2a-30c516d8f08a" />
+<img width="189" height="422" alt="image" src="https://github.com/user-attachments/assets/d442b697-ff4c-4f8f-b585-e4e54fc8edf3" />
+
+
+**5. Giao diện widget ở màn hình chính:**
+
+<img width="189" height="422" alt="ưidget" src="https://github.com/user-attachments/assets/1d9b9721-3e30-423a-bc3b-db8d19a206b4" />
+
 
 
 
