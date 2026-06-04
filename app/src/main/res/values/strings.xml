@@ -217,4 +217,29 @@
     <string name="ai_bad_response">AI returned invalid data.</string>
     <string name="ai_parse_error">Parse error: %1$s</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_step1">👤 Account / Tài khoản</string>
+    <string name="desc_step1">
+Sign up or log in to save and sync your flashcards. / Đăng ký hoặc đăng nhập để lưu và đồng bộ dữ liệu.
+</string>
+
+    <string name="title_step2">📚 Create Decks / Tạo bộ thẻ</string>
+    <string name="desc_step2">
+Create vocabulary decks for different topics. / Tạo các bộ từ vựng theo từng chủ đề.
+</string>
+
+    <string name="title_step3">➕ Add Flashcards / Thêm thẻ học</string>
+    <string name="desc_step3">
+Add words, meanings, IPA and examples to your deck. / Thêm từ vựng, nghĩa, IPA và ví dụ vào bộ thẻ.
+</string>
+
+    <string name="title_step4">🤖 AI Assistant / Hỗ trợ AI</string>
+    <string name="desc_step4">
+Use AI to generate meanings and example sentences automatically. / Sử dụng AI để tạo nghĩa và ví dụ tự động.
+</string>
+
+    <string name="title_faq">🧠 Review Cards / Ôn tập</string>
+    <string name="desc_faq">
+Review cards regularly with spaced repetition to improve memory. / Ôn tập thường xuyên bằng phương pháp lặp lại ngắt quãng để ghi nhớ lâu hơn.
+</string>
 </resources>

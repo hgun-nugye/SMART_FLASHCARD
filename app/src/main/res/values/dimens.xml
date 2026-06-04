@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Corner Radius -->
     <dimen name="kid_corner_small">12dp</dimen>
     <dimen name="kid_corner_button">16dp</dimen>
     <dimen name="kid_corner_chip">50dp</dimen>
     <dimen name="kid_corner_card">24dp</dimen>
     <dimen name="kid_corner_hero">28dp</dimen>
+    <dimen name="card_corner_radius">16dp</dimen>
+
+    <!-- Elevation -->
     <dimen name="kid_elevation_card">4dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+
+    <!-- Padding & Spacing -->
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
     <dimen name="kid_section_spacing">16dp</dimen>
+    <dimen name="card_margin_bottom">16dp</dimen>
+
+    <!-- Component Sizes -->
+    <dimen name="button_height_standard">56dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_size_body">14sp</dimen>
+    <dimen name="text_size_title">18sp</dimen>
 </resources>

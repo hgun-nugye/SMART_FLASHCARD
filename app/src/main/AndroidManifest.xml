@@ -2,12 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -19,6 +13,13 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartFlashCard">
+        <activity
+            android:name=".widget.FlashcardWidgetProvider"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false" />
         <activity
             android:name=".InterestSelectionActivity"
             android:exported="false" />
@@ -64,6 +65,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".widget.FlashcardWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/flashcard_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

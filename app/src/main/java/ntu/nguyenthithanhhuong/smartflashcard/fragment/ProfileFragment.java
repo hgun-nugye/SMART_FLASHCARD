@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import ntu.nguyenthithanhhuong.smartflashcard.EdgeToEdgeHelper;
+import ntu.nguyenthithanhhuong.smartflashcard.HelpActivity;
 import ntu.nguyenthithanhhuong.smartflashcard.R;
 import ntu.nguyenthithanhhuong.smartflashcard.login.UserProfileHelper;
 import ntu.nguyenthithanhhuong.smartflashcard.model.User;
@@ -41,11 +43,10 @@ public class ProfileFragment extends Fragment {
     private TextView tvUid;
     private TextView tvPhone;
     private TextView tvCreatedAt;
-
     private MaterialButton btnLogout;
-
     private FirebaseAuth mAuth;
     private ShapeableImageView imgUser;
+    private MaterialCardView cardHelp;
 
     @Nullable
     @Override
@@ -63,6 +64,8 @@ public class ProfileFragment extends Fragment {
 
         btnLogout = view.findViewById(R.id.btnLogout);
         imgUser = view.findViewById(R.id.imgUser);
+        cardHelp = view.findViewById(R.id.cardHelp);
+        cardHelp.setOnClickListener(v -> showHelpDialog());
 
         btnLogout.setOnClickListener(v -> showLogoutConfirmationDialog());
 
@@ -164,6 +167,11 @@ public class ProfileFragment extends Fragment {
         int size = (int) (100 * getResources().getDisplayMetrics().density);
         drawable.setSize(size, size);
         return drawable;
+    }
+
+    private void showHelpDialog() {
+        Intent intent = new Intent(requireContext(), HelpActivity.class);
+        startActivity(intent);
     }
 
     private BitmapDrawable generateAvatarBitmap(String name) {

@@ -68,9 +68,7 @@ public class OnboardingManager {
 
                             for (Map<String, String> localCard : cardsList) {
                                 var cardDocRef = userDeckRef.collection("flashcards").document();
-
                                 Map<String, Object> cardData = new HashMap<>(localCard);
-                                // Khởi tạo các trường bổ trợ cho thuật toán học (SM2) nếu cần thiết
                                 cardData.put("interval", 1);
                                 cardData.put("easeFactor", 2.5);
                                 cardData.put("repetitions", 0);
