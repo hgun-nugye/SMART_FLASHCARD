@@ -27,6 +27,7 @@ import android.text.TextWatcher;
 import java.util.concurrent.TimeUnit;
 
 import ntu.nguyenthithanhhuong.smartflashcard.EdgeToEdgeHelper;
+import ntu.nguyenthithanhhuong.smartflashcard.InterestSelectionActivity;
 import ntu.nguyenthithanhhuong.smartflashcard.MainActivity;
 import ntu.nguyenthithanhhuong.smartflashcard.model.User;
 import ntu.nguyenthithanhhuong.smartflashcard.R;
@@ -63,7 +64,8 @@ public class LoginOtpActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() != null) {
-            goToMain();
+            // Phiên đăng nhập cũ còn hiệu lực -> Vào thẳng màn hình chính
+            goToNextScreen(false);
         }
     }
 
@@ -305,7 +307,7 @@ public class LoginOtpActivity extends AppCompatActivity {
                     if (isExistingUser != null && isExistingUser) {
                         setLoading(false);
                         Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                        goToMain();
+                        goToNextScreen(false); // Vào thẳng MainActivity
                         return;
                     }
 
@@ -327,19 +329,18 @@ public class LoginOtpActivity extends AppCompatActivity {
                                             getString(R.string.otp_success, name),
                                             Toast.LENGTH_SHORT
                                     ).show();
-                                    goToMain();
+                                    goToNextScreen(true); // Người dùng mới -> Qua chọn chủ đề
                                 }
 
                                 @Override
                                 public void onError(String message) {
                                     setLoading(false);
-
                                     Toast.makeText(
                                             LoginOtpActivity.this,
                                             getString(R.string.otp_error_profile, message),
                                             Toast.LENGTH_LONG
                                     ).show();
-                                    goToMain();
+                                    goToNextScreen(true); // Dự phòng lỗi profile vẫn cho qua chọn chủ đề mẫu
                                 }
                             }
                     );
@@ -369,8 +370,15 @@ public class LoginOtpActivity extends AppCompatActivity {
         return editText.getText() != null ? editText.getText().toString().trim() : "";
     }
 
-    private void goToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void goToNextScreen(boolean isNewUser) {
+        Intent intent;
+        if (isNewUser) {
+            // Người dùng mới đăng ký qua OTP -> Qua màn hình chọn sở thích
+            intent = new Intent(this, InterestSelectionActivity.class);
+        } else {
+            // Người dùng cũ đăng nhập -> Vào thẳng màn hình chính ứng dụng
+            intent = new Intent(this, MainActivity.class);
+        }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

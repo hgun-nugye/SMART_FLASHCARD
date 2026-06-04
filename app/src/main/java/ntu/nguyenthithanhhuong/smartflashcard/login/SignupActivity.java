@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
 import ntu.nguyenthithanhhuong.smartflashcard.EdgeToEdgeHelper;
+import ntu.nguyenthithanhhuong.smartflashcard.InterestSelectionActivity;
 import ntu.nguyenthithanhhuong.smartflashcard.MainActivity;
 import ntu.nguyenthithanhhuong.smartflashcard.model.User;
 import ntu.nguyenthithanhhuong.smartflashcard.R;
@@ -48,7 +49,10 @@ public class SignupActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() != null) {
-            goToMain();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -154,7 +158,7 @@ public class SignupActivity extends AppCompatActivity {
                                     getString(R.string.signup_success, name),
                                     Toast.LENGTH_SHORT
                             ).show();
-                            goToMain();
+                            goToInterestSelection(); // Đăng ký mới thành công -> Đi chọn sở thích
                         }
 
                         @Override
@@ -167,7 +171,7 @@ public class SignupActivity extends AppCompatActivity {
                                                     SignupActivity.this, message)),
                                     Toast.LENGTH_SHORT
                             ).show();
-                            goToMain();
+                            goToInterestSelection(); // Gặp lỗi tạo profile vẫn cho đi khởi tạo bộ thẻ mẫu mẫu
                         }
                     });
                 });
@@ -212,8 +216,8 @@ public class SignupActivity extends AppCompatActivity {
         return editText.getText() != null ? editText.getText().toString().trim() : "";
     }
 
-    private void goToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void goToInterestSelection() {
+        Intent intent = new Intent(this, InterestSelectionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

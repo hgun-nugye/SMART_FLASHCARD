@@ -58,7 +58,7 @@
     <string name="signup_button">Sign Up</string>
     <string name="signup_has_account">Already have an account?</string>
     <string name="signup_link">Sign up</string>
-    <string name="login_link">Sign up</string>
+    <string name="login_link">Login</string>
     <string name="signup_loading">Creating account…</string>
     <string name="signup_success">Welcome, %1$s!</string>
     <string name="signup_error_empty">Please fill all fields</string>
@@ -216,6 +216,5 @@
     <string name="ai_no_choices">Server returned no result.</string>
     <string name="ai_bad_response">AI returned invalid data.</string>
     <string name="ai_parse_error">Parse error: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
